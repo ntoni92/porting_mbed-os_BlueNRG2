@@ -46,7 +46,7 @@ typedef enum {
     // ADC internal channels
 	ADC_OPEN = 0x10,
 	ADC2     = 0x11,
-	ADC10     = 0x12,    /////////////cambiare!!!!!!!!!
+	ADC1     = 0x12,    /////////////cambiare!!!!!!!!!
 	ADC_DIFF = 0x13,
     ADC_TEMP = 0x14,
     ADC_VBAT = 0x15,
@@ -82,7 +82,7 @@ typedef enum {
 	//A1          = TEST1,
 	A2          = DIO13,
 	A3          = DIO14,
-	A4          = ADC10,
+	A4          = ADC1,
 	A5          = ADC2,
 	D0          = DIO11,
 	D1          = DIO8,

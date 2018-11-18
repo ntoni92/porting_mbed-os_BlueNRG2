@@ -250,7 +250,7 @@ static void Start_Beaconing(void)
 
 DigitalOut led1(LED1);
 DigitalOut led2(LED2);
-InterruptIn button(BUTTON1);
+InterruptIn button(PUSH1);
 Serial pc(USBTX,USBRX);
 //Thread thread;
 

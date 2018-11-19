@@ -36,7 +36,7 @@ int gpio_irq_init(gpio_irq_t *obj, PinName pin, gpio_irq_handler handler, uint32
 
 	irq_handler = handler;
 
-	NVIC_SetVector(GPIO_IRQn, &GPIO_Handler);
+	NVIC_SetVector(GPIO_IRQn, (uint32_t)&GPIO_Handler);
 
 	//GPIO_EXTICmd((uint32_t)pin, (FunctionalState)1); //////da rivedere
 

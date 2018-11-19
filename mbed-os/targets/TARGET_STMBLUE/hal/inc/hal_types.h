@@ -63,10 +63,10 @@ typedef enum {SUCCESS = 0, ERROR} ErrorStatus;
 typedef uint8_t BOOL;
 
 /**@brief TRUE, FALSE definition */
-#define TRUE  ((BOOL)1U)
-#define FALSE ((BOOL)0U)
+//#define TRUE  ((BOOL)1U)
+//#define FALSE ((BOOL)0U)
 
-//#define TRUE  1 //antonio
-//#define FALSE 0 //antonio
+#define TRUE  1 //antonio
+#define FALSE 0 //antonio
 
 #endif /* __HAL_TYPES_H__ */

@@ -47,7 +47,7 @@ void us_ticker_init(void){
 	NVIC_EnableIRQ(MFT2B_IRQn);
 	enabled = NVIC_GetEnableIRQ(MFT2B_IRQn);
 */
-	NVIC_SetVector(MFT2B_IRQn, &MFT2B_Handler);
+	NVIC_SetVector(MFT2B_IRQn, (uint32_t)&MFT2B_Handler);
 	SysCtrl_PeripheralClockCmd(CLOCK_PERIPH_MTFX2, ENABLE); //timer 2 is used as timebase, maybe mtfx1 is useless in this context
 	MFT_StructInit(&timer_init);
 

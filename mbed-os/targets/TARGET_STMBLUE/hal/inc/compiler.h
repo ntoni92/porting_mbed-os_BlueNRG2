@@ -147,9 +147,9 @@ extern void __iar_program_start(void);
   *         Usage:  PACKED(struct) myStruct_s
   *                 PACKED(union) myStruct_s
   */
-#ifndef PACKED //antonio
+//#ifndef PACKED //antonio
 #define PACKED(decl)                    decl __attribute__((packed))
-#endif //antonio
+//#endif //antonio
 /**
   * @brief  REQUIRED
   *         Use the REQUIRED macro for variables that must be always included.

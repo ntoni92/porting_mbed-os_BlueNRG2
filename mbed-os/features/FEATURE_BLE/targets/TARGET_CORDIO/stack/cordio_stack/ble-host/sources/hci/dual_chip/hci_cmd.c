@@ -31,33 +31,39 @@
 #include "hci_tr.h"
 #include "hci_api.h"
 #include "hci_main.h"
+#include "bluenrg1_api.h"
+#include "DTM_cmd_db.h"
 
 /**************************************************************************************************
   Macros
-**************************************************************************************************/
+ **************************************************************************************************/
 
 /* HCI command timeout in seconds */
 #define HCI_CMD_TIMEOUT           2
 
 /**************************************************************************************************
   Data Types
-**************************************************************************************************/
+ **************************************************************************************************/
 
 /* Local control block type */
 typedef struct
 {
-  wsfTimer_t      cmdTimer;       /* HCI command timeout timer */
-  wsfQueue_t      cmdQueue;       /* HCI command queue */
-  uint16_t        cmdOpcode;      /* Opcode of last HCI command sent */
-  uint8_t         numCmdPkts;     /* Number of outstanding HCI commands that can be sent */
+	wsfTimer_t      cmdTimer;       /* HCI command timeout timer */
+	wsfQueue_t      cmdQueue;       /* HCI command queue */
+	uint16_t        cmdOpcode;      /* Opcode of last HCI command sent */
+	uint8_t         numCmdPkts;     /* Number of outstanding HCI commands that can be sent */
 } hciCmdCb_t;
 
 /**************************************************************************************************
   Local Variables
-**************************************************************************************************/
+ **************************************************************************************************/
 
 /* Local control block */
 hciCmdCb_t hciCmdCb;
+
+//antonio variabili
+uint8_t output_size;
+uint8_t buffer_out[255];
 
 /*************************************************************************************************/
 /*!
@@ -71,18 +77,18 @@ hciCmdCb_t hciCmdCb;
 /*************************************************************************************************/
 uint8_t *hciCmdAlloc(uint16_t opcode, uint16_t len)
 {
-  uint8_t   *p;
+	uint8_t   *p;
 
-  /* allocate buffer */
-  if ((p = WsfMsgAlloc(len + HCI_CMD_HDR_LEN)) != NULL)
-  {
-    /* set HCI command header */
-    UINT16_TO_BSTREAM(p, opcode);
-    UINT8_TO_BSTREAM(p, len);
-    p -= HCI_CMD_HDR_LEN;
-  }
+	/* allocate buffer */
+	if ((p = WsfMsgAlloc(len + HCI_CMD_HDR_LEN)) != NULL)
+	{
+		/* set HCI command header */
+		UINT16_TO_BSTREAM(p, opcode);
+		UINT8_TO_BSTREAM(p, len);
+		p -= HCI_CMD_HDR_LEN;
+	}
 
-  return p;
+	return p;
 }
 
 /*************************************************************************************************/
@@ -96,35 +102,35 @@ uint8_t *hciCmdAlloc(uint16_t opcode, uint16_t len)
 /*************************************************************************************************/
 void hciCmdSend(uint8_t *pData)
 {
-  uint8_t         *p;
-  wsfHandlerId_t  handlerId;
+	uint8_t         *p;
+	wsfHandlerId_t  handlerId;
 
-  /* queue command if present */
-  if (pData != NULL)
-  {
-    /* queue data - message handler ID 'handerId' not used */
-    WsfMsgEnq(&hciCmdCb.cmdQueue, 0, pData);
-  }
+	/* queue command if present */
+	if (pData != NULL)
+	{
+		/* queue data - message handler ID 'handerId' not used */
+		WsfMsgEnq(&hciCmdCb.cmdQueue, 0, pData);
+	}
 
-  /* service the HCI command queue; first check if controller can accept any commands */
-  if (hciCmdCb.numCmdPkts > 0)
-  {
-    /* if queue not empty */
-    if ((p = WsfMsgDeq(&hciCmdCb.cmdQueue, &handlerId)) != NULL)
-    {
-      /* decrement controller command packet count */
-      hciCmdCb.numCmdPkts--;
+	/* service the HCI command queue; first check if controller can accept any commands */
+	if (hciCmdCb.numCmdPkts > 0)
+	{
+		/* if queue not empty */
+		if ((p = WsfMsgDeq(&hciCmdCb.cmdQueue, &handlerId)) != NULL)
+		{
+			/* decrement controller command packet count */
+			hciCmdCb.numCmdPkts--;
 
-      /* store opcode of command we're sending */
-      BYTES_TO_UINT16(hciCmdCb.cmdOpcode, p);
+			/* store opcode of command we're sending */
+			BYTES_TO_UINT16(hciCmdCb.cmdOpcode, p);
 
-      /* start command timeout */
-      WsfTimerStartSec(&hciCmdCb.cmdTimer, HCI_CMD_TIMEOUT);
+			/* start command timeout */
+			WsfTimerStartSec(&hciCmdCb.cmdTimer, HCI_CMD_TIMEOUT);
 
-      /* send command to transport */
-      hciTrSendCmd(p);
-    }
-  }
+			/* send command to transport */
+			hciTrSendCmd(p);
+		}
+	}
 }
 
 /*************************************************************************************************/
@@ -136,14 +142,14 @@ void hciCmdSend(uint8_t *pData)
 /*************************************************************************************************/
 void hciCmdInit(void)
 {
-  WSF_QUEUE_INIT(&hciCmdCb.cmdQueue);
+	WSF_QUEUE_INIT(&hciCmdCb.cmdQueue);
 
-  /* initialize numCmdPkts for special case of first command */
-  hciCmdCb.numCmdPkts = 1;
+	/* initialize numCmdPkts for special case of first command */
+	hciCmdCb.numCmdPkts = 1;
 
-  /* initialize timer */
-  hciCmdCb.cmdTimer.msg.event = HCI_MSG_CMD_TIMEOUT;
-  hciCmdCb.cmdTimer.handlerId = hciCb.handlerId;
+	/* initialize timer */
+	hciCmdCb.cmdTimer.msg.event = HCI_MSG_CMD_TIMEOUT;
+	hciCmdCb.cmdTimer.handlerId = hciCb.handlerId;
 }
 
 /*************************************************************************************************/
@@ -155,7 +161,7 @@ void hciCmdInit(void)
 /*************************************************************************************************/
 void hciCmdTimeout(wsfMsgHdr_t *pMsg)
 {
-  HCI_TRACE_INFO0("hciCmdTimeout");
+	HCI_TRACE_INFO0("hciCmdTimeout");
 }
 
 /*************************************************************************************************/
@@ -169,18 +175,18 @@ void hciCmdTimeout(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void hciCmdRecvCmpl(uint8_t numCmdPkts)
 {
-  /* stop the command timeout timer */
-  WsfTimerStop(&hciCmdCb.cmdTimer);
+	/* stop the command timeout timer */
+	WsfTimerStop(&hciCmdCb.cmdTimer);
 
-  /*
-   * Set the number of commands that can be sent to the controller.  Setting this
-   * to 1 rather than incrementing by numCmdPkts allows only one command at a time to
-   * be sent to the controller and simplifies the code.
-   */
-  hciCmdCb.numCmdPkts = 1;
+	/*
+	 * Set the number of commands that can be sent to the controller.  Setting this
+	 * to 1 rather than incrementing by numCmdPkts allows only one command at a time to
+	 * be sent to the controller and simplifies the code.
+	 */
+	hciCmdCb.numCmdPkts = 1;
 
-  /* send the next queued command */
-  hciCmdSend(NULL);
+	/* send the next queued command */
+	hciCmdSend(NULL);
 }
 
 /*************************************************************************************************/
@@ -190,16 +196,19 @@ void hciCmdRecvCmpl(uint8_t numCmdPkts)
 /*************************************************************************************************/
 void HciDisconnectCmd(uint16_t handle, uint8_t reason)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 3);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_DISCONNECT, HCI_LEN_DISCONNECT)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    UINT8_TO_BSTREAM(p, reason);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_disconnect(handle, reason);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0F;
+	buffer_out[2] = output_size + 3;
+	buffer_out[4] = 0x01;
+	buffer_out[5] = 0x06;
+	buffer_out[6] = 0x04;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -209,16 +218,19 @@ void HciDisconnectCmd(uint16_t handle, uint8_t reason)
 /*************************************************************************************************/
 void HciLeAddDevWhiteListCmd(uint8_t addrType, uint8_t *pAddr)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ADD_DEV_WHITE_LIST, HCI_LEN_LE_ADD_DEV_WHITE_LIST)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, addrType);
-    BDA_TO_BSTREAM(p, pAddr);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_add_device_to_white_list(addrType /* 1 */, *pAddr /* 6 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x11;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -230,12 +242,19 @@ void HciLeAddDevWhiteListCmd(uint8_t addrType, uint8_t *pAddr)
 /*************************************************************************************************/
 void HciLeClearWhiteListCmd(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CLEAR_WHITE_LIST, HCI_LEN_LE_CLEAR_WHITE_LIST)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_clear_white_list();
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x10;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -247,21 +266,25 @@ void HciLeClearWhiteListCmd(void)
 /*************************************************************************************************/
 void HciLeConnUpdateCmd(uint16_t handle, hciConnSpec_t *pConnSpec)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 3);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CONN_UPDATE, HCI_LEN_LE_CONN_UPDATE)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    UINT16_TO_BSTREAM(p, pConnSpec->connIntervalMin);
-    UINT16_TO_BSTREAM(p, pConnSpec->connIntervalMax);
-    UINT16_TO_BSTREAM(p, pConnSpec->connLatency);
-    UINT16_TO_BSTREAM(p, pConnSpec->supTimeout);
-    UINT16_TO_BSTREAM(p, pConnSpec->minCeLen);
-    UINT16_TO_BSTREAM(p, pConnSpec->maxCeLen);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_connection_update(handle /* 2 */,
+									   pConnSpec->connIntervalMin /* 2 */,
+									   pConnSpec->connIntervalMax /* 2 */,
+									   pConnSpec->connLatency /* 2 */,
+									   pConnSpec->supTimeout /* 2 */,
+									   pConnSpec->minCeLen /* 2 */,
+									   pConnSpec->maxCeLen /* 2 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0F;
+	buffer_out[2] = output_size + 3;
+	buffer_out[4] = 0x01;
+	buffer_out[5] = 0x13;
+	buffer_out[6] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -272,29 +295,33 @@ void HciLeConnUpdateCmd(uint16_t handle, hciConnSpec_t *pConnSpec)
  */
 /*************************************************************************************************/
 void HciLeCreateConnCmd(uint16_t scanInterval, uint16_t scanWindow, uint8_t filterPolicy,
-                        uint8_t peerAddrType, uint8_t *pPeerAddr, uint8_t ownAddrType,
-                        hciConnSpec_t *pConnSpec)
+		uint8_t peerAddrType, uint8_t *pPeerAddr, uint8_t ownAddrType,
+		hciConnSpec_t *pConnSpec)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	  int output_size = 1;
+	  /* Output params */
+	  uint8_t *status = (uint8_t *) (buffer_out + 3);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CREATE_CONN, HCI_LEN_LE_CREATE_CONN)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, scanInterval);
-    UINT16_TO_BSTREAM(p, scanWindow);
-    UINT8_TO_BSTREAM(p, filterPolicy);
-    UINT8_TO_BSTREAM(p, peerAddrType);
-    BDA_TO_BSTREAM(p, pPeerAddr);
-    UINT8_TO_BSTREAM(p, ownAddrType);
-    UINT16_TO_BSTREAM(p, pConnSpec->connIntervalMin);
-    UINT16_TO_BSTREAM(p, pConnSpec->connIntervalMax);
-    UINT16_TO_BSTREAM(p, pConnSpec->connLatency);
-    UINT16_TO_BSTREAM(p, pConnSpec->supTimeout);
-    UINT16_TO_BSTREAM(p, pConnSpec->minCeLen);
-    UINT16_TO_BSTREAM(p, pConnSpec->maxCeLen);
-    hciCmdSend(pBuf);
-  }
+	  *status = hci_le_create_connection(scanInterval /* 2 */,
+	                                     scanWindow /* 2 */,
+	                                     filterPolicy /* 1 */,
+	                                     peerAddrType /* 1 */,
+	                                     *pPeerAddr /* 6 */,
+	                                     ownAddrType /* 1 */,
+	                                     pConnSpec->connIntervalMin /* 2 */,
+										 pConnSpec->connIntervalMax /* 2 */,
+										 pConnSpec->connLatency /* 2 */,
+										 pConnSpec->supTimeout /* 2 */,
+	                                     pConnSpec->minCeLen /* 2 */,
+	                                     pConnSpec->maxCeLen /* 2 */);
+	  buffer_out[0] = 0x04;
+	  buffer_out[1] = 0x0F;
+	  buffer_out[2] = output_size + 3;
+	  buffer_out[4] = 0x01;
+	  buffer_out[5] = 0x0d;
+	  buffer_out[6] = 0x20;
+	  //return (output_size + 6);
+	  hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -306,175 +333,244 @@ void HciLeCreateConnCmd(uint16_t scanInterval, uint16_t scanWindow, uint8_t filt
 /*************************************************************************************************/
 void HciLeCreateConnCancelCmd(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CREATE_CONN_CANCEL, HCI_LEN_LE_CREATE_CONN_CANCEL)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_create_connection_cancel();
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x0e;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
 /*!
-*  \brief  HCI LE remote connection parameter request reply command.
-*
-*  \return None.
-*/
+ *  \brief  HCI LE remote connection parameter request reply command.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void HciLeRemoteConnParamReqReply(uint16_t handle, uint16_t intervalMin, uint16_t intervalMax, uint16_t latency,
-                                  uint16_t timeout, uint16_t minCeLen, uint16_t maxCeLen)
+		uint16_t timeout, uint16_t minCeLen, uint16_t maxCeLen)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	/*
+	uint8_t *pBuf;
+	uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REM_CONN_PARAM_REP, HCI_LEN_LE_REM_CONN_PARAM_REP)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    UINT16_TO_BSTREAM(p, intervalMin);
-    UINT16_TO_BSTREAM(p, intervalMax);
-    UINT16_TO_BSTREAM(p, latency);
-    UINT16_TO_BSTREAM(p, timeout);
-    UINT16_TO_BSTREAM(p, minCeLen);
-    UINT16_TO_BSTREAM(p, maxCeLen);
-    hciCmdSend(pBuf);
-  }
+	if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REM_CONN_PARAM_REP, HCI_LEN_LE_REM_CONN_PARAM_REP)) != NULL)
+	{
+		p = pBuf + HCI_CMD_HDR_LEN;
+		UINT16_TO_BSTREAM(p, handle);
+		UINT16_TO_BSTREAM(p, intervalMin);
+		UINT16_TO_BSTREAM(p, intervalMax);
+		UINT16_TO_BSTREAM(p, latency);
+		UINT16_TO_BSTREAM(p, timeout);
+		UINT16_TO_BSTREAM(p, minCeLen);
+		UINT16_TO_BSTREAM(p, maxCeLen);
+		hciCmdSend(pBuf);
+	}
+	*/
+	while(1){;}
 }
 
 /*************************************************************************************************/
 /*!
-*  \brief  HCI LE remote connection parameter request negative reply command.
-*
-*  \return None.
-*/
+ *  \brief  HCI LE remote connection parameter request negative reply command.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void HciLeRemoteConnParamReqNegReply(uint16_t handle, uint8_t reason)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	/*
+	uint8_t *pBuf;
+	uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REM_CONN_PARAM_NEG_REP, HCI_LEN_LE_REM_CONN_PARAM_NEG_REP)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    UINT8_TO_BSTREAM(p, reason);
-    hciCmdSend(pBuf);
-  }
+	if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REM_CONN_PARAM_NEG_REP, HCI_LEN_LE_REM_CONN_PARAM_NEG_REP)) != NULL)
+	{
+		p = pBuf + HCI_CMD_HDR_LEN;
+		UINT16_TO_BSTREAM(p, handle);
+		UINT8_TO_BSTREAM(p, reason);
+		hciCmdSend(pBuf);
+	}
+	*/
+	while(1){;}
 }
 
 /*************************************************************************************************/
 /*!
-*  \brief  HCI LE set data len command.
-*
-*  \return None.
-*/
+ *  \brief  HCI LE set data len command.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void HciLeSetDataLen(uint16_t handle, uint16_t txOctets, uint16_t txTime)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1 + 2;
+	/* Output params */
+	hci_le_set_data_length_rp0 *rp0 = (hci_le_set_data_length_rp0 *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_DATA_LEN, HCI_LEN_LE_SET_DATA_LEN)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    UINT16_TO_BSTREAM(p, txOctets);
-    UINT16_TO_BSTREAM(p, txTime);
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_set_data_length(handle /* 2 */,
+										 txOctets /* 2 */,
+										 txTime /* 2 */);
+	rp0->Connection_Handle = handle;
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x22;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
 /*!
-*  \brief  HCI LE read suggested default data len command.
-*
-*  \return None.
-*/
+ *  \brief  HCI LE read suggested default data len command.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void HciLeReadDefDataLen(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1 + 2 + 2;
+	/* Output params */
+	hci_le_read_suggested_default_data_length_rp0 *rp0 = (hci_le_read_suggested_default_data_length_rp0 *) (buffer_out + 6);
+	uint16_t SuggestedMaxTxOctets = 0;
+	uint16_t SuggestedMaxTxTime = 0;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_DEF_DATA_LEN, HCI_LEN_LE_READ_DEF_DATA_LEN)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_read_suggested_default_data_length(&SuggestedMaxTxOctets,
+			&SuggestedMaxTxTime);
+	rp0->SuggestedMaxTxOctets = SuggestedMaxTxOctets;
+	rp0->SuggestedMaxTxTime = SuggestedMaxTxTime;
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x23;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
 /*!
-*  \brief  HCI LE write suggested default data len command.
-*
-*  \return None.
-*/
+ *  \brief  HCI LE write suggested default data len command.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void HciLeWriteDefDataLen(uint16_t suggestedMaxTxOctets, uint16_t suggestedMaxTxTime)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_WRITE_DEF_DATA_LEN, HCI_LEN_LE_WRITE_DEF_DATA_LEN)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, suggestedMaxTxOctets);
-    UINT16_TO_BSTREAM(p, suggestedMaxTxTime);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_write_suggested_default_data_length(suggestedMaxTxOctets /* 2 */,
+														 suggestedMaxTxTime /* 2 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x24;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
 /*!
-*  \brief  HCI LE read local P-256 public key command.
-*
-*  \return None.
-*/
+ *  \brief  HCI LE read local P-256 public key command.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void HciLeReadLocalP256PubKey(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 3);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_LOCAL_P256_PUB_KEY, HCI_LEN_LE_READ_LOCAL_P256_PUB_KEY)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_read_local_p256_public_key();
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0F;
+	buffer_out[2] = output_size + 3;
+	buffer_out[4] = 0x01;
+	buffer_out[5] = 0x25;
+	buffer_out[6] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
 /*!
-*  \brief  HCI LE generate DHKey command.
-*
-*  \return None.
-*/
+ *  \brief  HCI LE generate DHKey command.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void HciLeGenerateDHKey(uint8_t *pPubKeyX, uint8_t *pPubKeyY)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	////////antonio
+	uint8_t Remote_P256_Public_Key[64];
+	for(int i=0; i<32; i++){
+		Remote_P256_Public_Key[i] = pPubKeyX[i];
+		Remote_P256_Public_Key[32+i] = pPubKeyY[i];
+	}
+	////////antonio
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 3);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_GENERATE_DHKEY, HCI_LEN_LE_GENERATE_DHKEY)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    memcpy(p, pPubKeyX, HCI_DH_KEY_LEN);
-    memcpy(p + HCI_DH_KEY_LEN, pPubKeyY, HCI_DH_KEY_LEN);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_generate_dhkey(Remote_P256_Public_Key /* 64 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0F;
+	buffer_out[2] = output_size + 3;
+	buffer_out[4] = 0x01;
+	buffer_out[5] = 0x26;
+	buffer_out[6] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
 /*!
-*  \brief  HCI LE read maximum data len command.
-*
-*  \return None.
-*/
+ *  \brief  HCI LE read maximum data len command.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void HciLeReadMaxDataLen(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1 + 2 + 2 + 2 + 2;
+	/* Output params */
+	hci_le_read_maximum_data_length_rp0 *rp0 = (hci_le_read_maximum_data_length_rp0 *) (buffer_out + 6);
+	uint16_t supportedMaxTxOctets = 0;
+	uint16_t supportedMaxTxTime = 0;
+	uint16_t supportedMaxRxOctets = 0;
+	uint16_t supportedMaxRxTime = 0;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_MAX_DATA_LEN, HCI_LEN_LE_READ_MAX_DATA_LEN)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_read_maximum_data_length(&supportedMaxTxOctets,
+			&supportedMaxTxTime,
+			&supportedMaxRxOctets,
+			&supportedMaxRxTime);
+	rp0->supportedMaxTxOctets = supportedMaxTxOctets;
+	rp0->supportedMaxTxTime = supportedMaxTxTime;
+	rp0->supportedMaxRxOctets = supportedMaxRxOctets;
+	rp0->supportedMaxRxTime = supportedMaxRxTime;
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x2f;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -486,17 +582,23 @@ void HciLeReadMaxDataLen(void)
 /*************************************************************************************************/
 void HciLeEncryptCmd(uint8_t *pKey, uint8_t *pData)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1 + 16;
+	/* Output params */
+	hci_le_encrypt_rp0 *rp0 = (hci_le_encrypt_rp0 *) (buffer_out + 6);
+	uint8_t Encrypted_Data[16];
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ENCRYPT, HCI_LEN_LE_ENCRYPT)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    memcpy(p, pKey, HCI_KEY_LEN);
-    p += HCI_KEY_LEN;
-    memcpy(p, pData, HCI_ENCRYPT_DATA_LEN);
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_encrypt(*pKey /* 16 */,
+								 *pData /* 16 */,
+								 Encrypted_Data);
+	Osal_MemCpy((void *) rp0->Encrypted_Data,(const void *) Encrypted_Data, 16);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x17;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -508,15 +610,20 @@ void HciLeEncryptCmd(uint8_t *pKey, uint8_t *pData)
 /*************************************************************************************************/
 void HciLeLtkReqNegReplCmd(uint16_t handle)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1 + 2;
+	/* Output params */
+	hci_le_long_term_key_requested_negative_reply_rp0 *rp0 = (hci_le_long_term_key_requested_negative_reply_rp0 *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_LTK_REQ_NEG_REPL, HCI_LEN_LE_LTK_REQ_NEG_REPL)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_long_term_key_requested_negative_reply(handle /* 2 */);
+	rp0->Connection_Handle = handle;
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x1b;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -528,16 +635,20 @@ void HciLeLtkReqNegReplCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciLeLtkReqReplCmd(uint16_t handle, uint8_t *pKey)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1 + 2;
+	/* Output params */
+	hci_le_long_term_key_request_reply_rp0 *rp0 = (hci_le_long_term_key_request_reply_rp0 *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_LTK_REQ_REPL, HCI_LEN_LE_LTK_REQ_REPL)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    memcpy(p, pKey, HCI_KEY_LEN);
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_long_term_key_request_reply(handle /* 2 */, *pKey /* 16 */);
+	rp0->Connection_Handle = handle;
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x1a;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -549,12 +660,21 @@ void HciLeLtkReqReplCmd(uint16_t handle, uint8_t *pKey)
 /*************************************************************************************************/
 void HciLeRandCmd(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1 + 8;
+	/* Output params */
+	hci_le_rand_rp0 *rp0 = (hci_le_rand_rp0 *) (buffer_out + 6);
+	uint8_t Random_Number[8];
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_RAND, HCI_LEN_LE_RAND)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_rand(Random_Number);
+	Osal_MemCpy((void *) rp0->Random_Number,(const void *) Random_Number, 8);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x18;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -566,12 +686,21 @@ void HciLeRandCmd(void)
 /*************************************************************************************************/
 void HciLeReadAdvTXPowerCmd(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1 + 1;
+	/* Output params */
+	hci_le_read_advertising_channel_tx_power_rp0 *rp0 = (hci_le_read_advertising_channel_tx_power_rp0 *) (buffer_out + 6);
+	uint8_t Transmit_Power_Level = 0;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_ADV_TX_POWER, HCI_LEN_LE_READ_ADV_TX_POWER)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_read_advertising_channel_tx_power(&Transmit_Power_Level);
+	rp0->Transmit_Power_Level = Transmit_Power_Level;
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x07;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -583,12 +712,24 @@ void HciLeReadAdvTXPowerCmd(void)
 /*************************************************************************************************/
 void HciLeReadBufSizeCmd(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1 + 2 + 1;
+	/* Output params */
+	hci_le_read_buffer_size_rp0 *rp0 = (hci_le_read_buffer_size_rp0 *) (buffer_out + 6);
+	uint16_t HC_LE_ACL_Data_Packet_Length = 0;
+	uint8_t HC_Total_Num_LE_ACL_Data_Packets = 0;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_BUF_SIZE, HCI_LEN_LE_READ_BUF_SIZE)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_read_buffer_size(&HC_LE_ACL_Data_Packet_Length,
+			&HC_Total_Num_LE_ACL_Data_Packets);
+	rp0->HC_LE_ACL_Data_Packet_Length = HC_LE_ACL_Data_Packet_Length;
+	rp0->HC_Total_Num_LE_ACL_Data_Packets = HC_Total_Num_LE_ACL_Data_Packets;
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x02;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -600,15 +741,23 @@ void HciLeReadBufSizeCmd(void)
 /*************************************************************************************************/
 void HciLeReadChanMapCmd(uint16_t handle)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1 + 2 + 5;
+	/* Output params */
+	hci_le_read_channel_map_rp0 *rp0 = (hci_le_read_channel_map_rp0 *) (buffer_out + 6);
+	uint8_t LE_Channel_Map[5];
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_CHAN_MAP, HCI_LEN_LE_READ_CHAN_MAP)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_read_channel_map(handle /* 2 */,
+			LE_Channel_Map);
+	rp0->Connection_Handle = handle;
+	Osal_MemCpy((void *) rp0->LE_Channel_Map,(const void *) LE_Channel_Map, 5);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x15;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -620,12 +769,21 @@ void HciLeReadChanMapCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciLeReadLocalSupFeatCmd(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1 + 8;
+	/* Output params */
+	hci_le_read_local_supported_features_rp0 *rp0 = (hci_le_read_local_supported_features_rp0 *) (buffer_out + 6);
+	uint8_t LE_Features[8];
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_LOCAL_SUP_FEAT, HCI_LEN_LE_READ_LOCAL_SUP_FEAT)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_read_local_supported_features(LE_Features);
+	Osal_MemCpy((void *) rp0->LE_Features,(const void *) LE_Features, 8);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x03;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -637,15 +795,19 @@ void HciLeReadLocalSupFeatCmd(void)
 /*************************************************************************************************/
 void HciLeReadRemoteFeatCmd(uint16_t handle)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 3);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_REMOTE_FEAT, HCI_LEN_LE_READ_REMOTE_FEAT)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_read_remote_used_features(handle /* 2 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0F;
+	buffer_out[2] = output_size + 3;
+	buffer_out[4] = 0x01;
+	buffer_out[5] = 0x16;
+	buffer_out[6] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -657,12 +819,21 @@ void HciLeReadRemoteFeatCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciLeReadSupStatesCmd(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1 + 8;
+	/* Output params */
+	hci_le_read_supported_states_rp0 *rp0 = (hci_le_read_supported_states_rp0 *) (buffer_out + 6);
+	uint8_t LE_States[8];
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_SUP_STATES, HCI_LEN_LE_READ_SUP_STATES)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_read_supported_states(LE_States);
+	Osal_MemCpy((void *) rp0->LE_States,(const void *) LE_States, 8);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x1c;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -674,12 +845,21 @@ void HciLeReadSupStatesCmd(void)
 /*************************************************************************************************/
 void HciLeReadWhiteListSizeCmd(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1 + 1;
+	/* Output params */
+	hci_le_read_white_list_size_rp0 *rp0 = (hci_le_read_white_list_size_rp0 *) (buffer_out + 6);
+	uint8_t White_List_Size = 0;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_WHITE_LIST_SIZE, HCI_LEN_LE_READ_WHITE_LIST_SIZE)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_read_white_list_size(&White_List_Size);
+	rp0->White_List_Size = White_List_Size;
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x0f;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -691,36 +871,43 @@ void HciLeReadWhiteListSizeCmd(void)
 /*************************************************************************************************/
 void HciLeRemoveDevWhiteListCmd(uint8_t addrType, uint8_t *pAddr)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REMOVE_DEV_WHITE_LIST, HCI_LEN_LE_REMOVE_DEV_WHITE_LIST)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, addrType);
-    BDA_TO_BSTREAM(p, pAddr);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_remove_device_from_white_list(addrType /* 1 */, *pAddr /* 6 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x12;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
 /*!
- *  \brief  HCI LE set advanced enable command.
+ *  \brief  HCI LE set advanced enable command. //antonio advertise??
  *
  *  \return None.
  */
 /*************************************************************************************************/
 void HciLeSetAdvEnableCmd(uint8_t enable)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_ADV_ENABLE, HCI_LEN_LE_SET_ADV_ENABLE)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, enable);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_set_advertise_enable(enable /* 1 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x0a;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -732,18 +919,20 @@ void HciLeSetAdvEnableCmd(uint8_t enable)
 /*************************************************************************************************/
 void HciLeSetAdvDataCmd(uint8_t len, uint8_t *pData)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_ADV_DATA, HCI_LEN_LE_SET_ADV_DATA)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, len);
-    memcpy(p, pData, len);
-    p += len;
-    memset(p, 0, (HCI_ADV_DATA_LEN - len));
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_set_advertising_data(len /* 1 */,
+			*pData /* 31 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x08;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -754,32 +943,29 @@ void HciLeSetAdvDataCmd(uint8_t len, uint8_t *pData)
  */
 /*************************************************************************************************/
 void HciLeSetAdvParamCmd(uint16_t advIntervalMin, uint16_t advIntervalMax, uint8_t advType,
-                         uint8_t ownAddrType, uint8_t peerAddrType, uint8_t *pPeerAddr,
-                         uint8_t advChanMap, uint8_t advFiltPolicy)
+		uint8_t ownAddrType, uint8_t peerAddrType, uint8_t *pPeerAddr,
+		uint8_t advChanMap, uint8_t advFiltPolicy)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_ADV_PARAM, HCI_LEN_LE_SET_ADV_PARAM)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, advIntervalMin);
-    UINT16_TO_BSTREAM(p, advIntervalMax);
-    UINT8_TO_BSTREAM(p, advType);
-    UINT8_TO_BSTREAM(p, ownAddrType);
-    UINT8_TO_BSTREAM(p, peerAddrType);
-    if (pPeerAddr != NULL)
-    {
-      BDA_TO_BSTREAM(p, pPeerAddr);
-    }
-    else
-    {
-      p = BdaClr(p);
-    }
-    UINT8_TO_BSTREAM(p, advChanMap);
-    UINT8_TO_BSTREAM(p, advFiltPolicy);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_set_advertising_parameters(advIntervalMin /* 2 */,
+			advIntervalMax /* 2 */,
+			advType /* 1 */,
+			ownAddrType /* 1 */,
+			peerAddrType /* 1 */,
+			*pPeerAddr /* 6 */,
+			advChanMap /* 1 */,
+			advFiltPolicy /* 1 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x06;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -791,15 +977,19 @@ void HciLeSetAdvParamCmd(uint16_t advIntervalMin, uint16_t advIntervalMax, uint8
 /*************************************************************************************************/
 void HciLeSetEventMaskCmd(uint8_t *pLeEventMask)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EVENT_MASK, HCI_LEN_LE_SET_EVENT_MASK)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    memcpy(p, pLeEventMask, HCI_LE_EVT_MASK_LEN);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_set_event_mask(*pLeEventMask /* 8 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x01;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -811,15 +1001,19 @@ void HciLeSetEventMaskCmd(uint8_t *pLeEventMask)
 /*************************************************************************************************/
 void HciLeSetHostChanClassCmd(uint8_t *pChanMap)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_HOST_CHAN_CLASS, HCI_LEN_LE_SET_HOST_CHAN_CLASS)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    memcpy(p, pChanMap, HCI_CHAN_MAP_LEN);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_set_host_channel_classification(*pChanMap /* 5 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x14;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -831,15 +1025,19 @@ void HciLeSetHostChanClassCmd(uint8_t *pChanMap)
 /*************************************************************************************************/
 void HciLeSetRandAddrCmd(uint8_t *pAddr)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_RAND_ADDR, HCI_LEN_LE_SET_RAND_ADDR)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    BDA_TO_BSTREAM(p, pAddr);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_set_random_address(*pAddr /* 6 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x05;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -851,16 +1049,20 @@ void HciLeSetRandAddrCmd(uint8_t *pAddr)
 /*************************************************************************************************/
 void HciLeSetScanEnableCmd(uint8_t enable, uint8_t filterDup)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_SCAN_ENABLE, HCI_LEN_LE_SET_SCAN_ENABLE)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, enable);
-    UINT8_TO_BSTREAM(p, filterDup);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_set_scan_enable(enable /* 1 */,
+			filterDup /* 1 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x0c;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -871,21 +1073,25 @@ void HciLeSetScanEnableCmd(uint8_t enable, uint8_t filterDup)
  */
 /*************************************************************************************************/
 void HciLeSetScanParamCmd(uint8_t scanType, uint16_t scanInterval, uint16_t scanWindow,
-                          uint8_t ownAddrType, uint8_t scanFiltPolicy)
+		uint8_t ownAddrType, uint8_t scanFiltPolicy)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_SCAN_PARAM, HCI_LEN_LE_SET_SCAN_PARAM)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, scanType);
-    UINT16_TO_BSTREAM(p, scanInterval);
-    UINT16_TO_BSTREAM(p, scanWindow);
-    UINT8_TO_BSTREAM(p, ownAddrType);
-    UINT8_TO_BSTREAM(p, scanFiltPolicy);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_set_scan_parameters(scanType /* 1 */,
+			scanInterval /* 2 */,
+			scanWindow /* 2 */,
+			ownAddrType /* 1 */,
+			scanFiltPolicy /* 1 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x0b;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -897,18 +1103,20 @@ void HciLeSetScanParamCmd(uint8_t scanType, uint16_t scanInterval, uint16_t scan
 /*************************************************************************************************/
 void HciLeSetScanRespDataCmd(uint8_t len, uint8_t *pData)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_SCAN_RESP_DATA, HCI_LEN_LE_SET_SCAN_RESP_DATA)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, len);
-    memcpy(p, pData, len);
-    p += len;
-    memset(p, 0, (HCI_SCAN_DATA_LEN - len));
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_set_scan_response_data(len /* 1 */,
+			*pData /* 31 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x09;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -920,19 +1128,22 @@ void HciLeSetScanRespDataCmd(uint8_t len, uint8_t *pData)
 /*************************************************************************************************/
 void HciLeStartEncryptionCmd(uint16_t handle, uint8_t *pRand, uint16_t diversifier, uint8_t *pKey)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 3);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_START_ENCRYPTION, HCI_LEN_LE_START_ENCRYPTION)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    memcpy(p, pRand, HCI_RAND_LEN);
-    p += HCI_RAND_LEN;
-    UINT16_TO_BSTREAM(p, diversifier);
-    memcpy(p, pKey, HCI_KEY_LEN);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_start_encryption(handle /* 2 */,
+									  *pRand /* 8 */,
+									  diversifier /* 2 */,
+									  *pKey /* 16 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0F;
+	buffer_out[2] = output_size + 3;
+	buffer_out[4] = 0x01;
+	buffer_out[5] = 0x19;
+	buffer_out[6] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -944,12 +1155,21 @@ void HciLeStartEncryptionCmd(uint16_t handle, uint8_t *pRand, uint16_t diversifi
 /*************************************************************************************************/
 void HciReadBdAddrCmd(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1 + 6;
+	/* Output params */
+	hci_read_bd_addr_rp0 *rp0 = (hci_read_bd_addr_rp0 *) (buffer_out + 6);
+	uint8_t BD_ADDR[6];
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_BD_ADDR, HCI_LEN_READ_BD_ADDR)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_read_bd_addr(BD_ADDR);
+	Osal_MemCpy((void *) rp0->BD_ADDR,(const void *) BD_ADDR, 6);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x09;
+	buffer_out[5] = 0x10;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -961,12 +1181,15 @@ void HciReadBdAddrCmd(void)
 /*************************************************************************************************/
 void HciReadBufSizeCmd(void)
 {
-  uint8_t *pBuf;
+	/*
+	uint8_t *pBuf;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_BUF_SIZE, HCI_LEN_READ_BUF_SIZE)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_BUF_SIZE, HCI_LEN_READ_BUF_SIZE)) != NULL)
+	{
+		hciCmdSend(pBuf);
+	}
+	*/
+	while(1){;}
 }
 
 /*************************************************************************************************/
@@ -978,12 +1201,21 @@ void HciReadBufSizeCmd(void)
 /*************************************************************************************************/
 void HciReadLocalSupFeatCmd(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1 + 8;
+	/* Output params */
+	hci_read_local_supported_features_rp0 *rp0 = (hci_read_local_supported_features_rp0 *) (buffer_out + 6);
+	uint8_t LMP_Features[8];
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_LOCAL_SUP_FEAT, HCI_LEN_READ_LOCAL_SUP_FEAT)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_read_local_supported_features(LMP_Features);
+	Osal_MemCpy((void *) rp0->LMP_Features,(const void *) LMP_Features, 8);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x03;
+	buffer_out[5] = 0x10;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -995,12 +1227,45 @@ void HciReadLocalSupFeatCmd(void)
 /*************************************************************************************************/
 void HciReadLocalVerInfoCmd(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1 + 1 + 2 + 1 + 2 + 2;
+	/* Output params */
+	hci_read_local_version_information_rp0 *rp0 = (hci_read_local_version_information_rp0 *) (buffer_out + 6);
+	uint8_t HCI_Version = 0;
+	uint16_t HCI_Revision = 0;
+	uint8_t LMP_PAL_Version = 0;
+	uint16_t Manufacturer_Name = 0;
+	uint16_t LMP_PAL_Subversion = 0;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_LOCAL_VER_INFO, HCI_LEN_READ_LOCAL_VER_INFO)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_read_local_version_information(&HCI_Version,
+			&HCI_Revision,
+			&LMP_PAL_Version,
+			&Manufacturer_Name,
+			&LMP_PAL_Subversion);
+	{
+		PartInfoType partInfo;
+		/* get partInfo */
+		HAL_GetPartInfo(&partInfo);
+		//  H[15:12]= Hardware cut major version
+				//  h[11:8]= Hardware cut minor version
+				//  C[7:4]= 0: BlueNRG/BlueNRG-MS, 1: BlueNRG-1; 2: BlueNRG-2;
+				//  S[3:0]= Library major version
+		/* Set HCI_Revision fields with information coming from HAL_GetPartInfo() */
+		HCI_Revision = HCI_Revision & 0xF;
+		HCI_Revision |= ((partInfo.die_major & 0xF) <<12) | ((partInfo.die_cut & 0xF) <<8) | ((partInfo.die_id & 0xF) <<4) ;
+	}
+	rp0->HCI_Version = HCI_Version;
+	rp0->HCI_Revision = HCI_Revision;
+	rp0->LMP_PAL_Version = LMP_PAL_Version;
+	rp0->Manufacturer_Name = Manufacturer_Name;
+	rp0->LMP_PAL_Subversion = LMP_PAL_Subversion;
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x01;
+	buffer_out[5] = 0x10;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out,output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1012,15 +1277,19 @@ void HciReadLocalVerInfoCmd(void)
 /*************************************************************************************************/
 void HciReadRemoteVerInfoCmd(uint16_t handle)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 3);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_REMOTE_VER_INFO, HCI_LEN_READ_REMOTE_VER_INFO)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_read_remote_version_information(handle);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0F;
+	buffer_out[2] = output_size + 3;
+	buffer_out[4] = 0x01;
+	buffer_out[5] = 0x1d;
+	buffer_out[6] = 0x04;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1032,15 +1301,23 @@ void HciReadRemoteVerInfoCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciReadRssiCmd(uint16_t handle)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1 + 2 + 1;
+	/* Output params */
+	hci_read_rssi_rp0 *rp0 = (hci_read_rssi_rp0 *) (buffer_out + 6);
+	uint8_t RSSI = 0;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_RSSI, HCI_LEN_READ_RSSI)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_read_rssi(handle,
+			&RSSI);
+	rp0->Connection_Handle = handle;
+	rp0->RSSI = RSSI;
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x05;
+	buffer_out[5] = 0x14;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1052,16 +1329,22 @@ void HciReadRssiCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciReadTxPwrLvlCmd(uint16_t handle, uint8_t type)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	output_size = 1 + 2 + 1;
+	/* Output params */
+	hci_read_transmit_power_level_rp0 *rp0 = (hci_read_transmit_power_level_rp0 *) (buffer_out + 6);
+	uint8_t Transmit_Power_Level = 0;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_TX_PWR_LVL, HCI_LEN_READ_TX_PWR_LVL)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    UINT8_TO_BSTREAM(p, type);
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_read_transmit_power_level(handle, type, &Transmit_Power_Level);
+	rp0->Connection_Handle = handle;
+	rp0->Transmit_Power_Level = Transmit_Power_Level;
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x2d;
+	buffer_out[5] = 0x0c;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out,output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1073,15 +1356,19 @@ void HciReadTxPwrLvlCmd(uint16_t handle, uint8_t type)
 /*************************************************************************************************/
 void HciResetCmd(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  /* initialize numCmdPkts for special case of reset command */
-  hciCmdCb.numCmdPkts = 1;
-
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_RESET, HCI_LEN_RESET)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	*status = hci_reset();
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x03;
+	buffer_out[5] = 0x0c;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1093,81 +1380,94 @@ void HciResetCmd(void)
 /*************************************************************************************************/
 void HciSetEventMaskCmd(uint8_t *pEventMask)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_SET_EVENT_MASK, HCI_LEN_SET_EVENT_MASK)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    memcpy(p, pEventMask, HCI_EVT_MASK_LEN);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_set_event_mask(*pEventMask);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x01;
+	buffer_out[5] = 0x0c;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
 /*!
-*  \brief  HCI set event mask page 2 command.
-*
-*  \return None.
-*/
+ *  \brief  HCI set event mask page 2 command.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void HciSetEventMaskPage2Cmd(uint8_t *pEventMask)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	/*
+	uint8_t *pBuf;
+	uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_SET_EVENT_MASK_PAGE2, HCI_LEN_SET_EVENT_MASK_PAGE2)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    memcpy(p, pEventMask, HCI_EVT_MASK_PAGE_2_LEN);
-    hciCmdSend(pBuf);
-  }
+	if ((pBuf = hciCmdAlloc(HCI_OPCODE_SET_EVENT_MASK_PAGE2, HCI_LEN_SET_EVENT_MASK_PAGE2)) != NULL)
+	{
+		p = pBuf + HCI_CMD_HDR_LEN;
+		memcpy(p, pEventMask, HCI_EVT_MASK_PAGE_2_LEN);
+		hciCmdSend(pBuf);
+	}
+	*/
+	while(1){;}
 }
 
 /*************************************************************************************************/
 /*!
-*  \brief  HCI read authenticated payload timeout command.
-*
-*  \param  handle    Connection handle.
-*
-*  \return None.
-*/
+ *  \brief  HCI read authenticated payload timeout command.
+ *
+ *  \param  handle    Connection handle.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void HciReadAuthPayloadTimeout(uint16_t handle)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	/*
+	uint8_t *pBuf;
+	uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_AUTH_PAYLOAD_TO, HCI_LEN_READ_AUTH_PAYLOAD_TO)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    hciCmdSend(pBuf);
-  }
+	if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_AUTH_PAYLOAD_TO, HCI_LEN_READ_AUTH_PAYLOAD_TO)) != NULL)
+	{
+		p = pBuf + HCI_CMD_HDR_LEN;
+		UINT16_TO_BSTREAM(p, handle);
+		hciCmdSend(pBuf);
+	}
+	*/
+	while(1){;}
 }
 
 /*************************************************************************************************/
 /*!
-*  \brief  HCI write authenticated payload timeout command.
-*
-*  \param  handle    Connection handle.
-*  \param  timeout   Timeout value.
-*
-*  \return None.
-*/
+ *  \brief  HCI write authenticated payload timeout command.
+ *
+ *  \param  handle    Connection handle.
+ *  \param  timeout   Timeout value.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void HciWriteAuthPayloadTimeout(uint16_t handle, uint16_t timeout)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	/*
+	uint8_t *pBuf;
+	uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_WRITE_AUTH_PAYLOAD_TO, HCI_LEN_WRITE_AUTH_PAYLOAD_TO)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    UINT16_TO_BSTREAM(p, timeout);
-    hciCmdSend(pBuf);
-  }
+	if ((pBuf = hciCmdAlloc(HCI_OPCODE_WRITE_AUTH_PAYLOAD_TO, HCI_LEN_WRITE_AUTH_PAYLOAD_TO)) != NULL)
+	{
+		p = pBuf + HCI_CMD_HDR_LEN;
+		UINT16_TO_BSTREAM(p, handle);
+		UINT16_TO_BSTREAM(p, timeout);
+		hciCmdSend(pBuf);
+	}
+	*/
+	while(1){;}
 }
 
 /*************************************************************************************************/
@@ -1183,21 +1483,24 @@ void HciWriteAuthPayloadTimeout(uint16_t handle, uint16_t timeout)
  */
 /*************************************************************************************************/
 void HciLeAddDeviceToResolvingListCmd(uint8_t peerAddrType, const uint8_t *pPeerIdentityAddr,
-                                      const uint8_t *pPeerIrk, const uint8_t *pLocalIrk)
+		const uint8_t *pPeerIrk, const uint8_t *pLocalIrk)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ADD_DEV_RES_LIST, HCI_LEN_LE_ADD_DEV_RES_LIST)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, peerAddrType);
-    BDA_TO_BSTREAM(p, pPeerIdentityAddr);
-    memcpy(p, pPeerIrk, HCI_KEY_LEN);
-    p += HCI_KEY_LEN;
-    memcpy(p, pLocalIrk, HCI_KEY_LEN);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_add_device_to_resolving_list(peerAddrType /* 1 */,
+												  *pPeerIdentityAddr /* 6 */,
+												  pPeerIrk /* 16 */,
+												  pLocalIrk /* 16 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x27;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1212,16 +1515,20 @@ void HciLeAddDeviceToResolvingListCmd(uint8_t peerAddrType, const uint8_t *pPeer
 /*************************************************************************************************/
 void HciLeRemoveDeviceFromResolvingList(uint8_t peerAddrType, const uint8_t *pPeerIdentityAddr)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REMOVE_DEV_RES_LIST, HCI_LEN_LE_REMOVE_DEV_RES_LIST)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, peerAddrType);
-    BDA_TO_BSTREAM(p, pPeerIdentityAddr);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_remove_device_from_resolving_list(peerAddrType /* 1 */,
+													   *pPeerIdentityAddr /* 6 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x28;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1233,12 +1540,19 @@ void HciLeRemoveDeviceFromResolvingList(uint8_t peerAddrType, const uint8_t *pPe
 /*************************************************************************************************/
 void HciLeClearResolvingList(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CLEAR_RES_LIST, HCI_LEN_LE_CLEAR_RES_LIST)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_clear_resolving_list();
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x29;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1250,12 +1564,21 @@ void HciLeClearResolvingList(void)
 /*************************************************************************************************/
 void HciLeReadResolvingListSize(void)
 {
-  uint8_t *pBuf;
+	int output_size = 1 + 1;
+	/* Output params */
+	hci_le_read_resolving_list_size_rp0 *rp0 = (hci_le_read_resolving_list_size_rp0 *) (buffer_out + 6);
+	uint8_t Resolving_List_Size = 0;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_RES_LIST_SIZE, HCI_LEN_LE_READ_RES_LIST_SIZE)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_read_resolving_list_size(&Resolving_List_Size);
+	rp0->Resolving_List_Size = Resolving_List_Size;
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x2a;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1270,16 +1593,23 @@ void HciLeReadResolvingListSize(void)
 /*************************************************************************************************/
 void HciLeReadPeerResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1 + 6;
+	/* Output params */
+	hci_le_read_peer_resolvable_address_rp0 *rp0 = (hci_le_read_peer_resolvable_address_rp0 *) (buffer_out + 6);
+	uint8_t Peer_Resolvable_Address[6];
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_PEER_RES_ADDR, HCI_LEN_LE_READ_PEER_RES_ADDR)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, addrType);
-    BDA_TO_BSTREAM(p, pIdentityAddr);
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_read_peer_resolvable_address(addrType /* 1 */,
+													  *pIdentityAddr /* 6 */,
+													  Peer_Resolvable_Address);
+	Osal_MemCpy((void *) rp0->Peer_Resolvable_Address,(const void *) Peer_Resolvable_Address, 6);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x2b;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1294,16 +1624,23 @@ void HciLeReadPeerResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr)
 /*************************************************************************************************/
 void HciLeReadLocalResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1 + 6;
+	/* Output params */
+	hci_le_read_local_resolvable_address_rp0 *rp0 = (hci_le_read_local_resolvable_address_rp0 *) (buffer_out + 6);
+	uint8_t Local_Resolvable_Address[6];
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_LOCAL_RES_ADDR, HCI_LEN_LE_READ_LOCAL_RES_ADDR)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, addrType);
-    BDA_TO_BSTREAM(p, pIdentityAddr);
-    hciCmdSend(pBuf);
-  }
+	rp0->Status = hci_le_read_local_resolvable_address(addrType /* 1 */,
+													   *pIdentityAddr /* 6 */,
+													   Local_Resolvable_Address);
+	Osal_MemCpy((void *) rp0->Local_Resolvable_Address,(const void *) Local_Resolvable_Address, 6);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x2c;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1318,15 +1655,19 @@ void HciLeReadLocalResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr
 /*************************************************************************************************/
 void HciLeSetAddrResolutionEnable(uint8_t enable)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_ADDR_RES_ENABLE, HCI_LEN_LE_SET_ADDR_RES_ENABLE)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, enable);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_set_address_resolution_enable(enable /* 1 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x2d;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1340,15 +1681,19 @@ void HciLeSetAddrResolutionEnable(uint8_t enable)
 /*************************************************************************************************/
 void HciLeSetResolvablePrivateAddrTimeout(uint16_t rpaTimeout)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	int output_size = 1;
+	/* Output params */
+	uint8_t *status = (uint8_t *) (buffer_out + 6);
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_RES_PRIV_ADDR_TO, HCI_LEN_LE_SET_RES_PRIV_ADDR_TO)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, rpaTimeout);
-    hciCmdSend(pBuf);
-  }
+	*status = hci_le_set_resolvable_private_address_timeout(rpaTimeout /* 2 */);
+	buffer_out[0] = 0x04;
+	buffer_out[1] = 0x0E;
+	buffer_out[2] = output_size + 3;
+	buffer_out[3] = 0x01;
+	buffer_out[4] = 0x2e;
+	buffer_out[5] = 0x20;
+	//return (output_size + 6);
+	hciTrSerialRxIncoming(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1364,17 +1709,20 @@ void HciLeSetResolvablePrivateAddrTimeout(uint16_t rpaTimeout)
 /*************************************************************************************************/
 void HciLeSetPrivacyModeCmd(uint8_t addrType, uint8_t *pAddr, uint8_t mode)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	/*
+	uint8_t *pBuf;
+	uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PRIVACY_MODE, HCI_LEN_LE_SET_PRIVACY_MODE)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, addrType);
-    BDA_TO_BSTREAM(p, pAddr);
-    UINT8_TO_BSTREAM(p, mode);
-    hciCmdSend(pBuf);
-  }
+	if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PRIVACY_MODE, HCI_LEN_LE_SET_PRIVACY_MODE)) != NULL)
+	{
+		p = pBuf + HCI_CMD_HDR_LEN;
+		UINT8_TO_BSTREAM(p, addrType);
+		BDA_TO_BSTREAM(p, pAddr);
+		UINT8_TO_BSTREAM(p, mode);
+		hciCmdSend(pBuf);
+	}
+	*/
+	while(1){;}
 }
 
 /*************************************************************************************************/
@@ -1386,13 +1734,16 @@ void HciLeSetPrivacyModeCmd(uint8_t addrType, uint8_t *pAddr, uint8_t mode)
 /*************************************************************************************************/
 void HciVendorSpecificCmd(uint16_t opcode, uint8_t len, uint8_t *pData)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+	/*
+	uint8_t *pBuf;
+	uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(opcode, len)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    memcpy(p, pData, len);
-    hciCmdSend(pBuf);
-  }
+	if ((pBuf = hciCmdAlloc(opcode, len)) != NULL)
+	{
+		p = pBuf + HCI_CMD_HDR_LEN;
+		memcpy(p, pData, len);
+		hciCmdSend(pBuf);
+	}
+	*/
+	while(1){;}
 }

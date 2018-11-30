@@ -208,7 +208,7 @@ void HciDisconnectCmd(uint16_t handle, uint8_t reason)
 	buffer_out[5] = 0x06;
 	buffer_out[6] = 0x04;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -230,7 +230,7 @@ void HciLeAddDevWhiteListCmd(uint8_t addrType, uint8_t *pAddr)
 	buffer_out[4] = 0x11;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -254,7 +254,7 @@ void HciLeClearWhiteListCmd(void)
 	buffer_out[4] = 0x10;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -284,7 +284,7 @@ void HciLeConnUpdateCmd(uint16_t handle, hciConnSpec_t *pConnSpec)
 	buffer_out[5] = 0x13;
 	buffer_out[6] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -321,7 +321,7 @@ void HciLeCreateConnCmd(uint16_t scanInterval, uint16_t scanWindow, uint8_t filt
 	  buffer_out[5] = 0x0d;
 	  buffer_out[6] = 0x20;
 	  //return (output_size + 6);
-	  hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	  onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -345,7 +345,7 @@ void HciLeCreateConnCancelCmd(void)
 	buffer_out[4] = 0x0e;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -426,7 +426,7 @@ void HciLeSetDataLen(uint16_t handle, uint16_t txOctets, uint16_t txTime)
 	buffer_out[4] = 0x22;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -455,7 +455,7 @@ void HciLeReadDefDataLen(void)
 	buffer_out[4] = 0x23;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -480,7 +480,7 @@ void HciLeWriteDefDataLen(uint16_t suggestedMaxTxOctets, uint16_t suggestedMaxTx
 	buffer_out[4] = 0x24;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -504,7 +504,7 @@ void HciLeReadLocalP256PubKey(void)
 	buffer_out[5] = 0x25;
 	buffer_out[6] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -535,7 +535,7 @@ void HciLeGenerateDHKey(uint8_t *pPubKeyX, uint8_t *pPubKeyY)
 	buffer_out[5] = 0x26;
 	buffer_out[6] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -570,7 +570,7 @@ void HciLeReadMaxDataLen(void)
 	buffer_out[4] = 0x2f;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -598,7 +598,7 @@ void HciLeEncryptCmd(uint8_t *pKey, uint8_t *pData)
 	buffer_out[4] = 0x17;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -623,7 +623,7 @@ void HciLeLtkReqNegReplCmd(uint16_t handle)
 	buffer_out[4] = 0x1b;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -648,7 +648,7 @@ void HciLeLtkReqReplCmd(uint16_t handle, uint8_t *pKey)
 	buffer_out[4] = 0x1a;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -674,7 +674,7 @@ void HciLeRandCmd(void)
 	buffer_out[4] = 0x18;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	//onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -700,7 +700,7 @@ void HciLeReadAdvTXPowerCmd(void)
 	buffer_out[4] = 0x07;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -729,7 +729,7 @@ void HciLeReadBufSizeCmd(void)
 	buffer_out[4] = 0x02;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -757,7 +757,7 @@ void HciLeReadChanMapCmd(uint16_t handle)
 	buffer_out[4] = 0x15;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -783,7 +783,7 @@ void HciLeReadLocalSupFeatCmd(void)
 	buffer_out[4] = 0x03;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -807,7 +807,7 @@ void HciLeReadRemoteFeatCmd(uint16_t handle)
 	buffer_out[5] = 0x16;
 	buffer_out[6] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -833,7 +833,7 @@ void HciLeReadSupStatesCmd(void)
 	buffer_out[4] = 0x1c;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -859,7 +859,7 @@ void HciLeReadWhiteListSizeCmd(void)
 	buffer_out[4] = 0x0f;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -883,7 +883,7 @@ void HciLeRemoveDevWhiteListCmd(uint8_t addrType, uint8_t *pAddr)
 	buffer_out[4] = 0x12;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -907,7 +907,7 @@ void HciLeSetAdvEnableCmd(uint8_t enable)
 	buffer_out[4] = 0x0a;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -932,7 +932,7 @@ void HciLeSetAdvDataCmd(uint8_t len, uint8_t *pData)
 	buffer_out[4] = 0x08;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -965,7 +965,7 @@ void HciLeSetAdvParamCmd(uint16_t advIntervalMin, uint16_t advIntervalMax, uint8
 	buffer_out[4] = 0x06;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -989,7 +989,7 @@ void HciLeSetEventMaskCmd(uint8_t *pLeEventMask)
 	buffer_out[4] = 0x01;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1013,7 +1013,7 @@ void HciLeSetHostChanClassCmd(uint8_t *pChanMap)
 	buffer_out[4] = 0x14;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1037,7 +1037,7 @@ void HciLeSetRandAddrCmd(uint8_t *pAddr)
 	buffer_out[4] = 0x05;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1062,7 +1062,7 @@ void HciLeSetScanEnableCmd(uint8_t enable, uint8_t filterDup)
 	buffer_out[4] = 0x0c;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1091,7 +1091,7 @@ void HciLeSetScanParamCmd(uint8_t scanType, uint16_t scanInterval, uint16_t scan
 	buffer_out[4] = 0x0b;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1116,7 +1116,7 @@ void HciLeSetScanRespDataCmd(uint8_t len, uint8_t *pData)
 	buffer_out[4] = 0x09;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1143,7 +1143,7 @@ void HciLeStartEncryptionCmd(uint16_t handle, uint8_t *pRand, uint16_t diversifi
 	buffer_out[5] = 0x19;
 	buffer_out[6] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1169,7 +1169,7 @@ void HciReadBdAddrCmd(void)
 	buffer_out[4] = 0x09;
 	buffer_out[5] = 0x10;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1215,7 +1215,7 @@ void HciReadLocalSupFeatCmd(void)
 	buffer_out[4] = 0x03;
 	buffer_out[5] = 0x10;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1265,7 +1265,7 @@ void HciReadLocalVerInfoCmd(void)
 	buffer_out[4] = 0x01;
 	buffer_out[5] = 0x10;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out,output_size + 6);
+	onDataReceived(buffer_out,output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1289,7 +1289,7 @@ void HciReadRemoteVerInfoCmd(uint16_t handle)
 	buffer_out[5] = 0x1d;
 	buffer_out[6] = 0x04;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1317,7 +1317,7 @@ void HciReadRssiCmd(uint16_t handle)
 	buffer_out[4] = 0x05;
 	buffer_out[5] = 0x14;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1344,7 +1344,7 @@ void HciReadTxPwrLvlCmd(uint16_t handle, uint8_t type)
 	buffer_out[4] = 0x2d;
 	buffer_out[5] = 0x0c;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out,output_size + 6);
+	onDataReceived(buffer_out,output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1368,7 +1368,7 @@ void HciResetCmd(void)
 	buffer_out[4] = 0x03;
 	buffer_out[5] = 0x0c;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1392,7 +1392,7 @@ void HciSetEventMaskCmd(uint8_t *pEventMask)
 	buffer_out[4] = 0x01;
 	buffer_out[5] = 0x0c;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1500,7 +1500,7 @@ void HciLeAddDeviceToResolvingListCmd(uint8_t peerAddrType, const uint8_t *pPeer
 	buffer_out[4] = 0x27;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1528,7 +1528,7 @@ void HciLeRemoveDeviceFromResolvingList(uint8_t peerAddrType, const uint8_t *pPe
 	buffer_out[4] = 0x28;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1552,7 +1552,7 @@ void HciLeClearResolvingList(void)
 	buffer_out[4] = 0x29;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1578,7 +1578,7 @@ void HciLeReadResolvingListSize(void)
 	buffer_out[4] = 0x2a;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1609,7 +1609,7 @@ void HciLeReadPeerResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr)
 	buffer_out[4] = 0x2b;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1640,7 +1640,7 @@ void HciLeReadLocalResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr
 	buffer_out[4] = 0x2c;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1667,7 +1667,7 @@ void HciLeSetAddrResolutionEnable(uint8_t enable)
 	buffer_out[4] = 0x2d;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/
@@ -1693,7 +1693,7 @@ void HciLeSetResolvablePrivateAddrTimeout(uint16_t rpaTimeout)
 	buffer_out[4] = 0x2e;
 	buffer_out[5] = 0x20;
 	//return (output_size + 6);
-	hciTrSerialRxIncoming(buffer_out, output_size + 6);
+	onDataReceived(buffer_out, output_size + 6);
 }
 
 /*************************************************************************************************/

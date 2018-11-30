@@ -37,13 +37,12 @@
  * User can modify, tune the configuration options according to his specific application requirements. 
  */
 
-
 /* MAX numberof link for DTM */
-#define DTM_NUM_LINK            8
+#define DTM_NUM_LINK            8  //8
 /* MAX numberof GATT services for DTM */
-#define DTM_NUM_GATT_SERVICES   8
+#define DTM_NUM_GATT_SERVICES   0  //8
 /* MAX number of GAP and GATT attributes for DTM */
-#define DTM_NUM_GATT_ATTRIBUTES 68
+#define DTM_NUM_GATT_ATTRIBUTES 0 //68
 
 /* Number of links needed for the demo: 1
  * Only 1 the default
@@ -65,7 +64,7 @@
 #define MAX_ATT_MTU              (220) 
 
 /* Array size for the attribte value */
-#define ATT_VALUE_ARRAY_SIZE    (1344)
+#define ATT_VALUE_ARRAY_SIZE    (1344)  //si può mettere a 0
 
 /* Flash security database size */
 #define FLASH_SEC_DB_SIZE       (0x400)

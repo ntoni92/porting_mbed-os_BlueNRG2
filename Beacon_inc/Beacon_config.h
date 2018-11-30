@@ -173,7 +173,7 @@ extern uint8_t hot_table_radio_config[];
 }
 
 /* This structure contains memory and low level hardware configuration data for the device */
-const BlueNRG_Stack_Initialization_t BlueNRG_Stack_Init_params = {
+BlueNRG_Stack_Initialization_t BlueNRG_Stack_Init_params = {
     (uint8_t*)stacklib_flash_data,
     FLASH_SEC_DB_SIZE,
     FLASH_SERVER_DB_SIZE,

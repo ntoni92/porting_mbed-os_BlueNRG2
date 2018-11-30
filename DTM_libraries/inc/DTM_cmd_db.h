@@ -34,6 +34,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" void onDataReceived(uint8_t* data, uint16_t len);
+#endif
+
 typedef PACKED(struct) packed_Handle_Packets_Pair_Entry_t_s {
   /** Connection handle
   */
@@ -132,26 +136,26 @@ Units: dBm
   uint8_t RSSI;
 } packed_Direct_Advertising_Report_t;
 
-typedef PACKED(struct) hci_disconnect_cp0_s {
-  uint16_t Connection_Handle;
-  uint8_t Reason;
-} hci_disconnect_cp0;
+//typedef PACKED(struct) hci_disconnect_cp0_s {
+//  uint16_t Connection_Handle;
+//  uint8_t Reason;
+//} hci_disconnect_cp0;
 
 typedef PACKED(struct) hci_disconnect_rp0_s {
   uint8_t Status;
 } hci_disconnect_rp0;
 
-typedef PACKED(struct) hci_read_remote_version_information_cp0_s {
-  uint16_t Connection_Handle;
-} hci_read_remote_version_information_cp0;
+//typedef PACKED(struct) hci_read_remote_version_information_cp0_s {
+//  uint16_t Connection_Handle;
+//} hci_read_remote_version_information_cp0;
 
 typedef PACKED(struct) hci_read_remote_version_information_rp0_s {
   uint8_t Status;
 } hci_read_remote_version_information_rp0;
 
-typedef PACKED(struct) hci_set_event_mask_cp0_s {
-  uint8_t Event_Mask[8];
-} hci_set_event_mask_cp0;
+//typedef PACKED(struct) hci_set_event_mask_cp0_s {
+//  uint8_t Event_Mask[8];
+//} hci_set_event_mask_cp0;
 
 typedef PACKED(struct) hci_set_event_mask_rp0_s {
   uint8_t Status;
@@ -161,10 +165,10 @@ typedef PACKED(struct) hci_reset_rp0_s {
   uint8_t Status;
 } hci_reset_rp0;
 
-typedef PACKED(struct) hci_read_transmit_power_level_cp0_s {
-  uint16_t Connection_Handle;
-  uint8_t Type;
-} hci_read_transmit_power_level_cp0;
+//typedef PACKED(struct) hci_read_transmit_power_level_cp0_s {
+//  uint16_t Connection_Handle;
+//  uint8_t Type;
+//} hci_read_transmit_power_level_cp0;
 
 typedef PACKED(struct) hci_read_transmit_power_level_rp0_s {
   uint8_t Status;
@@ -196,9 +200,9 @@ typedef PACKED(struct) hci_read_bd_addr_rp0_s {
   uint8_t BD_ADDR[6];
 } hci_read_bd_addr_rp0;
 
-typedef PACKED(struct) hci_read_rssi_cp0_s {
-  uint16_t Connection_Handle;
-} hci_read_rssi_cp0;
+//typedef PACKED(struct) hci_read_rssi_cp0_s {
+//  uint16_t Connection_Handle;
+//} hci_read_rssi_cp0;
 
 typedef PACKED(struct) hci_read_rssi_rp0_s {
   uint8_t Status;
@@ -206,9 +210,9 @@ typedef PACKED(struct) hci_read_rssi_rp0_s {
   uint8_t RSSI;
 } hci_read_rssi_rp0;
 
-typedef PACKED(struct) hci_le_set_event_mask_cp0_s {
-  uint8_t LE_Event_Mask[8];
-} hci_le_set_event_mask_cp0;
+//typedef PACKED(struct) hci_le_set_event_mask_cp0_s {
+//  uint8_t LE_Event_Mask[8];
+//} hci_le_set_event_mask_cp0;
 
 typedef PACKED(struct) hci_le_set_event_mask_rp0_s {
   uint8_t Status;
@@ -225,24 +229,24 @@ typedef PACKED(struct) hci_le_read_local_supported_features_rp0_s {
   uint8_t LE_Features[8];
 } hci_le_read_local_supported_features_rp0;
 
-typedef PACKED(struct) hci_le_set_random_address_cp0_s {
-  uint8_t Random_Address[6];
-} hci_le_set_random_address_cp0;
+//typedef PACKED(struct) hci_le_set_random_address_cp0_s {
+//  uint8_t Random_Address[6];
+//} hci_le_set_random_address_cp0;
 
 typedef PACKED(struct) hci_le_set_random_address_rp0_s {
   uint8_t Status;
 } hci_le_set_random_address_rp0;
 
-typedef PACKED(struct) hci_le_set_advertising_parameters_cp0_s {
-  uint16_t Advertising_Interval_Min;
-  uint16_t Advertising_Interval_Max;
-  uint8_t Advertising_Type;
-  uint8_t Own_Address_Type;
-  uint8_t Peer_Address_Type;
-  uint8_t Peer_Address[6];
-  uint8_t Advertising_Channel_Map;
-  uint8_t Advertising_Filter_Policy;
-} hci_le_set_advertising_parameters_cp0;
+//typedef PACKED(struct) hci_le_set_advertising_parameters_cp0_s {
+//  uint16_t Advertising_Interval_Min;
+//  uint16_t Advertising_Interval_Max;
+//  uint8_t Advertising_Type;
+//  uint8_t Own_Address_Type;
+//  uint8_t Peer_Address_Type;
+//  uint8_t Peer_Address[6];
+//  uint8_t Advertising_Channel_Map;
+//  uint8_t Advertising_Filter_Policy;
+//} hci_le_set_advertising_parameters_cp0;
 
 typedef PACKED(struct) hci_le_set_advertising_parameters_rp0_s {
   uint8_t Status;
@@ -253,67 +257,67 @@ typedef PACKED(struct) hci_le_read_advertising_channel_tx_power_rp0_s {
   uint8_t Transmit_Power_Level;
 } hci_le_read_advertising_channel_tx_power_rp0;
 
-typedef PACKED(struct) hci_le_set_advertising_data_cp0_s {
-  uint8_t Advertising_Data_Length;
-  uint8_t Advertising_Data[31];
-} hci_le_set_advertising_data_cp0;
+//typedef PACKED(struct) hci_le_set_advertising_data_cp0_s {
+//  uint8_t Advertising_Data_Length;
+//  uint8_t Advertising_Data[31];
+//} hci_le_set_advertising_data_cp0;
 
 typedef PACKED(struct) hci_le_set_advertising_data_rp0_s {
   uint8_t Status;
 } hci_le_set_advertising_data_rp0;
 
-typedef PACKED(struct) hci_le_set_scan_response_data_cp0_s {
-  uint8_t Scan_Response_Data_Length;
-  uint8_t Scan_Response_Data[31];
-} hci_le_set_scan_response_data_cp0;
+//typedef PACKED(struct) hci_le_set_scan_response_data_cp0_s {
+//  uint8_t Scan_Response_Data_Length;
+//  uint8_t Scan_Response_Data[31];
+//} hci_le_set_scan_response_data_cp0;
 
 typedef PACKED(struct) hci_le_set_scan_response_data_rp0_s {
   uint8_t Status;
 } hci_le_set_scan_response_data_rp0;
 
-typedef PACKED(struct) hci_le_set_advertise_enable_cp0_s {
-  uint8_t Advertising_Enable;
-} hci_le_set_advertise_enable_cp0;
+//typedef PACKED(struct) hci_le_set_advertise_enable_cp0_s {
+//  uint8_t Advertising_Enable;
+//} hci_le_set_advertise_enable_cp0;
 
 typedef PACKED(struct) hci_le_set_advertise_enable_rp0_s {
   uint8_t Status;
 } hci_le_set_advertise_enable_rp0;
 
-typedef PACKED(struct) hci_le_set_scan_parameters_cp0_s {
-  uint8_t LE_Scan_Type;
-  uint16_t LE_Scan_Interval;
-  uint16_t LE_Scan_Window;
-  uint8_t Own_Address_Type;
-  uint8_t Scanning_Filter_Policy;
-} hci_le_set_scan_parameters_cp0;
+//typedef PACKED(struct) hci_le_set_scan_parameters_cp0_s {
+//  uint8_t LE_Scan_Type;
+//  uint16_t LE_Scan_Interval;
+//  uint16_t LE_Scan_Window;
+//  uint8_t Own_Address_Type;
+//  uint8_t Scanning_Filter_Policy;
+//} hci_le_set_scan_parameters_cp0;
 
 typedef PACKED(struct) hci_le_set_scan_parameters_rp0_s {
   uint8_t Status;
 } hci_le_set_scan_parameters_rp0;
 
-typedef PACKED(struct) hci_le_set_scan_enable_cp0_s {
-  uint8_t LE_Scan_Enable;
-  uint8_t Filter_Duplicates;
-} hci_le_set_scan_enable_cp0;
+//typedef PACKED(struct) hci_le_set_scan_enable_cp0_s {
+//  uint8_t LE_Scan_Enable;
+//  uint8_t Filter_Duplicates;
+//} hci_le_set_scan_enable_cp0;
 
 typedef PACKED(struct) hci_le_set_scan_enable_rp0_s {
   uint8_t Status;
 } hci_le_set_scan_enable_rp0;
 
-typedef PACKED(struct) hci_le_create_connection_cp0_s {
-  uint16_t LE_Scan_Interval;
-  uint16_t LE_Scan_Window;
-  uint8_t Initiator_Filter_Policy;
-  uint8_t Peer_Address_Type;
-  uint8_t Peer_Address[6];
-  uint8_t Own_Address_Type;
-  uint16_t Conn_Interval_Min;
-  uint16_t Conn_Interval_Max;
-  uint16_t Conn_Latency;
-  uint16_t Supervision_Timeout;
-  uint16_t Minimum_CE_Length;
-  uint16_t Maximum_CE_Length;
-} hci_le_create_connection_cp0;
+//typedef PACKED(struct) hci_le_create_connection_cp0_s {
+//  uint16_t LE_Scan_Interval;
+//  uint16_t LE_Scan_Window;
+//  uint8_t Initiator_Filter_Policy;
+//  uint8_t Peer_Address_Type;
+//  uint8_t Peer_Address[6];
+//  uint8_t Own_Address_Type;
+//  uint16_t Conn_Interval_Min;
+//  uint16_t Conn_Interval_Max;
+//  uint16_t Conn_Latency;
+//  uint16_t Supervision_Timeout;
+//  uint16_t Minimum_CE_Length;
+//  uint16_t Maximum_CE_Length;
+//} hci_le_create_connection_cp0;
 
 typedef PACKED(struct) hci_le_create_connection_rp0_s {
   uint8_t Status;
@@ -332,49 +336,49 @@ typedef PACKED(struct) hci_le_clear_white_list_rp0_s {
   uint8_t Status;
 } hci_le_clear_white_list_rp0;
 
-typedef PACKED(struct) hci_le_add_device_to_white_list_cp0_s {
-  uint8_t Address_Type;
-  uint8_t Address[6];
-} hci_le_add_device_to_white_list_cp0;
+//typedef PACKED(struct) hci_le_add_device_to_white_list_cp0_s {
+//  uint8_t Address_Type;
+//  uint8_t Address[6];
+//} hci_le_add_device_to_white_list_cp0;
 
 typedef PACKED(struct) hci_le_add_device_to_white_list_rp0_s {
   uint8_t Status;
 } hci_le_add_device_to_white_list_rp0;
 
-typedef PACKED(struct) hci_le_remove_device_from_white_list_cp0_s {
-  uint8_t Address_Type;
-  uint8_t Address[6];
-} hci_le_remove_device_from_white_list_cp0;
+//typedef PACKED(struct) hci_le_remove_device_from_white_list_cp0_s {
+//  uint8_t Address_Type;
+//  uint8_t Address[6];
+//} hci_le_remove_device_from_white_list_cp0;
 
 typedef PACKED(struct) hci_le_remove_device_from_white_list_rp0_s {
   uint8_t Status;
 } hci_le_remove_device_from_white_list_rp0;
 
-typedef PACKED(struct) hci_le_connection_update_cp0_s {
-  uint16_t Connection_Handle;
-  uint16_t Conn_Interval_Min;
-  uint16_t Conn_Interval_Max;
-  uint16_t Conn_Latency;
-  uint16_t Supervision_Timeout;
-  uint16_t Minimum_CE_Length;
-  uint16_t Maximum_CE_Length;
-} hci_le_connection_update_cp0;
+//typedef PACKED(struct) hci_le_connection_update_cp0_s {
+//  uint16_t Connection_Handle;
+//  uint16_t Conn_Interval_Min;
+//  uint16_t Conn_Interval_Max;
+//  uint16_t Conn_Latency;
+//  uint16_t Supervision_Timeout;
+//  uint16_t Minimum_CE_Length;
+//  uint16_t Maximum_CE_Length;
+//} hci_le_connection_update_cp0;
 
 typedef PACKED(struct) hci_le_connection_update_rp0_s {
   uint8_t Status;
 } hci_le_connection_update_rp0;
 
-typedef PACKED(struct) hci_le_set_host_channel_classification_cp0_s {
-  uint8_t LE_Channel_Map[5];
-} hci_le_set_host_channel_classification_cp0;
+//typedef PACKED(struct) hci_le_set_host_channel_classification_cp0_s {
+//  uint8_t LE_Channel_Map[5];
+//} hci_le_set_host_channel_classification_cp0;
 
 typedef PACKED(struct) hci_le_set_host_channel_classification_rp0_s {
   uint8_t Status;
 } hci_le_set_host_channel_classification_rp0;
 
-typedef PACKED(struct) hci_le_read_channel_map_cp0_s {
-  uint16_t Connection_Handle;
-} hci_le_read_channel_map_cp0;
+//typedef PACKED(struct) hci_le_read_channel_map_cp0_s {
+//  uint16_t Connection_Handle;
+//} hci_le_read_channel_map_cp0;
 
 typedef PACKED(struct) hci_le_read_channel_map_rp0_s {
   uint8_t Status;
@@ -382,18 +386,18 @@ typedef PACKED(struct) hci_le_read_channel_map_rp0_s {
   uint8_t LE_Channel_Map[5];
 } hci_le_read_channel_map_rp0;
 
-typedef PACKED(struct) hci_le_read_remote_used_features_cp0_s {
-  uint16_t Connection_Handle;
-} hci_le_read_remote_used_features_cp0;
+//typedef PACKED(struct) hci_le_read_remote_used_features_cp0_s {
+//  uint16_t Connection_Handle;
+//} hci_le_read_remote_used_features_cp0;
 
 typedef PACKED(struct) hci_le_read_remote_used_features_rp0_s {
   uint8_t Status;
 } hci_le_read_remote_used_features_rp0;
 
-typedef PACKED(struct) hci_le_encrypt_cp0_s {
-  uint8_t Key[16];
-  uint8_t Plaintext_Data[16];
-} hci_le_encrypt_cp0;
+//typedef PACKED(struct) hci_le_encrypt_cp0_s {
+//  uint8_t Key[16];
+//  uint8_t Plaintext_Data[16];
+//} hci_le_encrypt_cp0;
 
 typedef PACKED(struct) hci_le_encrypt_rp0_s {
   uint8_t Status;
@@ -405,30 +409,30 @@ typedef PACKED(struct) hci_le_rand_rp0_s {
   uint8_t Random_Number[8];
 } hci_le_rand_rp0;
 
-typedef PACKED(struct) hci_le_start_encryption_cp0_s {
-  uint16_t Connection_Handle;
-  uint8_t Random_Number[8];
-  uint16_t Encrypted_Diversifier;
-  uint8_t Long_Term_Key[16];
-} hci_le_start_encryption_cp0;
+//typedef PACKED(struct) hci_le_start_encryption_cp0_s {
+//  uint16_t Connection_Handle;
+//  uint8_t Random_Number[8];
+//  uint16_t Encrypted_Diversifier;
+//  uint8_t Long_Term_Key[16];
+//} hci_le_start_encryption_cp0;
 
 typedef PACKED(struct) hci_le_start_encryption_rp0_s {
   uint8_t Status;
 } hci_le_start_encryption_rp0;
 
-typedef PACKED(struct) hci_le_long_term_key_request_reply_cp0_s {
-  uint16_t Connection_Handle;
-  uint8_t Long_Term_Key[16];
-} hci_le_long_term_key_request_reply_cp0;
+//typedef PACKED(struct) hci_le_long_term_key_request_reply_cp0_s {
+//  uint16_t Connection_Handle;
+//  uint8_t Long_Term_Key[16];
+//} hci_le_long_term_key_request_reply_cp0;
 
 typedef PACKED(struct) hci_le_long_term_key_request_reply_rp0_s {
   uint8_t Status;
   uint16_t Connection_Handle;
 } hci_le_long_term_key_request_reply_rp0;
 
-typedef PACKED(struct) hci_le_long_term_key_requested_negative_reply_cp0_s {
-  uint16_t Connection_Handle;
-} hci_le_long_term_key_requested_negative_reply_cp0;
+//typedef PACKED(struct) hci_le_long_term_key_requested_negative_reply_cp0_s {
+//  uint16_t Connection_Handle;
+//} hci_le_long_term_key_requested_negative_reply_cp0;
 
 typedef PACKED(struct) hci_le_long_term_key_requested_negative_reply_rp0_s {
   uint8_t Status;
@@ -440,19 +444,19 @@ typedef PACKED(struct) hci_le_read_supported_states_rp0_s {
   uint8_t LE_States[8];
 } hci_le_read_supported_states_rp0;
 
-typedef PACKED(struct) hci_le_receiver_test_cp0_s {
-  uint8_t RX_Frequency;
-} hci_le_receiver_test_cp0;
+//typedef PACKED(struct) hci_le_receiver_test_cp0_s {
+//  uint8_t RX_Frequency;
+//} hci_le_receiver_test_cp0;
 
 typedef PACKED(struct) hci_le_receiver_test_rp0_s {
   uint8_t Status;
 } hci_le_receiver_test_rp0;
 
-typedef PACKED(struct) hci_le_transmitter_test_cp0_s {
-  uint8_t TX_Frequency;
-  uint8_t Length_Of_Test_Data;
-  uint8_t Packet_Payload;
-} hci_le_transmitter_test_cp0;
+//typedef PACKED(struct) hci_le_transmitter_test_cp0_s {
+//  uint8_t TX_Frequency;
+//  uint8_t Length_Of_Test_Data;
+//  uint8_t Packet_Payload;
+//} hci_le_transmitter_test_cp0;
 
 typedef PACKED(struct) hci_le_transmitter_test_rp0_s {
   uint8_t Status;
@@ -463,11 +467,11 @@ typedef PACKED(struct) hci_le_test_end_rp0_s {
   uint16_t Number_Of_Packets;
 } hci_le_test_end_rp0;
 
-typedef PACKED(struct) hci_le_set_data_length_cp0_s {
-  uint16_t Connection_Handle;
-  uint16_t TxOctets;
-  uint16_t TxTime;
-} hci_le_set_data_length_cp0;
+//typedef PACKED(struct) hci_le_set_data_length_cp0_s {
+//  uint16_t Connection_Handle;
+//  uint16_t TxOctets;
+//  uint16_t TxTime;
+//} hci_le_set_data_length_cp0;
 
 typedef PACKED(struct) hci_le_set_data_length_rp0_s {
   uint8_t Status;
@@ -480,10 +484,10 @@ typedef PACKED(struct) hci_le_read_suggested_default_data_length_rp0_s {
   uint16_t SuggestedMaxTxTime;
 } hci_le_read_suggested_default_data_length_rp0;
 
-typedef PACKED(struct) hci_le_write_suggested_default_data_length_cp0_s {
-  uint16_t SuggestedMaxTxOctets;
-  uint16_t SuggestedMaxTxTime;
-} hci_le_write_suggested_default_data_length_cp0;
+//typedef PACKED(struct) hci_le_write_suggested_default_data_length_cp0_s {
+//  uint16_t SuggestedMaxTxOctets;
+//  uint16_t SuggestedMaxTxTime;
+//} hci_le_write_suggested_default_data_length_cp0;
 
 typedef PACKED(struct) hci_le_write_suggested_default_data_length_rp0_s {
   uint8_t Status;
@@ -493,29 +497,29 @@ typedef PACKED(struct) hci_le_read_local_p256_public_key_rp0_s {
   uint8_t Status;
 } hci_le_read_local_p256_public_key_rp0;
 
-typedef PACKED(struct) hci_le_generate_dhkey_cp0_s {
-  uint8_t Remote_P256_Public_Key[64];
-} hci_le_generate_dhkey_cp0;
+//typedef PACKED(struct) hci_le_generate_dhkey_cp0_s {
+//  uint8_t Remote_P256_Public_Key[64];
+//} hci_le_generate_dhkey_cp0;
 
 typedef PACKED(struct) hci_le_generate_dhkey_rp0_s {
   uint8_t Status;
 } hci_le_generate_dhkey_rp0;
 
-typedef PACKED(struct) hci_le_add_device_to_resolving_list_cp0_s {
-  uint8_t Peer_Identity_Address_Type;
-  uint8_t Peer_Identity_Address[6];
-  uint8_t Peer_IRK[16];
-  uint8_t Local_IRK[16];
-} hci_le_add_device_to_resolving_list_cp0;
+//typedef PACKED(struct) hci_le_add_device_to_resolving_list_cp0_s {
+//  uint8_t Peer_Identity_Address_Type;
+//  uint8_t Peer_Identity_Address[6];
+//  uint8_t Peer_IRK[16];
+//  uint8_t Local_IRK[16];
+//} hci_le_add_device_to_resolving_list_cp0;
 
 typedef PACKED(struct) hci_le_add_device_to_resolving_list_rp0_s {
   uint8_t Status;
 } hci_le_add_device_to_resolving_list_rp0;
 
-typedef PACKED(struct) hci_le_remove_device_from_resolving_list_cp0_s {
-  uint8_t Peer_Identity_Address_Type;
-  uint8_t Peer_Identity_Address[6];
-} hci_le_remove_device_from_resolving_list_cp0;
+//typedef PACKED(struct) hci_le_remove_device_from_resolving_list_cp0_s {
+//  uint8_t Peer_Identity_Address_Type;
+//  uint8_t Peer_Identity_Address[6];
+//} hci_le_remove_device_from_resolving_list_cp0;
 
 typedef PACKED(struct) hci_le_remove_device_from_resolving_list_rp0_s {
   uint8_t Status;
@@ -530,37 +534,37 @@ typedef PACKED(struct) hci_le_read_resolving_list_size_rp0_s {
   uint8_t Resolving_List_Size;
 } hci_le_read_resolving_list_size_rp0;
 
-typedef PACKED(struct) hci_le_read_peer_resolvable_address_cp0_s {
-  uint8_t Peer_Identity_Address_Type;
-  uint8_t Peer_Identity_Address[6];
-} hci_le_read_peer_resolvable_address_cp0;
+//typedef PACKED(struct) hci_le_read_peer_resolvable_address_cp0_s {
+//  uint8_t Peer_Identity_Address_Type;
+//  uint8_t Peer_Identity_Address[6];
+//} hci_le_read_peer_resolvable_address_cp0;
 
 typedef PACKED(struct) hci_le_read_peer_resolvable_address_rp0_s {
   uint8_t Status;
   uint8_t Peer_Resolvable_Address[6];
 } hci_le_read_peer_resolvable_address_rp0;
 
-typedef PACKED(struct) hci_le_read_local_resolvable_address_cp0_s {
-  uint8_t Peer_Identity_Address_Type;
-  uint8_t Peer_Identity_Address[6];
-} hci_le_read_local_resolvable_address_cp0;
+//typedef PACKED(struct) hci_le_read_local_resolvable_address_cp0_s {
+//  uint8_t Peer_Identity_Address_Type;
+//  uint8_t Peer_Identity_Address[6];
+//} hci_le_read_local_resolvable_address_cp0;
 
 typedef PACKED(struct) hci_le_read_local_resolvable_address_rp0_s {
   uint8_t Status;
   uint8_t Local_Resolvable_Address[6];
 } hci_le_read_local_resolvable_address_rp0;
 
-typedef PACKED(struct) hci_le_set_address_resolution_enable_cp0_s {
-  uint8_t Address_Resolution_Enable;
-} hci_le_set_address_resolution_enable_cp0;
+//typedef PACKED(struct) hci_le_set_address_resolution_enable_cp0_s {
+//  uint8_t Address_Resolution_Enable;
+//} hci_le_set_address_resolution_enable_cp0;
 
 typedef PACKED(struct) hci_le_set_address_resolution_enable_rp0_s {
   uint8_t Status;
 } hci_le_set_address_resolution_enable_rp0;
 
-typedef PACKED(struct) hci_le_set_resolvable_private_address_timeout_cp0_s {
-  uint16_t RPA_Timeout;
-} hci_le_set_resolvable_private_address_timeout_cp0;
+//typedef PACKED(struct) hci_le_set_resolvable_private_address_timeout_cp0_s {
+//  uint16_t RPA_Timeout;
+//} hci_le_set_resolvable_private_address_timeout_cp0;
 
 typedef PACKED(struct) hci_le_set_resolvable_private_address_timeout_rp0_s {
   uint8_t Status;

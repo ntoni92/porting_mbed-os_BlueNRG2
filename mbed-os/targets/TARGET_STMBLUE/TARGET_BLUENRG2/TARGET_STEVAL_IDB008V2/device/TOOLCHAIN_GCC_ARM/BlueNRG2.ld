@@ -17,7 +17,7 @@ BlueNRG-2 memory map
 +-----------------------+ 0x20000000
 |                       |
 |                       |
-+-----------------------+ 0x1007FFFF
++-----------------------+ 0x1003FFFF
 |                       |
 |  FLASH (256K)         |
 +-----------------------+ 0x10040000
@@ -30,8 +30,8 @@ BlueNRG-2 memory map
 /* Device specific values */
 
 #define FLASH_START   0x10040000
-#define FLASH_SIZE    0x3FFFF      //256KB
-//#define FLASH_END     0x1007FFFF
+#define FLASH_SIZE    0x7FFFF      //256KB
+//#define FLASH_END     0x1003FFFF
 #define RAM_START     0x20000000
 #define RAM_SIZE      0x6000       //24KB
 //#define RAM_END       0x20005FFF
@@ -280,7 +280,7 @@ SECTIONS
         __end__ = .;
         PROVIDE(end = .);
         *(.heap*);
-        . += (ORIGIN(RAM) + LENGTH(RAM) - .);  ///////antonio
+        //. += (ORIGIN(RAM) + LENGTH(RAM) - .);     ////////antonio, non esiste di default////////////
         __HeapLimit = .;
     } > RAM
 

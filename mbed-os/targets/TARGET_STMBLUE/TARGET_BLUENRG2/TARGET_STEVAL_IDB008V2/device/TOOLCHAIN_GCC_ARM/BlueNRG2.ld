@@ -30,7 +30,7 @@ BlueNRG-2 memory map
 /* Device specific values */
 
 #define FLASH_START   0x10040000
-#define FLASH_SIZE    0x7FFFF      //256KB
+#define FLASH_SIZE    0x3FFFF      //256KB
 //#define FLASH_END     0x1003FFFF
 #define RAM_START     0x20000000
 #define RAM_SIZE      0x6000       //24KB

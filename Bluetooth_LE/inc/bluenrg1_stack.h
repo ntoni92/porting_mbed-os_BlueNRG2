@@ -238,8 +238,13 @@ typedef struct {
  * @note The API name and parameters are subject to change in future releases.
  * @return None
  */
+#ifdef __cplusplus  //////////////////////////antonio
+extern "C" {  //////////////////////////antonio
+#endif  //////////////////////////antonio
 void BTLE_StackTick(void);
-
+#ifdef __cplusplus  //////////////////////////antonio
+}  //////////////////////////antonio
+#endif  //////////////////////////antonio
 /**
  * @brief The BTLE Stack initialization routine
  *

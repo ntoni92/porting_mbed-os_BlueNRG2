@@ -2,7 +2,7 @@
 
 /**
   ******************************************************************************
-  * @file    DTM_cmd_db.c
+  * @file    DTM_cmd_db.h
   * @author  AMG - RF Application team
   * @version V1.0.0
   * @date    31 May 2018
@@ -20,676 +20,207 @@
   * <h2><center>&copy; COPYRIGHT STMicroelectronics</center></h2>
   ******************************************************************************
   */
-#ifndef DTM_CMD_DB_H
-#define DTM_CMD_DB_H
+#ifndef _DTM_CMD_DB_H_
+#define _DTM_CMD_DB_H_
 
-#include "compiler.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <stdint.h>
 #include "bluenrg1_api.h"
-#include "bluenrg1_events.h"
-#include "osal.h"
-#include "miscutil.h"
 
 #define HCI_MAX_PAYLOAD_SIZE 256
 #define MIN(a, b) ((a <= b) ? (a) : (b))
 
-#include <stdint.h>
+typedef uint16_t (*hci_command_process_and_response_type)(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length) ;
+typedef struct hci_command_table_type_s {
+  uint16_t opcode;
+  hci_command_process_and_response_type execute;
+} hci_command_table_type;
+
+uint16_t hci_disconnect_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_read_remote_version_information_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_set_event_mask_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_reset_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_read_transmit_power_level_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_read_local_version_information_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_read_local_supported_commands_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_read_local_supported_features_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_read_bd_addr_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_read_rssi_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_set_event_mask_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_buffer_size_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_local_supported_features_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_set_random_address_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_set_advertising_parameters_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_advertising_channel_tx_power_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_set_advertising_data_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_set_scan_response_data_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_set_advertise_enable_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_set_scan_parameters_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_set_scan_enable_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_create_connection_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_create_connection_cancel_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_white_list_size_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_clear_white_list_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_add_device_to_white_list_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_remove_device_from_white_list_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_connection_update_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_set_host_channel_classification_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_channel_map_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_remote_used_features_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_encrypt_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_rand_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_start_encryption_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_long_term_key_request_reply_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_long_term_key_requested_negative_reply_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_supported_states_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_receiver_test_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_transmitter_test_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_test_end_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_set_data_length_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_suggested_default_data_length_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_write_suggested_default_data_length_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_local_p256_public_key_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_generate_dhkey_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_add_device_to_resolving_list_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_remove_device_from_resolving_list_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_clear_resolving_list_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_resolving_list_size_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_peer_resolvable_address_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_local_resolvable_address_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_set_address_resolution_enable_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_set_resolvable_private_address_timeout_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t aci_hal_write_config_data_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t aci_hal_read_config_data_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+uint16_t hci_le_read_maximum_data_length_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
+
+//extern const hci_command_table_type hci_command_table[156];
+//extern void rcv_callback(uint8_t *buffer_out, uint16_t buffer_out_length, int8_t overflow_index);
+//extern void send_event_isr(uint8_t *buffer_out, uint16_t buffer_out_length, int8_t overflow_index);
+/* NOTE: aci_hal_updater_start() function prototype: to be implemented on DTM context */
+//tBleStatus aci_hal_updater_start(void);
+/* NOTE: aci_hal_get_firmware_details() function prototype: to be implemented on DTM context */
+//tBleStatus aci_hal_get_firmware_details(uint8_t *DTM_version_major,uint8_t *DTM_version_minor,uint8_t *DTM_version_patch,uint8_t *DTM_variant,uint16_t *DTM_Build_Number,uint8_t *BTLE_Stack_version_major,uint8_t *BTLE_Stack_version_minor,uint8_t *BTLE_Stack_version_patch,uint8_t *BTLE_Stack_development,uint16_t *BTLE_Stack_variant,uint16_t *BTLE_Stack_Build_Number);
+
+const hci_command_table_type hci_command_table[56] = {
+  /* hci_disconnect */
+  {0x0406, hci_disconnect_process},
+  /* hci_read_remote_version_information */
+  {0x041d, hci_read_remote_version_information_process},
+  /* hci_set_event_mask */
+  {0x0c01, hci_set_event_mask_process},
+  /* hci_reset */
+  {0x0c03, hci_reset_process},
+  /* hci_read_transmit_power_level */
+  {0x0c2d, hci_read_transmit_power_level_process},
+  /* hci_read_local_version_information */
+  {0x1001, hci_read_local_version_information_process},
+  /* hci_read_local_supported_commands */
+  {0x1002, hci_read_local_supported_commands_process},
+  /* hci_read_local_supported_features */
+  {0x1003, hci_read_local_supported_features_process},
+  /* hci_read_bd_addr */
+  {0x1009, hci_read_bd_addr_process},
+  /* hci_read_rssi */
+  {0x1405, hci_read_rssi_process},
+  /* hci_le_set_event_mask */
+  {0x2001, hci_le_set_event_mask_process},
+  /* hci_le_read_buffer_size */
+  {0x2002, hci_le_read_buffer_size_process},
+  /* hci_le_read_local_supported_features */
+  {0x2003, hci_le_read_local_supported_features_process},
+  /* hci_le_set_random_address */
+  {0x2005, hci_le_set_random_address_process},
+  /* hci_le_set_advertising_parameters */
+  {0x2006, hci_le_set_advertising_parameters_process},
+  /* hci_le_read_advertising_channel_tx_power */
+  {0x2007, hci_le_read_advertising_channel_tx_power_process},
+  /* hci_le_set_advertising_data */
+  {0x2008, hci_le_set_advertising_data_process},
+  /* hci_le_set_scan_response_data */
+  {0x2009, hci_le_set_scan_response_data_process},
+  /* hci_le_set_advertise_enable */
+  {0x200a, hci_le_set_advertise_enable_process},
+  /* hci_le_set_scan_parameters */
+  {0x200b, hci_le_set_scan_parameters_process},
+  /* hci_le_set_scan_enable */
+  {0x200c, hci_le_set_scan_enable_process},
+  /* hci_le_create_connection */
+  {0x200d, hci_le_create_connection_process},
+  /* hci_le_create_connection_cancel */
+  {0x200e, hci_le_create_connection_cancel_process},
+  /* hci_le_read_white_list_size */
+  {0x200f, hci_le_read_white_list_size_process},
+  /* hci_le_clear_white_list */
+  {0x2010, hci_le_clear_white_list_process},
+  /* hci_le_add_device_to_white_list */
+  {0x2011, hci_le_add_device_to_white_list_process},
+  /* hci_le_remove_device_from_white_list */
+  {0x2012, hci_le_remove_device_from_white_list_process},
+  /* hci_le_connection_update */
+  {0x2013, hci_le_connection_update_process},
+  /* hci_le_set_host_channel_classification */
+  {0x2014, hci_le_set_host_channel_classification_process},
+  /* hci_le_read_channel_map */
+  {0x2015, hci_le_read_channel_map_process},
+  /* hci_le_read_remote_used_features */
+  {0x2016, hci_le_read_remote_used_features_process},
+  /* hci_le_encrypt */
+  {0x2017, hci_le_encrypt_process},
+  /* hci_le_rand */
+  {0x2018, hci_le_rand_process},
+  /* hci_le_start_encryption */
+  {0x2019, hci_le_start_encryption_process},
+  /* hci_le_long_term_key_request_reply */
+  {0x201a, hci_le_long_term_key_request_reply_process},
+  /* hci_le_long_term_key_requested_negative_reply */
+  {0x201b, hci_le_long_term_key_requested_negative_reply_process},
+  /* hci_le_read_supported_states */
+  {0x201c, hci_le_read_supported_states_process},
+  /* hci_le_receiver_test */
+  {0x201d, hci_le_receiver_test_process},
+  /* hci_le_transmitter_test */
+  {0x201e, hci_le_transmitter_test_process},
+  /* hci_le_test_end */
+  {0x201f, hci_le_test_end_process},
+  /* hci_le_set_data_length */
+  {0x2022, hci_le_set_data_length_process},
+  /* hci_le_read_suggested_default_data_length */
+  {0x2023, hci_le_read_suggested_default_data_length_process},
+  /* hci_le_write_suggested_default_data_length */
+  {0x2024, hci_le_write_suggested_default_data_length_process},
+  /* hci_le_read_local_p256_public_key */
+  {0x2025, hci_le_read_local_p256_public_key_process},
+  /* hci_le_generate_dhkey */
+  {0x2026, hci_le_generate_dhkey_process},
+  /* hci_le_add_device_to_resolving_list */
+  {0x2027, hci_le_add_device_to_resolving_list_process},
+  /* hci_le_remove_device_from_resolving_list */
+  {0x2028, hci_le_remove_device_from_resolving_list_process},
+  /* hci_le_clear_resolving_list */
+  {0x2029, hci_le_clear_resolving_list_process},
+  /* hci_le_read_resolving_list_size */
+  {0x202a, hci_le_read_resolving_list_size_process},
+  /* hci_le_read_peer_resolvable_address */
+  {0x202b, hci_le_read_peer_resolvable_address_process},
+  /* hci_le_read_local_resolvable_address */
+  {0x202c, hci_le_read_local_resolvable_address_process},
+  /* hci_le_set_address_resolution_enable */
+  {0x202d, hci_le_set_address_resolution_enable_process},
+  /* hci_le_set_resolvable_private_address_timeout */
+  {0x202e, hci_le_set_resolvable_private_address_timeout_process},
+  /* hci_le_read_maximum_data_length */
+  {0x202f, hci_le_read_maximum_data_length_process},
+  /* aci_hal_write_config_data */
+  {0xfc0c, aci_hal_write_config_data_process},
+  /* aci_hal_read_config_data */
+  {0xfc0d, aci_hal_read_config_data_process}
+};
 
 #ifdef __cplusplus
-extern "C" void onDataReceived(uint8_t* data, uint16_t len);
+}
 #endif
 
-typedef PACKED(struct) packed_Handle_Packets_Pair_Entry_t_s {
-  /** Connection handle
-  */
-  uint16_t Connection_Handle;
-  /** The number of HCI Data Packets that have been completed (transmitted
-or flushed) for the associated Connection_Handle since the previous time
-the event was returned.
-  */
-  uint16_t HC_Num_Of_Completed_Packets;
-} packed_Handle_Packets_Pair_Entry_t;
-
-typedef PACKED(struct) packed_Advertising_Report_t_s {
-  /** Type of advertising report event:
-ADV_IND: Connectable undirected advertising',
-ADV_DIRECT_IND: Connectable directed advertising,
-ADV_SCAN_IND: Scannable undirected advertising,
-ADV_NONCONN_IND: Non connectable undirected advertising,
-SCAN_RSP: Scan response.
-  * Values:
-  - 0x00: ADV_IND
-  - 0x01: ADV_DIRECT_IND
-  - 0x02: ADV_SCAN_IND
-  - 0x03: ADV_NONCONN_IND
-  - 0x04: SCAN_RSP
-  */
-  uint8_t Event_Type;
-  /** 0x00 Public Device Address
-0x01 Random Device Address
-0x02 Public Identity Address (Corresponds to Resolved Private Address)
-0x03 Random (Static) Identity Address (Corresponds to Resolved Private Address)
-  * Values:
-  - 0x00: Public Device Address
-  - 0x01: Random Device Address
-  - 0x02: Public Identity Address
-  - 0x03: Random (Static) Identity Address
-  */
-  uint8_t Address_Type;
-  /** Public Device Address, Random Device Address, Public Identity
-Address or Random (static) Identity Address of the advertising
-device.
-  */
-  uint8_t Address[6];
-  /** Length of the Data[i] field for each device which responded.
-  * Values:
-  - 0 ... 31
-  */
-  uint8_t Length_Data;
-  /** Length_Data[i] octets of advertising or scan response data formatted
-as defined in [Vol 3] Part C, Section 8.
-  */
-  uint8_t Data[1];
-  /** N Size: 1 Octet (signed integer)
-Units: dBm
-  * Values:
-  - 127: RSSI not available
-  - -127 ... 20
-  */
-  uint8_t RSSI;
-} packed_Advertising_Report_t;
-
-typedef PACKED(struct) packed_Direct_Advertising_Report_t_s {
-  /** Advertising type
-  * Values:
-  - 0x01: Connectable directed advertising (ADV_DIRECT_IND)
-  */
-  uint8_t Event_Type;
-  /** 0x00 Public Device Address
-0x01 Random Device Address
-0x02 Public Identity Address (Corresponds to Resolved Private Address)
-0x03 Random (Static) Identity Address (Corresponds to Resolved Private Address)
-  * Values:
-  - 0x00: Public Device Address
-  - 0x01: Random Device Address
-  - 0x02: Public Identity Address
-  - 0x03: Random (Static) Identity Address
-  */
-  uint8_t Address_Type;
-  /** Public Device Address, Random Device Address, Public Identity
-Address or Random (static) Identity Address of the advertising device.
-  */
-  uint8_t Address[6];
-  /** 0x01 Random Device Address
-  * Values:
-  - 0x01: Random Device Address
-  */
-  uint8_t Direct_Address_Type;
-  /** Random Device Address
-  */
-  uint8_t Direct_Address[6];
-  /** N Size: 1 Octet (signed integer)
-Units: dBm
-  * Values:
-  - 127: RSSI not available
-  - -127 ... 20
-  */
-  uint8_t RSSI;
-} packed_Direct_Advertising_Report_t;
-
-//typedef PACKED(struct) hci_disconnect_cp0_s {
-//  uint16_t Connection_Handle;
-//  uint8_t Reason;
-//} hci_disconnect_cp0;
-
-typedef PACKED(struct) hci_disconnect_rp0_s {
-  uint8_t Status;
-} hci_disconnect_rp0;
-
-//typedef PACKED(struct) hci_read_remote_version_information_cp0_s {
-//  uint16_t Connection_Handle;
-//} hci_read_remote_version_information_cp0;
-
-typedef PACKED(struct) hci_read_remote_version_information_rp0_s {
-  uint8_t Status;
-} hci_read_remote_version_information_rp0;
-
-//typedef PACKED(struct) hci_set_event_mask_cp0_s {
-//  uint8_t Event_Mask[8];
-//} hci_set_event_mask_cp0;
-
-typedef PACKED(struct) hci_set_event_mask_rp0_s {
-  uint8_t Status;
-} hci_set_event_mask_rp0;
-
-typedef PACKED(struct) hci_reset_rp0_s {
-  uint8_t Status;
-} hci_reset_rp0;
-
-//typedef PACKED(struct) hci_read_transmit_power_level_cp0_s {
-//  uint16_t Connection_Handle;
-//  uint8_t Type;
-//} hci_read_transmit_power_level_cp0;
-
-typedef PACKED(struct) hci_read_transmit_power_level_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-  uint8_t Transmit_Power_Level;
-} hci_read_transmit_power_level_rp0;
-
-typedef PACKED(struct) hci_read_local_version_information_rp0_s {
-  uint8_t Status;
-  uint8_t HCI_Version;
-  uint16_t HCI_Revision;
-  uint8_t LMP_PAL_Version;
-  uint16_t Manufacturer_Name;
-  uint16_t LMP_PAL_Subversion;
-} hci_read_local_version_information_rp0;
-
-typedef PACKED(struct) hci_read_local_supported_commands_rp0_s {
-  uint8_t Status;
-  uint8_t Supported_Commands[64];
-} hci_read_local_supported_commands_rp0;
-
-typedef PACKED(struct) hci_read_local_supported_features_rp0_s {
-  uint8_t Status;
-  uint8_t LMP_Features[8];
-} hci_read_local_supported_features_rp0;
-
-typedef PACKED(struct) hci_read_bd_addr_rp0_s {
-  uint8_t Status;
-  uint8_t BD_ADDR[6];
-} hci_read_bd_addr_rp0;
-
-//typedef PACKED(struct) hci_read_rssi_cp0_s {
-//  uint16_t Connection_Handle;
-//} hci_read_rssi_cp0;
-
-typedef PACKED(struct) hci_read_rssi_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-  uint8_t RSSI;
-} hci_read_rssi_rp0;
-
-//typedef PACKED(struct) hci_le_set_event_mask_cp0_s {
-//  uint8_t LE_Event_Mask[8];
-//} hci_le_set_event_mask_cp0;
-
-typedef PACKED(struct) hci_le_set_event_mask_rp0_s {
-  uint8_t Status;
-} hci_le_set_event_mask_rp0;
-
-typedef PACKED(struct) hci_le_read_buffer_size_rp0_s {
-  uint8_t Status;
-  uint16_t HC_LE_ACL_Data_Packet_Length;
-  uint8_t HC_Total_Num_LE_ACL_Data_Packets;
-} hci_le_read_buffer_size_rp0;
-
-typedef PACKED(struct) hci_le_read_local_supported_features_rp0_s {
-  uint8_t Status;
-  uint8_t LE_Features[8];
-} hci_le_read_local_supported_features_rp0;
-
-//typedef PACKED(struct) hci_le_set_random_address_cp0_s {
-//  uint8_t Random_Address[6];
-//} hci_le_set_random_address_cp0;
-
-typedef PACKED(struct) hci_le_set_random_address_rp0_s {
-  uint8_t Status;
-} hci_le_set_random_address_rp0;
-
-//typedef PACKED(struct) hci_le_set_advertising_parameters_cp0_s {
-//  uint16_t Advertising_Interval_Min;
-//  uint16_t Advertising_Interval_Max;
-//  uint8_t Advertising_Type;
-//  uint8_t Own_Address_Type;
-//  uint8_t Peer_Address_Type;
-//  uint8_t Peer_Address[6];
-//  uint8_t Advertising_Channel_Map;
-//  uint8_t Advertising_Filter_Policy;
-//} hci_le_set_advertising_parameters_cp0;
-
-typedef PACKED(struct) hci_le_set_advertising_parameters_rp0_s {
-  uint8_t Status;
-} hci_le_set_advertising_parameters_rp0;
-
-typedef PACKED(struct) hci_le_read_advertising_channel_tx_power_rp0_s {
-  uint8_t Status;
-  uint8_t Transmit_Power_Level;
-} hci_le_read_advertising_channel_tx_power_rp0;
-
-//typedef PACKED(struct) hci_le_set_advertising_data_cp0_s {
-//  uint8_t Advertising_Data_Length;
-//  uint8_t Advertising_Data[31];
-//} hci_le_set_advertising_data_cp0;
-
-typedef PACKED(struct) hci_le_set_advertising_data_rp0_s {
-  uint8_t Status;
-} hci_le_set_advertising_data_rp0;
-
-//typedef PACKED(struct) hci_le_set_scan_response_data_cp0_s {
-//  uint8_t Scan_Response_Data_Length;
-//  uint8_t Scan_Response_Data[31];
-//} hci_le_set_scan_response_data_cp0;
-
-typedef PACKED(struct) hci_le_set_scan_response_data_rp0_s {
-  uint8_t Status;
-} hci_le_set_scan_response_data_rp0;
-
-//typedef PACKED(struct) hci_le_set_advertise_enable_cp0_s {
-//  uint8_t Advertising_Enable;
-//} hci_le_set_advertise_enable_cp0;
-
-typedef PACKED(struct) hci_le_set_advertise_enable_rp0_s {
-  uint8_t Status;
-} hci_le_set_advertise_enable_rp0;
-
-//typedef PACKED(struct) hci_le_set_scan_parameters_cp0_s {
-//  uint8_t LE_Scan_Type;
-//  uint16_t LE_Scan_Interval;
-//  uint16_t LE_Scan_Window;
-//  uint8_t Own_Address_Type;
-//  uint8_t Scanning_Filter_Policy;
-//} hci_le_set_scan_parameters_cp0;
-
-typedef PACKED(struct) hci_le_set_scan_parameters_rp0_s {
-  uint8_t Status;
-} hci_le_set_scan_parameters_rp0;
-
-//typedef PACKED(struct) hci_le_set_scan_enable_cp0_s {
-//  uint8_t LE_Scan_Enable;
-//  uint8_t Filter_Duplicates;
-//} hci_le_set_scan_enable_cp0;
-
-typedef PACKED(struct) hci_le_set_scan_enable_rp0_s {
-  uint8_t Status;
-} hci_le_set_scan_enable_rp0;
-
-//typedef PACKED(struct) hci_le_create_connection_cp0_s {
-//  uint16_t LE_Scan_Interval;
-//  uint16_t LE_Scan_Window;
-//  uint8_t Initiator_Filter_Policy;
-//  uint8_t Peer_Address_Type;
-//  uint8_t Peer_Address[6];
-//  uint8_t Own_Address_Type;
-//  uint16_t Conn_Interval_Min;
-//  uint16_t Conn_Interval_Max;
-//  uint16_t Conn_Latency;
-//  uint16_t Supervision_Timeout;
-//  uint16_t Minimum_CE_Length;
-//  uint16_t Maximum_CE_Length;
-//} hci_le_create_connection_cp0;
-
-typedef PACKED(struct) hci_le_create_connection_rp0_s {
-  uint8_t Status;
-} hci_le_create_connection_rp0;
-
-typedef PACKED(struct) hci_le_create_connection_cancel_rp0_s {
-  uint8_t Status;
-} hci_le_create_connection_cancel_rp0;
-
-typedef PACKED(struct) hci_le_read_white_list_size_rp0_s {
-  uint8_t Status;
-  uint8_t White_List_Size;
-} hci_le_read_white_list_size_rp0;
-
-typedef PACKED(struct) hci_le_clear_white_list_rp0_s {
-  uint8_t Status;
-} hci_le_clear_white_list_rp0;
-
-//typedef PACKED(struct) hci_le_add_device_to_white_list_cp0_s {
-//  uint8_t Address_Type;
-//  uint8_t Address[6];
-//} hci_le_add_device_to_white_list_cp0;
-
-typedef PACKED(struct) hci_le_add_device_to_white_list_rp0_s {
-  uint8_t Status;
-} hci_le_add_device_to_white_list_rp0;
-
-//typedef PACKED(struct) hci_le_remove_device_from_white_list_cp0_s {
-//  uint8_t Address_Type;
-//  uint8_t Address[6];
-//} hci_le_remove_device_from_white_list_cp0;
-
-typedef PACKED(struct) hci_le_remove_device_from_white_list_rp0_s {
-  uint8_t Status;
-} hci_le_remove_device_from_white_list_rp0;
-
-//typedef PACKED(struct) hci_le_connection_update_cp0_s {
-//  uint16_t Connection_Handle;
-//  uint16_t Conn_Interval_Min;
-//  uint16_t Conn_Interval_Max;
-//  uint16_t Conn_Latency;
-//  uint16_t Supervision_Timeout;
-//  uint16_t Minimum_CE_Length;
-//  uint16_t Maximum_CE_Length;
-//} hci_le_connection_update_cp0;
-
-typedef PACKED(struct) hci_le_connection_update_rp0_s {
-  uint8_t Status;
-} hci_le_connection_update_rp0;
-
-//typedef PACKED(struct) hci_le_set_host_channel_classification_cp0_s {
-//  uint8_t LE_Channel_Map[5];
-//} hci_le_set_host_channel_classification_cp0;
-
-typedef PACKED(struct) hci_le_set_host_channel_classification_rp0_s {
-  uint8_t Status;
-} hci_le_set_host_channel_classification_rp0;
-
-//typedef PACKED(struct) hci_le_read_channel_map_cp0_s {
-//  uint16_t Connection_Handle;
-//} hci_le_read_channel_map_cp0;
-
-typedef PACKED(struct) hci_le_read_channel_map_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-  uint8_t LE_Channel_Map[5];
-} hci_le_read_channel_map_rp0;
-
-//typedef PACKED(struct) hci_le_read_remote_used_features_cp0_s {
-//  uint16_t Connection_Handle;
-//} hci_le_read_remote_used_features_cp0;
-
-typedef PACKED(struct) hci_le_read_remote_used_features_rp0_s {
-  uint8_t Status;
-} hci_le_read_remote_used_features_rp0;
-
-//typedef PACKED(struct) hci_le_encrypt_cp0_s {
-//  uint8_t Key[16];
-//  uint8_t Plaintext_Data[16];
-//} hci_le_encrypt_cp0;
-
-typedef PACKED(struct) hci_le_encrypt_rp0_s {
-  uint8_t Status;
-  uint8_t Encrypted_Data[16];
-} hci_le_encrypt_rp0;
-
-typedef PACKED(struct) hci_le_rand_rp0_s {
-  uint8_t Status;
-  uint8_t Random_Number[8];
-} hci_le_rand_rp0;
-
-//typedef PACKED(struct) hci_le_start_encryption_cp0_s {
-//  uint16_t Connection_Handle;
-//  uint8_t Random_Number[8];
-//  uint16_t Encrypted_Diversifier;
-//  uint8_t Long_Term_Key[16];
-//} hci_le_start_encryption_cp0;
-
-typedef PACKED(struct) hci_le_start_encryption_rp0_s {
-  uint8_t Status;
-} hci_le_start_encryption_rp0;
-
-//typedef PACKED(struct) hci_le_long_term_key_request_reply_cp0_s {
-//  uint16_t Connection_Handle;
-//  uint8_t Long_Term_Key[16];
-//} hci_le_long_term_key_request_reply_cp0;
-
-typedef PACKED(struct) hci_le_long_term_key_request_reply_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-} hci_le_long_term_key_request_reply_rp0;
-
-//typedef PACKED(struct) hci_le_long_term_key_requested_negative_reply_cp0_s {
-//  uint16_t Connection_Handle;
-//} hci_le_long_term_key_requested_negative_reply_cp0;
-
-typedef PACKED(struct) hci_le_long_term_key_requested_negative_reply_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-} hci_le_long_term_key_requested_negative_reply_rp0;
-
-typedef PACKED(struct) hci_le_read_supported_states_rp0_s {
-  uint8_t Status;
-  uint8_t LE_States[8];
-} hci_le_read_supported_states_rp0;
-
-//typedef PACKED(struct) hci_le_receiver_test_cp0_s {
-//  uint8_t RX_Frequency;
-//} hci_le_receiver_test_cp0;
-
-typedef PACKED(struct) hci_le_receiver_test_rp0_s {
-  uint8_t Status;
-} hci_le_receiver_test_rp0;
-
-//typedef PACKED(struct) hci_le_transmitter_test_cp0_s {
-//  uint8_t TX_Frequency;
-//  uint8_t Length_Of_Test_Data;
-//  uint8_t Packet_Payload;
-//} hci_le_transmitter_test_cp0;
-
-typedef PACKED(struct) hci_le_transmitter_test_rp0_s {
-  uint8_t Status;
-} hci_le_transmitter_test_rp0;
-
-typedef PACKED(struct) hci_le_test_end_rp0_s {
-  uint8_t Status;
-  uint16_t Number_Of_Packets;
-} hci_le_test_end_rp0;
-
-//typedef PACKED(struct) hci_le_set_data_length_cp0_s {
-//  uint16_t Connection_Handle;
-//  uint16_t TxOctets;
-//  uint16_t TxTime;
-//} hci_le_set_data_length_cp0;
-
-typedef PACKED(struct) hci_le_set_data_length_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-} hci_le_set_data_length_rp0;
-
-typedef PACKED(struct) hci_le_read_suggested_default_data_length_rp0_s {
-  uint8_t Status;
-  uint16_t SuggestedMaxTxOctets;
-  uint16_t SuggestedMaxTxTime;
-} hci_le_read_suggested_default_data_length_rp0;
-
-//typedef PACKED(struct) hci_le_write_suggested_default_data_length_cp0_s {
-//  uint16_t SuggestedMaxTxOctets;
-//  uint16_t SuggestedMaxTxTime;
-//} hci_le_write_suggested_default_data_length_cp0;
-
-typedef PACKED(struct) hci_le_write_suggested_default_data_length_rp0_s {
-  uint8_t Status;
-} hci_le_write_suggested_default_data_length_rp0;
-
-typedef PACKED(struct) hci_le_read_local_p256_public_key_rp0_s {
-  uint8_t Status;
-} hci_le_read_local_p256_public_key_rp0;
-
-//typedef PACKED(struct) hci_le_generate_dhkey_cp0_s {
-//  uint8_t Remote_P256_Public_Key[64];
-//} hci_le_generate_dhkey_cp0;
-
-typedef PACKED(struct) hci_le_generate_dhkey_rp0_s {
-  uint8_t Status;
-} hci_le_generate_dhkey_rp0;
-
-//typedef PACKED(struct) hci_le_add_device_to_resolving_list_cp0_s {
-//  uint8_t Peer_Identity_Address_Type;
-//  uint8_t Peer_Identity_Address[6];
-//  uint8_t Peer_IRK[16];
-//  uint8_t Local_IRK[16];
-//} hci_le_add_device_to_resolving_list_cp0;
-
-typedef PACKED(struct) hci_le_add_device_to_resolving_list_rp0_s {
-  uint8_t Status;
-} hci_le_add_device_to_resolving_list_rp0;
-
-//typedef PACKED(struct) hci_le_remove_device_from_resolving_list_cp0_s {
-//  uint8_t Peer_Identity_Address_Type;
-//  uint8_t Peer_Identity_Address[6];
-//} hci_le_remove_device_from_resolving_list_cp0;
-
-typedef PACKED(struct) hci_le_remove_device_from_resolving_list_rp0_s {
-  uint8_t Status;
-} hci_le_remove_device_from_resolving_list_rp0;
-
-typedef PACKED(struct) hci_le_clear_resolving_list_rp0_s {
-  uint8_t Status;
-} hci_le_clear_resolving_list_rp0;
-
-typedef PACKED(struct) hci_le_read_resolving_list_size_rp0_s {
-  uint8_t Status;
-  uint8_t Resolving_List_Size;
-} hci_le_read_resolving_list_size_rp0;
-
-//typedef PACKED(struct) hci_le_read_peer_resolvable_address_cp0_s {
-//  uint8_t Peer_Identity_Address_Type;
-//  uint8_t Peer_Identity_Address[6];
-//} hci_le_read_peer_resolvable_address_cp0;
-
-typedef PACKED(struct) hci_le_read_peer_resolvable_address_rp0_s {
-  uint8_t Status;
-  uint8_t Peer_Resolvable_Address[6];
-} hci_le_read_peer_resolvable_address_rp0;
-
-//typedef PACKED(struct) hci_le_read_local_resolvable_address_cp0_s {
-//  uint8_t Peer_Identity_Address_Type;
-//  uint8_t Peer_Identity_Address[6];
-//} hci_le_read_local_resolvable_address_cp0;
-
-typedef PACKED(struct) hci_le_read_local_resolvable_address_rp0_s {
-  uint8_t Status;
-  uint8_t Local_Resolvable_Address[6];
-} hci_le_read_local_resolvable_address_rp0;
-
-//typedef PACKED(struct) hci_le_set_address_resolution_enable_cp0_s {
-//  uint8_t Address_Resolution_Enable;
-//} hci_le_set_address_resolution_enable_cp0;
-
-typedef PACKED(struct) hci_le_set_address_resolution_enable_rp0_s {
-  uint8_t Status;
-} hci_le_set_address_resolution_enable_rp0;
-
-//typedef PACKED(struct) hci_le_set_resolvable_private_address_timeout_cp0_s {
-//  uint16_t RPA_Timeout;
-//} hci_le_set_resolvable_private_address_timeout_cp0;
-
-typedef PACKED(struct) hci_le_set_resolvable_private_address_timeout_rp0_s {
-  uint8_t Status;
-} hci_le_set_resolvable_private_address_timeout_rp0;
-
-typedef PACKED(struct) hci_le_read_maximum_data_length_rp0_s {
-  uint8_t Status;
-  uint16_t supportedMaxTxOctets;
-  uint16_t supportedMaxTxTime;
-  uint16_t supportedMaxRxOctets;
-  uint16_t supportedMaxRxTime;
-} hci_le_read_maximum_data_length_rp0;
-
-typedef PACKED(struct) hci_disconnection_complete_event_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-  uint8_t Reason;
-} hci_disconnection_complete_event_rp0;
-
-typedef PACKED(struct) hci_encryption_change_event_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-  uint8_t Encryption_Enabled;
-} hci_encryption_change_event_rp0;
-
-typedef PACKED(struct) hci_read_remote_version_information_complete_event_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-  uint8_t Version;
-  uint16_t Manufacturer_Name;
-  uint16_t Subversion;
-} hci_read_remote_version_information_complete_event_rp0;
-
-typedef PACKED(struct) hci_hardware_error_event_rp0_s {
-  uint8_t Hardware_Code;
-} hci_hardware_error_event_rp0;
-
-typedef PACKED(struct) hci_number_of_completed_packets_event_rp0_s {
-  uint8_t Number_of_Handles;
-  packed_Handle_Packets_Pair_Entry_t Handle_Packets_Pair_Entry[(HCI_MAX_PAYLOAD_SIZE - 1)/sizeof(packed_Handle_Packets_Pair_Entry_t)];
-} hci_number_of_completed_packets_event_rp0;
-
-typedef PACKED(struct) hci_data_buffer_overflow_event_rp0_s {
-  uint8_t Link_Type;
-} hci_data_buffer_overflow_event_rp0;
-
-typedef PACKED(struct) hci_encryption_key_refresh_complete_event_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-} hci_encryption_key_refresh_complete_event_rp0;
-
-
-
-typedef PACKED(struct) hci_le_connection_complete_event_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-  uint8_t Role;
-  uint8_t Peer_Address_Type;
-  uint8_t Peer_Address[6];
-  uint16_t Conn_Interval;
-  uint16_t Conn_Latency;
-  uint16_t Supervision_Timeout;
-  uint8_t Master_Clock_Accuracy;
-} hci_le_connection_complete_event_rp0;
-
-typedef PACKED(struct) hci_le_advertising_report_event_rp0_s {
-  uint8_t Num_Reports;
-  packed_Advertising_Report_t Advertising_Report[(HCI_MAX_PAYLOAD_SIZE - 1)/sizeof(packed_Advertising_Report_t)];
-} hci_le_advertising_report_event_rp0;
-
-typedef PACKED(struct) hci_le_connection_update_complete_event_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-  uint16_t Conn_Interval;
-  uint16_t Conn_Latency;
-  uint16_t Supervision_Timeout;
-} hci_le_connection_update_complete_event_rp0;
-
-typedef PACKED(struct) hci_le_read_remote_used_features_complete_event_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-  uint8_t LE_Features[8];
-} hci_le_read_remote_used_features_complete_event_rp0;
-
-typedef PACKED(struct) hci_le_long_term_key_request_event_rp0_s {
-  uint16_t Connection_Handle;
-  uint8_t Random_Number[8];
-  uint16_t Encrypted_Diversifier;
-} hci_le_long_term_key_request_event_rp0;
-
-typedef PACKED(struct) hci_le_data_length_change_event_rp0_s {
-  uint16_t Connection_Handle;
-  uint16_t MaxTxOctets;
-  uint16_t MaxTxTime;
-  uint16_t MaxRxOctets;
-  uint16_t MaxRxTime;
-} hci_le_data_length_change_event_rp0;
-
-typedef PACKED(struct) hci_le_read_local_p256_public_key_complete_event_rp0_s {
-  uint8_t Status;
-  uint8_t Local_P256_Public_Key[64];
-} hci_le_read_local_p256_public_key_complete_event_rp0;
-
-typedef PACKED(struct) hci_le_generate_dhkey_complete_event_rp0_s {
-  uint8_t Status;
-  uint8_t DHKey[32];
-} hci_le_generate_dhkey_complete_event_rp0;
-
-typedef PACKED(struct) hci_le_enhanced_connection_complete_event_rp0_s {
-  uint8_t Status;
-  uint16_t Connection_Handle;
-  uint8_t Role;
-  uint8_t Peer_Address_Type;
-  uint8_t Peer_Address[6];
-  uint8_t Local_Resolvable_Private_Address[6];
-  uint8_t Peer_Resolvable_Private_Address[6];
-  uint16_t Conn_Interval;
-  uint16_t Conn_Latency;
-  uint16_t Supervision_Timeout;
-  uint8_t Master_Clock_Accuracy;
-} hci_le_enhanced_connection_complete_event_rp0;
-
-typedef PACKED(struct) hci_le_direct_advertising_report_event_rp0_s {
-  uint8_t Num_Reports;
-  packed_Direct_Advertising_Report_t Direct_Advertising_Report[(HCI_MAX_PAYLOAD_SIZE - 1)/sizeof(packed_Direct_Advertising_Report_t)];
-} hci_le_direct_advertising_report_event_rp0;
-
-#endif /* DTM_CMD_DB_H */
+#endif //_DTM_CMD_DB_H_

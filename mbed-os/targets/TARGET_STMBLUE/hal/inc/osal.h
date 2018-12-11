@@ -48,8 +48,17 @@
  * 
  * @return  Address of the destination
  */
- 
-extern void* Osal_MemCpy(void *dest,const void *src, unsigned int size);
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern void* Osal_MemCpy(void *dest,const void *src, unsigned int size);  ////////antonio
+
+#ifdef __cplusplus
+}
+#endif
+
 
 /**
  * @brief This function sets first number of bytes, specified

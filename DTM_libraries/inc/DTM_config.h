@@ -37,12 +37,13 @@
  * User can modify, tune the configuration options according to his specific application requirements. 
  */
 
+
 /* MAX numberof link for DTM */
-#define DTM_NUM_LINK            8  //8
+#define DTM_NUM_LINK            1                 ////////////////////////////////8 antonio
 /* MAX numberof GATT services for DTM */
-#define DTM_NUM_GATT_SERVICES   0  //8
+#define DTM_NUM_GATT_SERVICES   0                 ////////////////////////////////8 antonio
 /* MAX number of GAP and GATT attributes for DTM */
-#define DTM_NUM_GATT_ATTRIBUTES 0 //68
+#define DTM_NUM_GATT_ATTRIBUTES 0                 ///////////////////////////////68 antonio
 
 /* Number of links needed for the demo: 1
  * Only 1 the default
@@ -58,13 +59,13 @@
 /* Set the number of prepare write request needed to write an att of 512 bytes,
    using MTU default value (23 bytes): value is reduced to 9 (refer to previous added note) */
 
-#define PREPARE_WRITE_LIST_SIZE (9) //(DEFAULT_PREP_WRITE_LIST_SIZE)
+#define PREPARE_WRITE_LIST_SIZE (0) ////////////////////9  //(DEFAULT_PREP_WRITE_LIST_SIZE) antonio
 
 /* Set supported max value for ATT_MTU */
-#define MAX_ATT_MTU              (220) 
+#define MAX_ATT_MTU              (0)  ////////////////////// 220 antonio
 
 /* Array size for the attribte value */
-#define ATT_VALUE_ARRAY_SIZE    (1344)  //si può mettere a 0
+#define ATT_VALUE_ARRAY_SIZE    (0) /////////////////////////////////////////////1344 antonio
 
 /* Flash security database size */
 #define FLASH_SEC_DB_SIZE       (0x400)

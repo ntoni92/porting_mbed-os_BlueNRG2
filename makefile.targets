@@ -2,16 +2,26 @@
 
 mbedclean:
 	$(RM) $(OBJS)
-	$(RM) $(CC_DEPS)$(C++_DEPS)$(C_UPPER_DEPS)$(CXX_DEPS)$(ASM_DEPS)$(S_UPPER_DEPS)$(C_DEPS)$(CPP_DEPS)
-	$(RM) $(SECONDARY_FLASH)$(SECONDARY_SIZE) mbed-os-example-blinky.* linker-script-*.ld
+	$(RM) $(CC_DEPS)
+	$(RM) $(C++_DEPS)
+	$(RM) $(C_UPPER_DEPS)
+	$(RM) $(CXX_DEPS)
+	$(RM) $(ASM_DEPS)
+	$(RM) $(S_UPPER_DEPS)
+	$(RM) $(C_DEPS)
+	$(RM) $(CPP_DEPS)
+	$(RM) $(SECONDARY_FLASH)$(SECONDARY_SIZE) porting_mbed-os_BlueNRG2.* linker-script-*.ld
 	-@echo ' '
 
 linker-script-debug.ld: ../mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2/TARGET_STEVAL_IDB008V2/device/TOOLCHAIN_GCC_ARM/BlueNRG2.ld
 	"arm-none-eabi-cpp" -E -P -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -Wl,-n -Wl,--start-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys -Wl,--end-group $< -o $@
-mbed-os-example-blinky.elf: linker-script-debug.ld
+porting_mbed-os_BlueNRG2.elf: linker-script-debug.ld
 linker-script-release.ld: ../mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2/TARGET_STEVAL_IDB008V2/device/TOOLCHAIN_GCC_ARM/BlueNRG2.ld
 	"arm-none-eabi-cpp" -E -P -DNDEBUG -Wl,-n -Wl,--start-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys -Wl,--end-group $< -o $@
-mbed-os-example-blinky.elf: linker-script-release.ld
+porting_mbed-os_BlueNRG2.elf: linker-script-release.ld
 linker-script-develop.ld: ../mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2/TARGET_STEVAL_IDB008V2/device/TOOLCHAIN_GCC_ARM/BlueNRG2.ld
 	"arm-none-eabi-cpp" -E -P -Wl,-n -Wl,--start-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys -Wl,--end-group $< -o $@
-mbed-os-example-blinky.elf: linker-script-develop.ld
+porting_mbed-os_BlueNRG2.elf: linker-script-develop.ld
+linker-script-custom.ld: ../mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2/TARGET_STEVAL_IDB008V2/device/TOOLCHAIN_GCC_ARM/BlueNRG2.ld
+	"arm-none-eabi-cpp" -E -P -DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -Wl,-n -Wl,--start-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys -Wl,--end-group $< -o $@
+porting_mbed-os_BlueNRG2.elf: linker-script-custom.ld

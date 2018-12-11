@@ -916,7 +916,7 @@ void SystemInit(void)
   NVIC_SetPriority(DMA_IRQn,       LOW_PRIORITY);
 
   //Map RAL_Isr() for Blue_Handler into RAM
-  NVIC_SetVector(BLUE_CTRL_IRQn, (uint32_t)&RAL_Isr); //antonio/
+  NVIC_SetVector(BLUE_CTRL_IRQn, (uint32_t)&RAL_Isr); ////////////antonio
 
   /* Device Configuration */
   DeviceConfiguration(TRUE, TRUE);

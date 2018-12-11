@@ -17,7 +17,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
 #include "radio_ota.h"
-#include "BlueNRG1_conf.h"
+//#include "BlueNRG1_conf.h"
 
 /** @addtogroup BlueNRG1_StdPeriph_Examples
 * @{

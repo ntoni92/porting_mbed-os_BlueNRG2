@@ -2328,7 +2328,7 @@ void hci_disconnection_complete_event(uint8_t Status,
   buffer_out[0] = 0x04;
   buffer_out[1] = 0x05;
   buffer_out[2] = 1 + 2 + 1;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 0);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_encryption_change_event */
 /* Event len: 1 + 2 + 1 */
@@ -2370,7 +2370,7 @@ void hci_encryption_change_event(uint8_t Status,
   buffer_out[0] = 0x04;
   buffer_out[1] = 0x08;
   buffer_out[2] = 1 + 2 + 1;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 1);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_read_remote_version_information_complete_event */
 /* Event len: 1 + 2 + 1 + 2 + 2 */
@@ -2418,7 +2418,7 @@ void hci_read_remote_version_information_complete_event(uint8_t Status,
   buffer_out[0] = 0x04;
   buffer_out[1] = 0x0c;
   buffer_out[2] = 1 + 2 + 1 + 2 + 2;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 2);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_hardware_error_event */
 /* Event len: 1 */
@@ -2444,7 +2444,7 @@ void hci_hardware_error_event(uint8_t Hardware_Code)
   buffer_out[0] = 0x04;
   buffer_out[1] = 0x10;
   buffer_out[2] = 1;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 5);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_number_of_completed_packets_event */
 /* Event len: 1 + rp0->Number_of_Handles * (sizeof(Handle_Packets_Pair_Entry_t)) */
@@ -2487,7 +2487,7 @@ void hci_number_of_completed_packets_event(uint8_t Number_of_Handles,
   buffer_out[0] = 0x04;
   buffer_out[1] = 0x13;
   buffer_out[2] = 1 + output_size;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 6);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_data_buffer_overflow_event */
 /* Event len: 1 */
@@ -2509,7 +2509,7 @@ void hci_data_buffer_overflow_event(uint8_t Link_Type)
   buffer_out[0] = 0x04;
   buffer_out[1] = 0x1a;
   buffer_out[2] = 1;
-  rcv_callback(buffer_out, buffer_out[2] + 3, -1);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_encryption_key_refresh_complete_event */
 /* Event len: 1 + 2 */
@@ -2542,7 +2542,7 @@ void hci_encryption_key_refresh_complete_event(uint8_t Status,
   buffer_out[0] = 0x04;
   buffer_out[1] = 0x30;
   buffer_out[2] = 1 + 2;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 7);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 
 /* hci_le_connection_complete_event */
@@ -2607,7 +2607,7 @@ void hci_le_connection_complete_event(uint8_t Status,
                                       uint8_t Master_Clock_Accuracy)
 {
   uint8_t buffer_out[258];
-  /* Output params */
+  // Output params
   hci_le_connection_complete_event_rp0 *rp0 = (hci_le_connection_complete_event_rp0 *) (buffer_out + 4);
   rp0->Status = Status;
   rp0->Connection_Handle = Connection_Handle;
@@ -2622,8 +2622,9 @@ void hci_le_connection_complete_event(uint8_t Status,
   buffer_out[1] = 0x3E;
   buffer_out[2] = 1 + 2 + 1 + 1 + 6 + 2 + 2 + 2 + 1 + 1;
   buffer_out[3] = 0x01;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 44);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
+
 /* hci_le_advertising_report_event */
 /* Event len: 1 + rp0->Num_Reports * (sizeof(Advertising_Report_t)) */
 /**
@@ -2667,7 +2668,7 @@ void hci_le_advertising_report_event(uint8_t Num_Reports,
   buffer_out[1] = 0x3E;
   buffer_out[2] = 1 + output_size + 1;
   buffer_out[3] = 0x02;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 45);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_le_connection_update_complete_event */
 /* Event len: 1 + 2 + 2 + 2 + 2 */
@@ -2712,7 +2713,7 @@ void hci_le_connection_update_complete_event(uint8_t Status,
   buffer_out[1] = 0x3E;
   buffer_out[2] = 1 + 2 + 2 + 2 + 2 + 1;
   buffer_out[3] = 0x03;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 46);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_le_read_remote_used_features_complete_event */
 /* Event len: 1 + 2 + 8 */
@@ -2741,7 +2742,7 @@ void hci_le_read_remote_used_features_complete_event(uint8_t Status,
   buffer_out[1] = 0x3E;
   buffer_out[2] = 1 + 2 + 8 + 1;
   buffer_out[3] = 0x04;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 47);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_le_long_term_key_request_event */
 /* Event len: 2 + 8 + 2 */
@@ -2770,7 +2771,7 @@ void hci_le_long_term_key_request_event(uint16_t Connection_Handle,
   buffer_out[1] = 0x3E;
   buffer_out[2] = 2 + 8 + 2 + 1;
   buffer_out[3] = 0x05;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 48);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_le_data_length_change_event */
 /* Event len: 2 + 2 + 2 + 2 + 2 */
@@ -2806,7 +2807,7 @@ void hci_le_data_length_change_event(uint16_t Connection_Handle,
   buffer_out[1] = 0x3E;
   buffer_out[2] = 2 + 2 + 2 + 2 + 2 + 1;
   buffer_out[3] = 0x07;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 49);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_le_read_local_p256_public_key_complete_event */
 /* Event len: 1 + 64 */
@@ -2828,7 +2829,7 @@ void hci_le_read_local_p256_public_key_complete_event(uint8_t Status,
   buffer_out[1] = 0x3E;
   buffer_out[2] = 1 + 64 + 1;
   buffer_out[3] = 0x08;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 50);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_le_generate_dhkey_complete_event */
 /* Event len: 1 + 32 */
@@ -2851,7 +2852,7 @@ void hci_le_generate_dhkey_complete_event(uint8_t Status,
   buffer_out[1] = 0x3E;
   buffer_out[2] = 1 + 32 + 1;
   buffer_out[3] = 0x09;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 51);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_le_enhanced_connection_complete_event */
 /* Event len: 1 + 2 + 1 + 1 + 6 + 6 + 6 + 2 + 2 + 2 + 1 */
@@ -2949,7 +2950,7 @@ void hci_le_enhanced_connection_complete_event(uint8_t Status,
   buffer_out[1] = 0x3E;
   buffer_out[2] = 1 + 2 + 1 + 1 + 6 + 6 + 6 + 2 + 2 + 2 + 1 + 1;
   buffer_out[3] = 0x0a;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 52);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 /* hci_le_direct_advertising_report_event */
 /* Event len: 1 + rp0->Num_Reports * (sizeof(Direct_Advertising_Report_t)) */
@@ -2996,7 +2997,7 @@ void hci_le_direct_advertising_report_event(uint8_t Num_Reports,
   buffer_out[1] = 0x3E;
   buffer_out[2] = 1 + output_size + 1;
   buffer_out[3] = 0x0b;
-  rcv_callback(buffer_out, buffer_out[2] + 3, 53);
+  rcv_callback(buffer_out, buffer_out[2] + 3);
 }
 
 /* Command len: 1 + 1 + cp0->Length * (sizeof(uint8_t)) */

@@ -420,7 +420,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="${cross_rm} -rf" description="" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release.336301699" name="Release" parent="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="${cross_rm} -rf" description="" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release.336301699" name="Release" optionalBuildProperties="" parent="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release">
 					<folderInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release.336301699." name="/" resourcePath="">
 						<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.release.948786878" name="Cross ARM GCC" superClass="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.release">
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.family.831811202" name="ARM family" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.family" value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0" valueType="enumerated"/>
@@ -1622,6 +1622,412 @@
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
+		<cconfiguration id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.272055284.1556447160">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.272055284.1556447160" moduleId="org.eclipse.cdt.core.settings" name="mbedCLI">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="${cross_rm} -rf" description="" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.272055284.1556447160" name="mbedCLI" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug">
+					<folderInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.272055284.1556447160." name="/" resourcePath="">
+						<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug.1952473078" name="Cross ARM GCC" superClass="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug">
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.family.1764627952" name="ARM family" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.family" value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0" valueType="enumerated"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.architecture.857918796" name="Architecture" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.architecture" value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.none" valueType="enumerated"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.instructionset.182304761" name="Instruction set" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.instructionset" value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.instructionset.thumb" valueType="enumerated"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.1805778455" name="Optimization Level" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level" value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.none" valueType="enumerated"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.messagelength.1410638526" name="Message length (-fmessage-length=0)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.messagelength" value="true" valueType="boolean"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.functionsections.1563525437" name="Function sections (-ffunction-sections)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.functionsections" value="true" valueType="boolean"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.datasections.105875569" name="Data sections (-fdata-sections)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.datasections" value="true" valueType="boolean"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.nobuiltin.418031539" name="Disable builtin (-fno-builtin)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.nobuiltin" value="true" valueType="boolean"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.other.1234818498" name="Other optimization flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.other" value="-funsigned-char -fno-delete-null-pointer-checks -fomit-frame-pointer" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.allwarn.604696198" name="Enable all common warnings (-Wall)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.allwarn" value="true" valueType="boolean"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.extrawarn.1557449919" name="Enable extra warnings (-Wextra)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.extrawarn" value="true" valueType="boolean"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.other.593706980" name="Other warning flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.other" value="-Wno-unused-parameter -Wno-missing-field-initializers" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.level.1987565583" name="Debug level" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.level" value="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.level.max" valueType="enumerated"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.name.1726694831" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.name" value="GNU Tools for ARM Embedded Processors" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.prefix.417378579" name="Prefix" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.prefix" value="arm-none-eabi-" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.c.611480637" name="C compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.c" value="gcc" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.cpp.1359732061" name="C++ compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.cpp" value="g++" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.ar.1481403839" name="Archiver" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.ar" value="ar" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.objcopy.1933012947" name="Hex/Bin converter" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.objcopy" value="objcopy" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.objdump.476439738" name="Listing generator" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.objdump" value="objdump" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.size.601847379" name="Size command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.size" value="size" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.make.1229138082" name="Build command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.make" value="make" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm.117489664" name="Remove command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm" value="rm" valueType="string"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.1974567234" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" value="true" valueType="boolean"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.1896829646" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" value="true" valueType="boolean"/>
+							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.id.1871348080" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.id" value="1287942917" valueType="string"/>
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.212935867" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
+							<builder arguments="" buildPath="${workspace_loc:/porting_mbed-os_BlueNRG2}" cleanBuildTarget="compile --clean" command="mbed" id="ilg.gnuarmeclipse.managedbuild.cross.builder.802884481" incrementalBuildTarget="compile -m STEVAL_IDB008V2 -t GCC_ARM --profile mbed-os/tools/profiles/debug.json" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" parallelBuildOn="false" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder"/>
+							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.109925970" name="Cross ARM GNU Assembler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler">
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor.1306187488" name="Use preprocessor" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor" value="true" valueType="boolean"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths.1776350657" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/.&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Bluetooth_LE&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Bluetooth_LE/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/DTM_libraries&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/DTM_libraries/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc/AES&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc/AES/CMAC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc/AES/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/imu_includes&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-coremark-lm32-printf&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/cmsis&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/cmsis/TARGET_CORTEX_M&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/drivers&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/events&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/events/equeue&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/ble&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/ble/generic&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/ble/pal&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/ble/services&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/driver&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/hci&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/hci/dual_chip&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/sec&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/sec/common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/att&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/cfg&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/dm&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/hci&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/l2c&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/smp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/platform&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/platform/common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/platform/common/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/wsf&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/wsf/common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/wsf/common/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/wsf/common/include/util&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/mbed_os_adaptation&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/hal&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/hal/storage_abstraction&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/platform&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/Periph_Driver&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/Periph_Driver/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2/TARGET_STEVAL_IDB008V2&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2/TARGET_STEVAL_IDB008V2/device&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/hal&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/hal/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/minimal-printf&quot;"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.369056033" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__CORTEX_M0"/>
+									<listOptionValue builtIn="false" value="LS_SOURCE=LS_SOURCE_EXTERNAL_32KHZ"/>
+									<listOptionValue builtIn="false" value="SMPS_INDUCTOR=SMPS_INDUCTOR_10uH"/>
+									<listOptionValue builtIn="false" value="CMSIS_VECTAB_VIRTUAL"/>
+									<listOptionValue builtIn="false" value="ARM_MATH_CM0"/>
+									<listOptionValue builtIn="false" value="__MBED_CMSIS_RTOS_CM"/>
+									<listOptionValue builtIn="false" value="BLUENRG2_DEVICE"/>
+									<listOptionValue builtIn="false" value="CMSIS_VECTAB_VIRTUAL_HEADER_FILE=\&quot;cmsis_nvic.h\&quot;"/>
+									<listOptionValue builtIn="false" value="__CMSIS_RTOS"/>
+									<listOptionValue builtIn="false" value="DEVICE_SERIAL"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.files.958260033" name="Include files (-include)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.files" useByScannerDiscovery="true" valueType="includeFiles">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed_config.h&quot;"/>
+								</option>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.other.725316416" name="Other assembler flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.other" value="-DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1" valueType="string"/>
+								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.538483262" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
+							</tool>
+							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.434882389" name="Cross ARM C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths.419289783" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/.&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Bluetooth_LE&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Bluetooth_LE/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/DTM_libraries&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/DTM_libraries/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc/AES&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc/AES/CMAC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc/AES/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/imu_includes&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-coremark-lm32-printf&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/cmsis&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/cmsis/TARGET_CORTEX_M&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/drivers&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/events&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/events/equeue&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/ble&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/ble/generic&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/ble/pal&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/ble/services&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/driver&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/hci&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/hci/dual_chip&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/sec&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/sec/common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/att&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/cfg&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/dm&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/hci&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/l2c&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/smp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/platform&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/platform/common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/platform/common/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/wsf&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/wsf/common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/wsf/common/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/wsf/common/include/util&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/mbed_os_adaptation&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/hal&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/hal/storage_abstraction&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/platform&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/Periph_Driver&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/Periph_Driver/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2/TARGET_STEVAL_IDB008V2&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2/TARGET_STEVAL_IDB008V2/device&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/hal&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/hal/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/minimal-printf&quot;"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.133005212" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__CORTEX_M0"/>
+									<listOptionValue builtIn="false" value="SMPS_INDUCTOR=SMPS_INDUCTOR_10uH"/>
+									<listOptionValue builtIn="false" value="CMSIS_VECTAB_VIRTUAL"/>
+									<listOptionValue builtIn="false" value="__MBED__=1"/>
+									<listOptionValue builtIn="false" value="TARGET_LIKE_MBED"/>
+									<listOptionValue builtIn="false" value="__MBED_CMSIS_RTOS_CM"/>
+									<listOptionValue builtIn="false" value="__CMSIS_RTOS"/>
+									<listOptionValue builtIn="false" value="TARGET_STMBLUE"/>
+									<listOptionValue builtIn="false" value="TOOLCHAIN_GCC"/>
+									<listOptionValue builtIn="false" value="TARGET_LIKE_CORTEX_M0"/>
+									<listOptionValue builtIn="false" value="TARGET_DEBUG"/>
+									<listOptionValue builtIn="false" value="ARM_MATH_CM0"/>
+									<listOptionValue builtIn="false" value="FEATURE_BLE=1"/>
+									<listOptionValue builtIn="false" value="TARGET_M0"/>
+									<listOptionValue builtIn="false" value="DEVICE_SERIAL"/>
+									<listOptionValue builtIn="false" value="DEVICE_INTERRUPTIN=1"/>
+									<listOptionValue builtIn="false" value="TARGET_CORTEX"/>
+									<listOptionValue builtIn="false" value="DEVICE_STDIO_MESSAGES=1"/>
+									<listOptionValue builtIn="false" value="TARGET_STEVAL_IDB008V2"/>
+									<listOptionValue builtIn="false" value="MBED_BUILD_TIMESTAMP=1544104757.79"/>
+									<listOptionValue builtIn="false" value="LS_SOURCE=LS_SOURCE_EXTERNAL_32KHZ"/>
+									<listOptionValue builtIn="false" value="TARGET_CORDIO"/>
+									<listOptionValue builtIn="false" value="DEVICE_SERIAL_FC=1"/>
+									<listOptionValue builtIn="false" value="DEVICE_USTICKER=1"/>
+									<listOptionValue builtIn="false" value="DEVICE_SERIAL_ASYNCH=1"/>
+									<listOptionValue builtIn="false" value="TOOLCHAIN_GCC_ARM"/>
+									<listOptionValue builtIn="false" value="DEVICE_SPI=1"/>
+									<listOptionValue builtIn="false" value="CMSIS_VECTAB_VIRTUAL_HEADER_FILE=\&quot;cmsis_nvic.h\&quot;"/>
+									<listOptionValue builtIn="false" value="TARGET_BLUENRG2"/>
+									<listOptionValue builtIn="false" value="BLUENRG2_DEVICE"/>
+									<listOptionValue builtIn="false" value="DEVICE_SERIAL=1"/>
+									<listOptionValue builtIn="false" value="TARGET_CORTEX_M"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.files.1179467381" name="Include files (-include)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.files" useByScannerDiscovery="true" valueType="includeFiles">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed_config.h&quot;"/>
+								</option>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.1970128448" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu99" valueType="enumerated"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.other.1898442978" name="Other compiler flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.other" useByScannerDiscovery="true" value="-DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1" valueType="string"/>
+								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.300691517" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
+							</tool>
+							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.542501051" name="Cross ARM C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths.1059729784" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/.&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Bluetooth_LE&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Bluetooth_LE/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/DTM_libraries&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/DTM_libraries/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc/AES&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc/AES/CMAC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc/AES/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/inc/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/imu_includes&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-coremark-lm32-printf&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/cmsis&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/cmsis/TARGET_CORTEX_M&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/drivers&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/events&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/events/equeue&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/ble&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/ble/generic&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/ble/pal&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/ble/services&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/driver&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/hci&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/hci/dual_chip&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/sec&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/sec/common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/att&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/cfg&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/dm&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/hci&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/l2c&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/ble-host/sources/stack/smp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/platform&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/platform/common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/platform/common/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/wsf&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/wsf/common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/wsf/common/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/cordio_stack/wsf/common/include/util&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/stack/mbed_os_adaptation&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/hal&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/hal/storage_abstraction&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/platform&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/Periph_Driver&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/Periph_Driver/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2/TARGET_STEVAL_IDB008V2&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2/TARGET_STEVAL_IDB008V2/device&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/hal&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed-os/targets/TARGET_STMBLUE/hal/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/minimal-printf&quot;"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.982515561" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__CORTEX_M0"/>
+									<listOptionValue builtIn="false" value="SMPS_INDUCTOR=SMPS_INDUCTOR_10uH"/>
+									<listOptionValue builtIn="false" value="CMSIS_VECTAB_VIRTUAL"/>
+									<listOptionValue builtIn="false" value="__MBED__=1"/>
+									<listOptionValue builtIn="false" value="TARGET_LIKE_MBED"/>
+									<listOptionValue builtIn="false" value="__MBED_CMSIS_RTOS_CM"/>
+									<listOptionValue builtIn="false" value="__CMSIS_RTOS"/>
+									<listOptionValue builtIn="false" value="TARGET_STMBLUE"/>
+									<listOptionValue builtIn="false" value="TOOLCHAIN_GCC"/>
+									<listOptionValue builtIn="false" value="TARGET_LIKE_CORTEX_M0"/>
+									<listOptionValue builtIn="false" value="TARGET_DEBUG"/>
+									<listOptionValue builtIn="false" value="ARM_MATH_CM0"/>
+									<listOptionValue builtIn="false" value="FEATURE_BLE=1"/>
+									<listOptionValue builtIn="false" value="TARGET_M0"/>
+									<listOptionValue builtIn="false" value="DEVICE_SERIAL"/>
+									<listOptionValue builtIn="false" value="DEVICE_INTERRUPTIN=1"/>
+									<listOptionValue builtIn="false" value="TARGET_CORTEX"/>
+									<listOptionValue builtIn="false" value="DEVICE_STDIO_MESSAGES=1"/>
+									<listOptionValue builtIn="false" value="TARGET_STEVAL_IDB008V2"/>
+									<listOptionValue builtIn="false" value="MBED_BUILD_TIMESTAMP=1544104757.79"/>
+									<listOptionValue builtIn="false" value="LS_SOURCE=LS_SOURCE_EXTERNAL_32KHZ"/>
+									<listOptionValue builtIn="false" value="TARGET_CORDIO"/>
+									<listOptionValue builtIn="false" value="DEVICE_SERIAL_FC=1"/>
+									<listOptionValue builtIn="false" value="DEVICE_USTICKER=1"/>
+									<listOptionValue builtIn="false" value="DEVICE_SERIAL_ASYNCH=1"/>
+									<listOptionValue builtIn="false" value="TOOLCHAIN_GCC_ARM"/>
+									<listOptionValue builtIn="false" value="DEVICE_SPI=1"/>
+									<listOptionValue builtIn="false" value="CMSIS_VECTAB_VIRTUAL_HEADER_FILE=\&quot;cmsis_nvic.h\&quot;"/>
+									<listOptionValue builtIn="false" value="TARGET_BLUENRG2"/>
+									<listOptionValue builtIn="false" value="BLUENRG2_DEVICE"/>
+									<listOptionValue builtIn="false" value="DEVICE_SERIAL=1"/>
+									<listOptionValue builtIn="false" value="TARGET_CORTEX_M"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.files.2019054410" name="Include files (-include)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.files" useByScannerDiscovery="true" valueType="includeFiles">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed_config.h&quot;"/>
+								</option>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.1530425268" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp98" valueType="enumerated"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions.1542222850" name="Do not use exceptions (-fno-exceptions)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions" useByScannerDiscovery="true" value="true" valueType="boolean"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti.132333823" name="Do not use RTTI (-fno-rtti)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti" useByScannerDiscovery="true" value="true" valueType="boolean"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.otherwarnings.1417714768" name="Other warning flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.otherwarnings" useByScannerDiscovery="true" value="-Wvla" valueType="string"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.other.1173243228" name="Other compiler flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.other" useByScannerDiscovery="true" value="-DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1" valueType="string"/>
+								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1230020271" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
+							</tool>
+							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.1723193942" name="Cross ARM C++ Linker" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.scriptfile.1029656770" name="Script files (-T)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.scriptfile" useByScannerDiscovery="false" valueType="stringList">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Debug\linker-script-debug.ld&quot;"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.paths.97052147" name="Library search path (-L)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.paths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Bluetooth_LE/library&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib&quot;"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs.2078754753" name="Libraries (-l)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs" valueType="libs">
+									<listOptionValue builtIn="false" value="stdc++"/>
+									<listOptionValue builtIn="false" value="supc++"/>
+									<listOptionValue builtIn="false" value="m"/>
+									<listOptionValue builtIn="false" value="c"/>
+									<listOptionValue builtIn="false" value="gcc"/>
+									<listOptionValue builtIn="false" value="nosys"/>
+									<listOptionValue builtIn="false" value="bluenrg1_stack"/>
+									<listOptionValue builtIn="false" value="crypto"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.otherobjs.495018036" name="Other objects" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.otherobjs" valueType="userObjs">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Bluetooth_LE/library/libbluenrg1_stack.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/cryptolib/libcrypto.a&quot;"/>
+								</option>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.gcsections.979775680" name="Remove unused sections (-Xlinker --gc-sections)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.gcsections" value="true" valueType="boolean"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.flags.1113129337" name="Linker flags (-Xlinker [option])" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.flags" valueType="stringList">
+									<listOptionValue builtIn="false" value="--wrap=main"/>
+									<listOptionValue builtIn="false" value="--wrap=_malloc_r"/>
+									<listOptionValue builtIn="false" value="--wrap=_free_r"/>
+									<listOptionValue builtIn="false" value="--wrap=_realloc_r"/>
+									<listOptionValue builtIn="false" value="--wrap=_memalign_r"/>
+									<listOptionValue builtIn="false" value="--wrap=_calloc_r"/>
+									<listOptionValue builtIn="false" value="--wrap=exit"/>
+									<listOptionValue builtIn="false" value="--wrap=atexit"/>
+								</option>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.other.983062985" name="Other linker flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.other" value="-DMBED_DEBUG -DMBED_TRAP_ERRORS_ENABLED=1 -Wl,-n -Wl,--start-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys -Wl,--end-group" valueType="string"/>
+								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.input.462274472" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.input">
+									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
+								</inputType>
+							</tool>
+							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.archiver.170601921" name="Cross ARM GNU Archiver" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.archiver"/>
+							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.createflash.1868939665" name="Cross ARM GNU Create Flash Image" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.createflash">
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.createflash.choice.1847242638" name="Output file format (-O)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.createflash.choice" value="ilg.gnuarmeclipse.managedbuild.cross.option.createflash.choice.binary" valueType="enumerated"/>
+							</tool>
+							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.createlisting.1550306499" name="Cross ARM GNU Create Listing" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.createlisting">
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.source.1287484371" name="Display source (--source|-S)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.source" value="true" valueType="boolean"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.allheaders.442023155" name="Display all headers (--all-headers|-x)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.allheaders" value="true" valueType="boolean"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.demangle.600211962" name="Demangle names (--demangle|-C)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.demangle" value="true" valueType="boolean"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.linenumbers.1725421421" name="Display line numbers (--line-numbers|-l)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.linenumbers" value="true" valueType="boolean"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.wide.1542180710" name="Wide lines (--wide|-w)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.wide" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize.250638917" name="Cross ARM GNU Print Size" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize">
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.format.1607343746" name="Size format" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.format"/>
+							</tool>
+							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.1934791252" name="GNU ARM Cross C Linker" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry excluding="mbed-os/features/FEATURE_BLE/targets/TARGET_CORDIO/TESTS|mbed-os/features/FEATURE_BLE/targets/TARGET_Maxim|mbed-os/features/netsocket|mbed-os/tools|minimal-printf/TESTS|mbed-os/events/equeue/tests|mbed-os/.coveragerc|mbed-os/.astylerc|mbed-os/features/FEATURE_BLE/targets/TARGET_ARM_SSG|mbed-coremark-lm32-printf/.git|.gitignore|mbed-os/features/nanostack|mbed-os/targets/TARGET_Analog_Devices|mbed-os/cmsis/TARGET_CORTEX_M/TOOLCHAIN_IAR|mbed-os/features/FEATURE_BLE/targets/TARGET_CYW4343X|mbed-os/targets/TARGET_TOSHIBA|mbed-os/features/unsupported|mbed-os/features/lorawan|mbed-os/features/FEATURE_BLE/.mbedignore|mbed-os/features/FEATURE_BOOTLOADER|mbed-os/targets/TARGET_Freescale|mbed-os/features/cellular|mbed-os/features/frameworks|mbed-os/features/lwipstack|mbed-os/targets/TARGET_RENESAS|mbed-os/TESTS|mbed-os/.pylintrc|mbed-os/features/mbedtls|mbed-os/targets/TARGET_Atmel|mbed-os/targets/TARGET_ONSEMI|.git|main|mbed-os/targets/TARGET_Cypress|mbed-os/hal/TARGET_FLASH_CMSIS_ALGO|.mbed|mbed-os/features/nfc|minimal-printf/.git|mbed-os/features/device_key|mbed-os/UNITTESTS|mbed-os/features/deprecated_warnings|mbed-os/targets/TARGET_NUVOTON|.mbedignore|mbed-os/features/FEATURE_BLE/targets/TARGET_NORDIC|mbed-os/targets/TARGET_Maxim|mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG2/TARGET_STEVAL_IDB008V2/device/TOOLCHAIN_IAR|BUILD|mbed-os/targets/TARGET_NORDIC|mbed-os/targets/TARGET_WIZNET|mbed-os/targets/TARGET_WICED|mbed-os/targets/TARGET_ARM_FM|mbed-os/targets/TARGET_ARM_SSG|mbed-os/TEST_APPS|mbed-os/features/FEATURE_BLE/.gitignore|mbed-os/features/cryptocell|mbed-os/targets/TARGET_NXP|mbed-os/components|mbed-os/.astyleignore|mbed-os/features/storage|mbed-os/targets/TARGET_Silicon_Labs|mbed-os/events/equeue/.mbedignore|mbed-os/targets/TARGET_STM|mbed-os/rtos|mbed-os/targets/TARGET_Realtek|mbed-os/targets/TARGET_ublox|mbed-os/targets/TARGET_STMBLUE/TARGET_BLUENRG1|mbed-os/cmsis/TARGET_CORTEX_A|mbed-os/.travis.yml" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="porting_mbed-os_BlueNRG2.ilg.gnuarmeclipse.managedbuild.cross.target.elf.956737643" name="Executable" projectType="ilg.gnuarmeclipse.managedbuild.cross.target.elf"/>
@@ -1629,6 +2035,9 @@
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Develop">
+			<resource resourceType="PROJECT" workspacePath="/porting_mbed-os_BlueNRG2"/>
+		</configuration>
+		<configuration configurationName="mbedCLI">
 			<resource resourceType="PROJECT" workspacePath="/porting_mbed-os_BlueNRG2"/>
 		</configuration>
 		<configuration configurationName="Custom"/>

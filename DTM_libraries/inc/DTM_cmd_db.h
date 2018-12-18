@@ -96,6 +96,16 @@ uint16_t aci_hal_write_config_data_process(uint8_t *buffer_in, uint16_t buffer_i
 uint16_t aci_hal_read_config_data_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
 uint16_t hci_le_read_maximum_data_length_process(uint8_t *buffer_in, uint16_t buffer_in_length, uint8_t *buffer_out, uint16_t buffer_out_max_length);
 
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+void rcv_callback(uint8_t *data, uint16_t len);
+#if defined(__cplusplus)
+}
+#endif
+
+
 //extern const hci_command_table_type hci_command_table[156];
 //extern void rcv_callback(uint8_t *buffer_out, uint16_t buffer_out_length, int8_t overflow_index);
 //extern void send_event_isr(uint8_t *buffer_out, uint16_t buffer_out_length, int8_t overflow_index);

@@ -238,13 +238,13 @@ typedef struct {
  * @note The API name and parameters are subject to change in future releases.
  * @return None
  */
-#ifdef __cplusplus  //////////////////////////antonio
-extern "C" {  //////////////////////////antonio
-#endif  //////////////////////////antonio
+#ifdef __cplusplus            /////////////antonio
+extern "C" {                  /////////////antonio
+#endif						  /////////////antonio
 void BTLE_StackTick(void);
-#ifdef __cplusplus  //////////////////////////antonio
-}  //////////////////////////antonio
-#endif  //////////////////////////antonio
+#ifdef __cplusplus			  /////////////antonio
+}							  /////////////antonio
+#endif						  /////////////antonio
 /**
  * @brief The BTLE Stack initialization routine
  *
@@ -280,8 +280,13 @@ uint8_t BlueNRG_Stack_Perform_Deep_Sleep_Check(void);
  *
  * @return None
  */
+#ifdef __cplusplus  ////////////antonio
+extern "C" {        ////////////antonio
+#endif              ////////////antonio
 void RAL_Isr(void);
-
+#ifdef __cplusplus  ////////////antonio
+}                   ////////////antonio
+#endif              ////////////antonio
 /**
  * @brief Starts a one-shot virtual timer for the given relative timeout value expressed in ms
  *

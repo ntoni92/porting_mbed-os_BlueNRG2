@@ -38,6 +38,10 @@
   - NOTE: default configuration is BLE_STACK_CONFIGURATION = BLE_STACK_BASIC_CONFIGURATION
 **/
 
+#ifdef __cplusplus            /////////////antonio
+extern "C" {                  /////////////antonio
+#endif						  /////////////antonio
+
 #include "bluenrg1_api.h"
 #include "hal_types.h"
 #include "stack_user_cfg.h"
@@ -967,6 +971,11 @@ tBleStatus smp_Process_Rx_Packet_Exception_Cases_sc_excerpt_ucfg(void *params)
 {
     return smp_Process_Rx_Packet_Exception_Cases_sc_excerpt(params);
 }
+
+#ifdef __cplusplus            /////////////antonio
+}                  			  /////////////antonio
+#endif						  /////////////antonio
+
 #endif
 #else
 #warning "SECURE_CONNECTIONS_ENABLED is not defined"

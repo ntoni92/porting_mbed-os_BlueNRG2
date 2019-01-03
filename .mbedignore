@@ -44,7 +44,5 @@ main/*
 BLE_Application/*
 Beacon_inc/*
 mbed-os/rtos/*
-mbed-os/features/FEATURE_BLE/*
-DTM_libraries/*
 mbed-coremark-lm32-printf/*
 minimal-printf/*

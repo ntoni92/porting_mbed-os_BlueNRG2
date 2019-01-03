@@ -60,11 +60,12 @@
 
 /* Select default configuration */
 #ifndef BLE_STACK_CONFIGURATION
+#error "you shall define basic configuration"    /////antonio
 /**
 * @brief BLE stack default configuration
 */
 #define BLE_STACK_CONFIGURATION        BLE_STACK_FULL_CONFIGURATION
-#endif 
+#endif
 
 /* --------------------- BLE stack configuration options and associated module inclusion -------------------- */
 

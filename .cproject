@@ -1335,7 +1335,6 @@
 									<listOptionValue builtIn="false" value="CMSIS_VECTAB_VIRTUAL_HEADER_FILE=\&quot;cmsis_nvic.h\&quot;"/>
 									<listOptionValue builtIn="false" value="__CMSIS_RTOS"/>
 									<listOptionValue builtIn="false" value="DEVICE_SERIAL"/>
-									<listOptionValue builtIn="false" value="BLE_STACK_CONFIGURATION=BLE_STACK_FULL_CONFIGURATION"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.files.506452006" name="Include files (-include)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.files" useByScannerDiscovery="true" valueType="includeFiles">
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/mbed_config.h&quot;"/>
@@ -1411,6 +1410,7 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.712610811" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__CORTEX_M0"/>
+									<listOptionValue builtIn="false" value="BLE_STACK_CONFIGURATION=BLE_STACK_BASIC_CONFIGURATION"/>
 									<listOptionValue builtIn="false" value="SMPS_INDUCTOR=SMPS_INDUCTOR_10uH"/>
 									<listOptionValue builtIn="false" value="CMSIS_VECTAB_VIRTUAL"/>
 									<listOptionValue builtIn="false" value="__MBED__=1"/>
@@ -2038,6 +2038,9 @@
 			<resource resourceType="PROJECT" workspacePath="/porting_mbed-os_BlueNRG2"/>
 		</configuration>
 		<configuration configurationName="mbedCLI">
+			<resource resourceType="PROJECT" workspacePath="/porting_mbed-os_BlueNRG2"/>
+		</configuration>
+		<configuration configurationName="release2">
 			<resource resourceType="PROJECT" workspacePath="/porting_mbed-os_BlueNRG2"/>
 		</configuration>
 		<configuration configurationName="Custom"/>

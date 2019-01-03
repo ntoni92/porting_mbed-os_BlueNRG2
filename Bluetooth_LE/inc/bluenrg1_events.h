@@ -24,6 +24,10 @@
 #ifndef _BLUENRG1_EVENTS_H_
 #define _BLUENRG1_EVENTS_H_
 
+#ifdef __cplusplus            /////////////antonio
+extern "C" {                  /////////////antonio
+#endif						  /////////////antonio
+
 #include <stdint.h>
 /**
  *@defgroup HCI_events HCI events
@@ -423,9 +427,6 @@ Time = N * 10 msec.
   - 0x07: 20 ppm
   * @retval None
 */
-#if defined(__cplusplus)    ///////antonio
-extern "C" {                ///////antonio
-#endif                      ///////antonio
 void hci_le_connection_complete_event(uint8_t Status,
                                       uint16_t Connection_Handle,
                                       uint8_t Role,
@@ -435,9 +436,6 @@ void hci_le_connection_complete_event(uint8_t Status,
                                       uint16_t Conn_Latency,
                                       uint16_t Supervision_Timeout,
                                       uint8_t Master_Clock_Accuracy);
-#if defined(__cplusplus)     ///////antonio
-}                            ///////antonio
-#endif                       ///////antonio
 /**
   * @brief The LE Advertising Report event indicates that a Bluetooth device or multiple
 Bluetooth devices have responded to an active scan or received some information
@@ -1348,4 +1346,9 @@ void aci_hal_fw_error_event(uint8_t FW_Error_Type,
 /**
  * @}
  */
+
+#ifdef __cplusplus            /////////////antonio
+}                  			  /////////////antonio
+#endif						  /////////////antonio
+
 #endif /* _BLUENRG1_EVENTS_H_ */

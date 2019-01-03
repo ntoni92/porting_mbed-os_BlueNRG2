@@ -13,28 +13,31 @@
 #include "DTM_cmd_db.h"
 #include "osal.h"
 #include "bluenrg1_api.h"
+#include "hci_defs.h"
 //#include "transport_layer.h"
 
 extern "C" void rcv_callback(uint8_t *data, uint16_t len){ble::vendor::cordio::CordioHCITransportDriver::on_data_received(data, len);}
 
 #define HCI_RESET_RAND_CNT        4
 
-#define VENDOR_SPECIFIC_EVENT     0xFF
-#define EVT_BLUE_INITIALIZED      0x0001
+//#define VENDOR_SPECIFIC_EVENT     0xFF
+//#define EVT_BLUE_INITIALIZED      0x0001
 #define ACI_READ_CONFIG_DATA_OPCODE 0xFC0D
 #define ACI_WRITE_CONFIG_DATA_OPCODE 0xFC0C
-#define ACI_GATT_INIT_OPCODE 0xFD01
-#define ACI_GAP_INIT_OPCODE 0xFC8A
+//#define ACI_GATT_INIT_OPCODE 0xFD01
+//#define ACI_GAP_INIT_OPCODE 0xFC8A
 
-#define PUBLIC_ADDRESS_OFFSET 0x00
+//#define PUBLIC_ADDRESS_OFFSET 0x00
 #define RANDOM_STATIC_ADDRESS_OFFSET 0x80
 #define LL_WITHOUT_HOST_OFFSET 0x2C
-#define ROLE_OFFSET 0x2D
+//#define ROLE_OFFSET 0x2D
 
 /*exported define*/
 //#define BLUE_FLAG_RAM_RESET             0x01010101
 
 #define HCI_CMD_FLAG 0x01 ////antonio
+//uint8_t mask_events[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10}; //antonio
+//uint8_t le_mask_events[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; //antonio
 
 namespace ble {
 namespace vendor {
@@ -59,9 +62,9 @@ public:
      * @see CordioHCIDriver::do_initialize
      */
     virtual void do_initialize() {
-    	/*enable link layer only */
-    	uint8_t Value = 1;
-    	aci_hal_write_config_data(0x2C, 1, &Value);
+//    	/*enable link layer only */
+//    	uint8_t Value = 1;
+//    	aci_hal_write_config_data(0x2C, 1, &Value);
     }
 
     /**
@@ -106,21 +109,28 @@ public:
         	// important, the bluenrg_initialized event come after the
         	// hci reset event (not documented), but in this initialization
         	// procedure it is bypassed
+
+        	/*enable link layer only */
+//        	uint8_t Value = 1;
+//        	aci_hal_write_config_data(0x2C, 1, &Value);
+        	//aci_gatt_init();
         	aciReadConfigParameter(RANDOM_STATIC_ADDRESS_OFFSET);
         } break;
 
         // ACL packet ...
+/*
         case ACI_WRITE_CONFIG_DATA_OPCODE:   //DEPRECATED
-        	/*if (enable_link_layer_mode_ongoing) {
+        	if (enable_link_layer_mode_ongoing) {
         		enable_link_layer_mode_ongoing = false;
         		//aciSetRole();
         		aciReadConfigParameter(RANDOM_STATIC_ADDRESS_OFFSET);
         	} else {
         		aciGattInit();
         		aciReadConfigParameter(RANDOM_STATIC_ADDRESS_OFFSET);
-        	}*/
+        	}
         	break;
-
+*/
+/*
         case ACI_GATT_INIT_OPCODE:           //DEPRECATED
         	aciGapInit();
         	break;
@@ -128,7 +138,7 @@ public:
         case ACI_GAP_INIT_OPCODE:            //DEPRECATED
         	aciReadConfigParameter(RANDOM_STATIC_ADDRESS_OFFSET);
         	break;
-
+*/
         case ACI_READ_CONFIG_DATA_OPCODE:
         	// note: will send the HCI command to send the random address
         	cordio::BLE::deviceInstance().getGap().setAddress(
@@ -138,12 +148,14 @@ public:
         	break;
 
         case HCI_OPCODE_LE_SET_RAND_ADDR:
-        	HciSetEventMaskCmd((uint8_t *) hciEventMask);
+//        	HciSetEventMaskCmd((uint8_t *) mask_events);
+        	HciSetEventMaskCmd((uint8_t *) hciEventMask_BNRG2);
         	break;
 
         case HCI_OPCODE_SET_EVENT_MASK:
         	/* send next command in sequence */
-        	HciLeSetEventMaskCmd((uint8_t *) hciLeEventMask);
+//        	HciLeSetEventMaskCmd((uint8_t *) le_mask_events);
+        	HciLeSetEventMaskCmd((uint8_t *) hciLeEventMask_BNRG2);
         	break;
 
         case HCI_OPCODE_LE_SET_EVENT_MASK:
@@ -281,9 +293,9 @@ private:
         // master and slave, simultaneous advertising and scanning
         // (up to 4 connections)
         uint8_t data[1] = { 0x04 };
-        aciWriteConfigData(ROLE_OFFSET, data);
+        //aciWriteConfigData(ROLE_OFFSET, data);
     }
-
+/*
     void aciGattInit() {
         uint8_t *pBuf = hciCmdAlloc(ACI_GATT_INIT_OPCODE, 0);
         if (!pBuf) {
@@ -291,7 +303,8 @@ private:
         }
         hciCmdSend(pBuf);
     }
-
+*/
+/*
     void aciGapInit() {
         uint8_t *pBuf = hciCmdAlloc(ACI_GAP_INIT_OPCODE, 3);
         if (!pBuf) {
@@ -302,7 +315,7 @@ private:
         pBuf[5] = 0;
         hciCmdSend(pBuf);
     }
-
+*/
     void aciReadConfigParameter(uint8_t offset) {
         uint8_t *pBuf = hciCmdAlloc(ACI_READ_CONFIG_DATA_OPCODE, 1);
         if (!pBuf) {
@@ -359,6 +372,49 @@ private:
             HciLeRandCmd();
         }
     }
+    /* this mask takes into account the inverted bit 61 on 2.0 DK */
+    const uint8_t hciEventMask_BNRG2[HCI_EVT_MASK_LEN] =
+    {
+      HCI_EVT_MASK_DISCONNECT_CMPL |                  /* Byte 0 */
+      HCI_EVT_MASK_ENC_CHANGE,                        /* Byte 0 */
+      HCI_EVT_MASK_READ_REMOTE_VER_INFO_CMPL |        /* Byte 1 */
+      HCI_EVT_MASK_HW_ERROR,                          /* Byte 1 */
+      0,                                              /* Byte 2 */
+      HCI_EVT_MASK_DATA_BUF_OVERFLOW,                 /* Byte 3 */
+      0,                                              /* Byte 4 */
+      HCI_EVT_MASK_ENC_KEY_REFRESH_CMPL,              /* Byte 5 */
+      0,                                              /* Byte 6 */
+      0         // HCI_EVT_MASK_LE_META                /* Byte 7 */   ///////// this bit should be 1, but it must be neglected to enable LE meta events
+    };
+    /* LE mask according to 4.2 specification */
+    const uint8_t hciLeEventMask_BNRG2[HCI_LE_EVT_MASK_LEN] =
+    {
+      HCI_EVT_MASK_LE_CONN_CMPL_EVT |                 /* Byte 0 */
+      HCI_EVT_MASK_LE_ADV_REPORT_EVT |                /* Byte 0 */
+      HCI_EVT_MASK_LE_CONN_UPDATE_CMPL_EVT |          /* Byte 0 */
+      HCI_EVT_MASK_LE_READ_REMOTE_FEAT_CMPL_EVT |     /* Byte 0 */
+      HCI_EVT_MASK_LE_LTK_REQ_EVT |                   /* Byte 0 */
+      HCI_EVT_MASK_LE_REMOTE_CONN_PARAM_REQ_EVT |     /* Byte 0 */
+      HCI_EVT_MASK_LE_DATA_LEN_CHANGE_EVT |           /* Byte 0 */
+      HCI_EVT_MASK_LE_READ_LOCAL_P256_PUB_KEY_CMPL,   /* Byte 0 */
+      HCI_EVT_MASK_LE_GENERATE_DHKEY_CMPL |           /* Byte 1 */
+      HCI_EVT_MASK_LE_ENHANCED_CONN_CMPL_EVT |        /* Byte 1 */
+      HCI_EVT_MASK_LE_DIRECT_ADV_REPORT_EVT |         /* Byte 1 */
+      HCI_EVT_MASK_LE_PHY_UPDATE_CMPL_EVT |           /* Byte 1 */
+      HCI_EVT_MASK_LE_EXT_ADV_REPORT_EVT |            /* Byte 1 */
+      HCI_EVT_MASK_LE_PER_ADV_SYNC_EST_EVT |          /* Byte 1 */
+      HCI_EVT_MASK_LE_PER_ADV_REPORT_EVT |            /* Byte 1 */
+      HCI_EVT_MASK_LE_PER_ADV_SYNC_LOST_EVT,          /* Byte 1 */
+      HCI_EVT_MASK_LE_SCAN_TIMEOUT_EVT |              /* Byte 2 */
+      HCI_EVT_MASK_LE_ADV_SET_TERM_EVT |              /* Byte 2 */
+      HCI_EVT_MASK_LE_SCAN_REQ_RCVD_EVT |             /* Byte 2 */
+      HCI_EVT_MASK_LE_CH_SEL_ALGO_EVT,                /* Byte 2 */
+      0,                                              /* Byte 3 */
+      0,                                              /* Byte 4 */
+      0,                                              /* Byte 5 */
+      0,                                              /* Byte 6 */
+      0                                               /* Byte 7 */
+    };
 };
 
 /**

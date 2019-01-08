@@ -14,6 +14,7 @@
 #include "osal.h"
 #include "miscutil.h"
 #include "DTM_cmd_db.h"
+#include "bluenrg1_stack.h"
 
 #include <stdint.h>
 
@@ -3055,4 +3056,1740 @@ uint16_t aci_hal_read_config_data_process(uint8_t *buffer_in, uint16_t buffer_in
   buffer_out[4] = 0x0d;
   buffer_out[5] = 0xfc;
   return (output_size + 6);
+}
+
+
+///////////////////////////////// separatore antonio/////////////////////////////////
+
+typedef PACKED(struct) aci_blue_initialized_event_rp0_s {
+  uint8_t Reason_Code;
+} aci_blue_initialized_event_rp0;
+
+typedef PACKED(struct) aci_blue_events_lost_event_rp0_s {
+  uint8_t Lost_Events[8];
+} aci_blue_events_lost_event_rp0;
+
+typedef PACKED(struct) aci_blue_crash_info_event_rp0_s {
+  uint8_t Crash_Type;
+  uint32_t SP;
+  uint32_t R0;
+  uint32_t R1;
+  uint32_t R2;
+  uint32_t R3;
+  uint32_t R12;
+  uint32_t LR;
+  uint32_t PC;
+  uint32_t xPSR;
+  uint8_t Debug_Data_Length;
+  uint8_t Debug_Data[(HCI_MAX_PAYLOAD_SIZE - 38)/sizeof(uint8_t)];
+} aci_blue_crash_info_event_rp0;
+
+typedef PACKED(struct) aci_hal_end_of_radio_activity_event_rp0_s {
+  uint8_t Last_State;
+  uint8_t Next_State;
+  uint32_t Next_State_SysTime;
+} aci_hal_end_of_radio_activity_event_rp0;
+
+typedef PACKED(struct) aci_hal_scan_req_report_event_rp0_s {
+  uint8_t RSSI;
+  uint8_t Peer_Address_Type;
+  uint8_t Peer_Address[6];
+} aci_hal_scan_req_report_event_rp0;
+
+typedef PACKED(struct) aci_hal_fw_error_event_rp0_s {
+  uint8_t FW_Error_Type;
+  uint8_t Data_Length;
+  uint8_t Data[(HCI_MAX_PAYLOAD_SIZE - 2)/sizeof(uint8_t)];
+} aci_hal_fw_error_event_rp0;
+
+typedef PACKED(struct) aci_gap_pairing_complete_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Status;
+  uint8_t Reason;
+} aci_gap_pairing_complete_event_rp0;
+
+typedef PACKED(struct) aci_gap_pass_key_req_event_rp0_s {
+  uint16_t Connection_Handle;
+} aci_gap_pass_key_req_event_rp0;
+
+typedef PACKED(struct) aci_gap_authorization_req_event_rp0_s {
+  uint16_t Connection_Handle;
+} aci_gap_authorization_req_event_rp0;
+
+typedef PACKED(struct) aci_gap_proc_complete_event_rp0_s {
+  uint8_t Procedure_Code;
+  uint8_t Status;
+  uint8_t Data_Length;
+  uint8_t Data[(HCI_MAX_PAYLOAD_SIZE - 3)/sizeof(uint8_t)];
+} aci_gap_proc_complete_event_rp0;
+
+typedef PACKED(struct) aci_gap_addr_not_resolved_event_rp0_s {
+  uint16_t Connection_Handle;
+} aci_gap_addr_not_resolved_event_rp0;
+
+typedef PACKED(struct) aci_gap_numeric_comparison_value_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint32_t Numeric_Value;
+} aci_gap_numeric_comparison_value_event_rp0;
+
+typedef PACKED(struct) aci_gap_keypress_notification_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Notification_Type;
+} aci_gap_keypress_notification_event_rp0;
+
+typedef PACKED(struct) aci_l2cap_connection_update_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint16_t Result;
+} aci_l2cap_connection_update_resp_event_rp0;
+
+typedef PACKED(struct) aci_l2cap_proc_timeout_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Data_Length;
+  uint8_t Data[(HCI_MAX_PAYLOAD_SIZE - 3)/sizeof(uint8_t)];
+} aci_l2cap_proc_timeout_event_rp0;
+
+typedef PACKED(struct) aci_l2cap_connection_update_req_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Identifier;
+  uint16_t L2CAP_Length;
+  uint16_t Interval_Min;
+  uint16_t Interval_Max;
+  uint16_t Slave_Latency;
+  uint16_t Timeout_Multiplier;
+} aci_l2cap_connection_update_req_event_rp0;
+
+typedef PACKED(struct) aci_l2cap_command_reject_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Identifier;
+  uint16_t Reason;
+  uint8_t Data_Length;
+  uint8_t Data[(HCI_MAX_PAYLOAD_SIZE - 6)/sizeof(uint8_t)];
+} aci_l2cap_command_reject_event_rp0;
+
+typedef PACKED(struct) aci_gatt_attribute_modified_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint16_t Attr_Handle;
+  uint16_t Offset;
+  uint16_t Attr_Data_Length;
+  uint8_t Attr_Data[(HCI_MAX_PAYLOAD_SIZE - 8)/sizeof(uint8_t)];
+} aci_gatt_attribute_modified_event_rp0;
+
+typedef PACKED(struct) aci_gatt_proc_timeout_event_rp0_s {
+  uint16_t Connection_Handle;
+} aci_gatt_proc_timeout_event_rp0;
+
+typedef PACKED(struct) aci_att_exchange_mtu_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint16_t Server_RX_MTU;
+} aci_att_exchange_mtu_resp_event_rp0;
+
+typedef PACKED(struct) aci_att_find_info_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Format;
+  uint8_t Event_Data_Length;
+  uint8_t Handle_UUID_Pair[(HCI_MAX_PAYLOAD_SIZE - 4)/sizeof(uint8_t)];
+} aci_att_find_info_resp_event_rp0;
+
+typedef PACKED(struct) aci_att_find_by_type_value_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Num_of_Handle_Pair;
+  packed_Attribute_Group_Handle_Pair_t Attribute_Group_Handle_Pair[(HCI_MAX_PAYLOAD_SIZE - 3)/sizeof(packed_Attribute_Group_Handle_Pair_t)];
+} aci_att_find_by_type_value_resp_event_rp0;
+
+typedef PACKED(struct) aci_att_read_by_type_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Handle_Value_Pair_Length;
+  uint8_t Data_Length;
+  uint8_t Handle_Value_Pair_Data[(HCI_MAX_PAYLOAD_SIZE - 4)/sizeof(uint8_t)];
+} aci_att_read_by_type_resp_event_rp0;
+
+typedef PACKED(struct) aci_att_read_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Event_Data_Length;
+  uint8_t Attribute_Value[(HCI_MAX_PAYLOAD_SIZE - 3)/sizeof(uint8_t)];
+} aci_att_read_resp_event_rp0;
+
+typedef PACKED(struct) aci_att_read_blob_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Event_Data_Length;
+  uint8_t Attribute_Value[(HCI_MAX_PAYLOAD_SIZE - 3)/sizeof(uint8_t)];
+} aci_att_read_blob_resp_event_rp0;
+
+typedef PACKED(struct) aci_att_read_multiple_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Event_Data_Length;
+  uint8_t Set_Of_Values[(HCI_MAX_PAYLOAD_SIZE - 3)/sizeof(uint8_t)];
+} aci_att_read_multiple_resp_event_rp0;
+
+typedef PACKED(struct) aci_att_read_by_group_type_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Attribute_Data_Length;
+  uint8_t Data_Length;
+  uint8_t Attribute_Data_List[(HCI_MAX_PAYLOAD_SIZE - 4)/sizeof(uint8_t)];
+} aci_att_read_by_group_type_resp_event_rp0;
+
+typedef PACKED(struct) aci_att_prepare_write_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint16_t Attribute_Handle;
+  uint16_t Offset;
+  uint8_t Part_Attribute_Value_Length;
+  uint8_t Part_Attribute_Value[(HCI_MAX_PAYLOAD_SIZE - 7)/sizeof(uint8_t)];
+} aci_att_prepare_write_resp_event_rp0;
+
+typedef PACKED(struct) aci_att_exec_write_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+} aci_att_exec_write_resp_event_rp0;
+
+typedef PACKED(struct) aci_gatt_indication_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint16_t Attribute_Handle;
+  uint8_t Attribute_Value_Length;
+  uint8_t Attribute_Value[(HCI_MAX_PAYLOAD_SIZE - 5)/sizeof(uint8_t)];
+} aci_gatt_indication_event_rp0;
+
+typedef PACKED(struct) aci_gatt_notification_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint16_t Attribute_Handle;
+  uint8_t Attribute_Value_Length;
+  uint8_t Attribute_Value[(HCI_MAX_PAYLOAD_SIZE - 5)/sizeof(uint8_t)];
+} aci_gatt_notification_event_rp0;
+
+typedef PACKED(struct) aci_gatt_proc_complete_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Error_Code;
+} aci_gatt_proc_complete_event_rp0;
+
+typedef PACKED(struct) aci_gatt_error_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Req_Opcode;
+  uint16_t Attribute_Handle;
+  uint8_t Error_Code;
+} aci_gatt_error_resp_event_rp0;
+
+typedef PACKED(struct) aci_gatt_disc_read_char_by_uuid_resp_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint16_t Attribute_Handle;
+  uint8_t Attribute_Value_Length;
+  uint8_t Attribute_Value[(HCI_MAX_PAYLOAD_SIZE - 5)/sizeof(uint8_t)];
+} aci_gatt_disc_read_char_by_uuid_resp_event_rp0;
+
+typedef PACKED(struct) aci_gatt_write_permit_req_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint16_t Attribute_Handle;
+  uint8_t Data_Length;
+  uint8_t Data[(HCI_MAX_PAYLOAD_SIZE - 5)/sizeof(uint8_t)];
+} aci_gatt_write_permit_req_event_rp0;
+
+typedef PACKED(struct) aci_gatt_read_permit_req_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint16_t Attribute_Handle;
+  uint16_t Offset;
+} aci_gatt_read_permit_req_event_rp0;
+
+typedef PACKED(struct) aci_gatt_read_multi_permit_req_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint8_t Number_of_Handles;
+  packed_Handle_Item_t Handle_Item[(HCI_MAX_PAYLOAD_SIZE - 3)/sizeof(packed_Handle_Item_t)];
+} aci_gatt_read_multi_permit_req_event_rp0;
+
+typedef PACKED(struct) aci_gatt_tx_pool_available_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint16_t Available_Buffers;
+} aci_gatt_tx_pool_available_event_rp0;
+
+typedef PACKED(struct) aci_gatt_server_confirmation_event_rp0_s {
+  uint16_t Connection_Handle;
+} aci_gatt_server_confirmation_event_rp0;
+
+typedef PACKED(struct) aci_gatt_prepare_write_permit_req_event_rp0_s {
+  uint16_t Connection_Handle;
+  uint16_t Attribute_Handle;
+  uint16_t Offset;
+  uint8_t Data_Length;
+  uint8_t Data[(HCI_MAX_PAYLOAD_SIZE - 7)/sizeof(uint8_t)];
+} aci_gatt_prepare_write_permit_req_event_rp0;
+
+
+void aci_blue_initialized_event(uint8_t Reason_Code)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_blue_initialized_event_rp0 *rp0 = (aci_blue_initialized_event_rp0 *) (buffer_out + 5);
+  rp0->Reason_Code = Reason_Code;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 1 + 2;
+  buffer_out[3] = 0x01;
+  buffer_out[4] = 0x00;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_blue_events_lost_event */
+/* Event len: 8 */
+/**
+  * @brief 'This event is generated when an overflow occurs in the event queue read by the
+external microcontroller. This is normally caused when the external microcontroller does
+not read pending events. The returned bitmap indicates which event has been lost. Please
+ note that one bit set to 1 indicates one or more occurrences of the particular events.
+The event ACI_BLUE_EVENTS_LOST_EVENT cannot be lost and it will inserted in the
+event queue as soon as a position is freed in the event queue. This event should not happen under normal
+operating condition where external microcontroller promptly reads events signaled by IRQ pin.
+It is provided to detected unexpected behavior of the external microcontroller or to
+allow application to recover situations where critical events are lost.
+  * @param Lost_Events Bitmap of lost events. Each bit indicates one or more occurrences of the specific event.
+  * Flags:
+  - 0x0000000000000001: HCI_DISCONNECTION_COMPLETE_EVENT
+  - 0x0000000000000002: HCI_ENCRYPTION_CHANGE_EVENT
+  - 0x0000000000000004: HCI_READ_REMOTE_VERSION_INFORMATION_COMPLETE_EVENT
+  - 0x0000000000000008: HCI_COMMAND_COMPLETE_EVENT
+  - 0x0000000000000010: HCI_COMMAND_STATUS_EVENT
+  - 0x0000000000000020: HCI_HARDWARE_ERROR_EVENT
+  - 0x0000000000000040: HCI_NUMBER_OF_COMPLETED_PACKETS_EVENT
+  - 0x0000000000000080: HCI_ENCRYPTION_KEY_REFRESH_COMPLETE_EVENT
+  - 0x0000000000000100: ACI_BLUE_INITIALIZED_EVENT
+  - 0x0000000000000200: ACI_GAP_LIMITED_DISCOVERABLE_EVENT
+  - 0x0000000000000400: ACI_GAP_PAIRING_COMPLETE_EVENT
+  - 0x0000000000000800: ACI_GAP_PASS_KEY_REQ_EVENT
+  - 0x0000000000001000: ACI_GAP_AUTHORIZATION_REQ_EVENT
+  - 0x0000000000002000: ACI_GAP_SLAVE_SECURITY_INITIATED_EVENT
+  - 0x0000000000004000: ACI_GAP_BOND_LOST_EVENT
+  - 0x0000000000008000: ACI_GAP_PROC_COMPLETE_EVENT
+  - 0x0000000000010000: ACI_GAP_ADDR_NOT_RESOLVED_EVENT
+  - 0x0000000000020000: ACI_L2CAP_CONNECTION_UPDATE_RESP_EVENT
+  - 0x0000000000040000: ACI_L2CAP_PROC_TIMEOUT_EVENT
+  - 0x0000000000080000: ACI_L2CAP_CONNECTION_UPDATE_REQ_EVENT
+  - 0x0000000000100000: ACI_GATT_ATTRIBUTE_MODIFIED_EVENT
+  - 0x0000000000200000: ACI_GATT_PROC_TIMEOUT_EVENT
+  - 0x0000000000400000: ACI_ATT_EXCHANGE_MTU_RESP_EVENT
+  - 0x0000000000800000: ACI_ATT_FIND_INFO_RESP_EVENT
+  - 0x0000000001000000: ACI_ATT_FIND_BY_TYPE_VALUE_RESP_EVENT
+  - 0x0000000002000000: ACI_ATT_READ_BY_TYPE_RESP_EVENT
+  - 0x0000000004000000: ACI_ATT_READ_RESP_EVENT
+  - 0x0000000008000000: ACI_ATT_READ_BLOB_RESP_EVENT
+  - 0x0000000010000000: ACI_ATT_READ_MULTIPLE_RESP_EVENT
+  - 0x0000000020000000: ACI_ATT_READ_BY_GROUP_TYPE_RESP_EVENT
+  - 0x0000000040000000: ACI_ATT_WRITE_RESP_EVENT
+  - 0x0000000080000000: ACI_ATT_PREPARE_WRITE_RESP_EVENT
+  - 0x0000000100000000: ACI_ATT_EXEC_WRITE_RESP_EVENT
+  - 0x0000000200000000: ACI_GATT_INDICATION_EVENT
+  - 0x0000000400000000: ACI_GATT_NOTIFICATION_EVENT
+  - 0x0000000800000000: ACI_GATT_PROC_COMPLETE_EVENT
+  - 0x0000001000000000: ACI_GATT_ERROR_RESP_EVENT
+  - 0x0000002000000000: ACI_GATT_DISC_READ_CHAR_BY_UUID_RESP_EVENT
+  - 0x0000004000000000: ACI_GATT_WRITE_PERMIT_REQ_EVENT
+  - 0x0000008000000000: ACI_GATT_READ_PERMIT_REQ_EVENT
+  - 0x0000010000000000: ACI_GATT_READ_MULTI_PERMIT_REQ_EVENT
+  - 0x0000020000000000: ACI_GATT_TX_POOL_AVAILABLE_EVENT
+  - 0x0000040000000000: ACI_GATT_SERVER_CONFIRMATION_EVENT
+  - 0x0000080000000000: ACI_GATT_PREPARE_WRITE_PERMIT_REQ_EVENT
+  - 0x0000100000000000: HCI_LE_CONNECTION_COMPLETE_EVENT
+  - 0x0000200000000000: HCI_LE_ADVERTISING_REPORT_EVENT
+  - 0x0000400000000000: HCI_LE_CONNECTION_UPDATE_COMPLETE_EVENT
+  - 0x0000800000000000: HCI_LE_READ_REMOTE_USED_FEATURES_COMPLETE_EVENT
+  - 0x0001000000000000: HCI_LE_LONG_TERM_KEY_REQUEST_EVENT
+  - 0x0002000000000000: HCI_LE_DATA_LENGTH_CHANGE_EVENT
+  - 0x0004000000000000: HCI_LE_READ_LOCAL_P256_PUBLIC_KEY_COMPLETE_EVENT
+  - 0x0008000000000000: HCI_LE_GENERATE_DHKEY_COMPLETE_EVENT
+  - 0x0010000000000000: HCI_LE_ENHANCED_CONNECTION_COMPLETE_EVENT
+  - 0x0020000000000000: HCI_LE_DIRECT_ADVERTISING_REPORT_EVENT
+  - 0x0040000000000000: ACI_GAP_NUMERIC_COMPARISON_VALUE_EVENT
+  - 0x0080000000000000: ACI_GAP_KEYPRESS_NOTIFICATION_EVENT
+  * @retval None
+*/
+void aci_blue_events_lost_event(uint8_t Lost_Events[8])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_blue_events_lost_event_rp0 *rp0 = (aci_blue_events_lost_event_rp0 *) (buffer_out + 5);
+  Osal_MemCpy((void *) rp0->Lost_Events,(const void *) Lost_Events, 8);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 8 + 2;
+  buffer_out[3] = 0x02;
+  buffer_out[4] = 0x00;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_blue_crash_info_event */
+/* Event len: 1 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 1 + rp0->Debug_Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief 'This event is given to the application after the @ref aci_blue_initialized_event
+when a system crash is detected. This events returns system crash information for debugging purposes.
+Information reported are useful to understand the root cause of the crash.
+  * @param Crash_Type Crash type
+  * Values:
+  - 0x00: Assert failed
+  - 0x01: NMI fault
+  - 0x02: Hard fault
+  * @param SP Stack pointer
+  * @param R0 Register R0
+  * @param R1 Register R1
+  * @param R2 Register R2
+  * @param R3 Register R3
+  * @param R12 Register R12
+  * @param LR Link register
+  * @param PC Program counter where crash occurred
+  * @param xPSR xPSR register
+  * @param Debug_Data_Length Length of Debug_Data field
+  * @param Debug_Data Debug data
+  * @retval None
+*/
+void aci_blue_crash_info_event(uint8_t Crash_Type,
+                               uint32_t SP,
+                               uint32_t R0,
+                               uint32_t R1,
+                               uint32_t R2,
+                               uint32_t R3,
+                               uint32_t R12,
+                               uint32_t LR,
+                               uint32_t PC,
+                               uint32_t xPSR,
+                               uint8_t Debug_Data_Length,
+                               uint8_t Debug_Data[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_blue_crash_info_event_rp0 *rp0 = (aci_blue_crash_info_event_rp0 *) (buffer_out + 5);
+  rp0->Crash_Type = Crash_Type;
+  rp0->SP = SP;
+  rp0->R0 = R0;
+  rp0->R1 = R1;
+  rp0->R2 = R2;
+  rp0->R3 = R3;
+  rp0->R12 = R12;
+  rp0->LR = LR;
+  rp0->PC = PC;
+  rp0->xPSR = xPSR;
+  rp0->Debug_Data_Length = Debug_Data_Length;
+  Osal_MemCpy((void *) rp0->Debug_Data,(const void *) Debug_Data, Debug_Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 1 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 1 + Debug_Data_Length + 2;
+  buffer_out[3] = 0x03;
+  buffer_out[4] = 0x00;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_hal_end_of_radio_activity_event */
+/* Event len: 1 + 1 + 4 */
+/**
+  * @brief 'This event is generated when the device completes a radio activity and provide information when a new radio acitivity will be performed.
+Informtation provided includes type of radio activity and absolute time in system ticks when a new radio acitivity is schedule, if any. Application can use this information to schedule user activities synchronous to selected radio activitities. A command @ref aci_hal_set_radio_activity_mask is provided to enable radio activity events of user interests, by default no events are enabled.
+User should take into account that enablinng radio events in application with intense radio activity could lead to a fairly high rate of events generated.
+Application use cases includes synchronizing notification with connection interval, switiching antenna at the end of advertising or performing flash erase operation while radio is idle.
+  * @param Last_State Completed radio events
+  * Values:
+  - 0x00: Idle
+  - 0x01: Advertising
+  - 0x02: Connection event slave
+  - 0x03: Scanning
+  - 0x04: Connection request
+  - 0x05: Connection event master
+  - 0x06: TX test mode
+  - 0x07: RX test mode
+  * @param Next_State Incoming radio events
+  * Values:
+  - 0x00: Idle
+  - 0x01: Advertising
+  - 0x02: Connection event slave
+  - 0x03: Scanning
+  - 0x04: Connection request
+  - 0x05: Connection event master
+  - 0x06: TX test mode
+  - 0x07: RX test mode
+  * @param Next_State_SysTime 32bit absolute current time expressed in internal time units.
+  * @retval None
+*/
+void aci_hal_end_of_radio_activity_event(uint8_t Last_State,
+                                         uint8_t Next_State,
+                                         uint32_t Next_State_SysTime)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_hal_end_of_radio_activity_event_rp0 *rp0 = (aci_hal_end_of_radio_activity_event_rp0 *) (buffer_out + 5);
+  rp0->Last_State = Last_State;
+  rp0->Next_State = Next_State;
+  rp0->Next_State_SysTime = Next_State_SysTime;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 1 + 1 + 4 + 2;
+  buffer_out[3] = 0x04;
+  buffer_out[4] = 0x00;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_hal_scan_req_report_event */
+/* Event len: 1 + 1 + 6 */
+/**
+  * @brief This event is reported to the application after a scan request is received and a scan reponse
+is scheduled to be transmitted.
+  * @param RSSI N Size: 1 Octet (signed integer)
+Units: dBm
+  * Values:
+  - 127: RSSI not available
+  - -127 ... 20
+  * @param Peer_Address_Type 0x00 Public Device Address
+0x01 Random Device Address
+0x02 Public Identity Address (Corresponds to Resolved Private Address)
+0x03 Random (Static) Identity Address (Corresponds to Resolved Private Address)
+  * Values:
+  - 0x00: Public Device Address
+  - 0x01: Random Device Address
+  - 0x02: Public Identity Address
+  - 0x03: Random (Static) Identity Address
+  * @param Peer_Address Public Device Address or Random Device Address of the peer device
+  * @retval None
+*/
+void aci_hal_scan_req_report_event(uint8_t RSSI,
+                                   uint8_t Peer_Address_Type,
+                                   uint8_t Peer_Address[6])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_hal_scan_req_report_event_rp0 *rp0 = (aci_hal_scan_req_report_event_rp0 *) (buffer_out + 5);
+  rp0->RSSI = RSSI;
+  rp0->Peer_Address_Type = Peer_Address_Type;
+  Osal_MemCpy((void *) rp0->Peer_Address,(const void *) Peer_Address, 6);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 1 + 1 + 6 + 2;
+  buffer_out[3] = 0x05;
+  buffer_out[4] = 0x00;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_hal_fw_error_event */
+/* Event len: 1 + 1 + rp0->Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is generated to report firmware error informations.
+  * @param FW_Error_Type FW Error type
+  * Values:
+  - 0x01: L2CAP recombination failure
+  * @param Data_Length Length of Data in octets
+  * @param Data The error event info
+  * @retval None
+*/
+void aci_hal_fw_error_event(uint8_t FW_Error_Type,
+                            uint8_t Data_Length,
+                            uint8_t Data[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_hal_fw_error_event_rp0 *rp0 = (aci_hal_fw_error_event_rp0 *) (buffer_out + 5);
+  rp0->FW_Error_Type = FW_Error_Type;
+  rp0->Data_Length = Data_Length;
+  Osal_MemCpy((void *) rp0->Data,(const void *) Data, Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 1 + 1 + Data_Length + 2;
+  buffer_out[3] = 0x06;
+  buffer_out[4] = 0x00;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gap_limited_discoverable_event */
+/* Event len: 0 */
+/**
+  * @brief This event is generated by the controller when the limited discoverable mode ends due to
+timeout. The timeout is 180 seconds.
+  * @retval None
+*/
+void aci_gap_limited_discoverable_event(void)
+{
+  uint8_t buffer_out[258];
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 0 + 2;
+  buffer_out[3] = 0x00;
+  buffer_out[4] = 0x04;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gap_pairing_complete_event */
+/* Event len: 2 + 1 + 1 */
+/**
+  * @brief This event is generated when the pairing process has completed successfully or a pairing
+procedure timeout has occurred or the pairing has failed. This is to notify the application that
+we have paired with a remote device so that it can take further actions or to notify that a
+timeout has occurred so that the upper layer can decide to disconnect the link.
+  * @param Connection_Handle Connection handle on which the pairing procedure completed
+  * @param Status Pairing status
+  * Values:
+  - 0x00: Success
+  - 0x01: Timeout
+  - 0x02: Failed
+  * @param Reason Pairing reason error code
+  * Values:
+  - 0x00
+  - 0x01: PASSKEY_ENTRY_FAILED
+  - 0x02: OOB_NOT_AVAILABLE
+  - 0x03: AUTH_REQ_CANNOT_BE_MET
+  - 0x04: CONFIRM_VALUE_FAILED
+  - 0x05: PAIRING_NOT_SUPPORTED
+  - 0x06: INSUFF_ENCRYPTION_KEY_SIZE
+  - 0x07: CMD_NOT_SUPPORTED
+  - 0x08: UNSPECIFIED_REASON
+  - 0x09: VERY_EARLY_NEXT_ATTEMPT
+  - 0x0A: SM_INVALID_PARAMS
+  - 0x0B: SMP_SC_DHKEY_CHECK_FAILED
+  - 0x0C: SMP_SC_NUMCOMPARISON_FAILED
+  * @retval None
+*/
+void aci_gap_pairing_complete_event(uint16_t Connection_Handle,
+                                    uint8_t Status,
+                                    uint8_t Reason)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gap_pairing_complete_event_rp0 *rp0 = (aci_gap_pairing_complete_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Status = Status;
+  rp0->Reason = Reason;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + 1 + 2;
+  buffer_out[3] = 0x01;
+  buffer_out[4] = 0x04;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gap_pass_key_req_event */
+/* Event len: 2 */
+/**
+  * @brief This event is generated by the Security manager to the application when a passkey is
+required for pairing. When this event is received, the application has to respond with the
+@ref aci_gap_pass_key_resp command.
+  * @param Connection_Handle Connection handle for which the passkey has been requested.
+  * @retval None
+*/
+void aci_gap_pass_key_req_event(uint16_t Connection_Handle)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gap_pass_key_req_event_rp0 *rp0 = (aci_gap_pass_key_req_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2;
+  buffer_out[3] = 0x02;
+  buffer_out[4] = 0x04;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gap_authorization_req_event */
+/* Event len: 2 */
+/**
+  * @brief This event is generated by the Security manager to the application when the application has
+set that authorization is required for reading/writing of attributes. This event will be
+generated as soon as the pairing is complete. When this event is received,
+@ref aci_gap_authorization_resp command should be used to respond by the application.
+  * @param Connection_Handle Connection handle for which authorization has been requested.
+  * @retval None
+*/
+void aci_gap_authorization_req_event(uint16_t Connection_Handle)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gap_authorization_req_event_rp0 *rp0 = (aci_gap_authorization_req_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2;
+  buffer_out[3] = 0x03;
+  buffer_out[4] = 0x04;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gap_slave_security_initiated_event */
+/* Event len: 0 */
+/**
+  * @brief This event is generated when the slave security request is successfully sent to the master.
+  * @retval None
+*/
+void aci_gap_slave_security_initiated_event(void)
+{
+  uint8_t buffer_out[258];
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 0 + 2;
+  buffer_out[3] = 0x04;
+  buffer_out[4] = 0x04;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gap_bond_lost_event */
+/* Event len: 0 */
+/**
+  * @brief This event is generated on the slave when a ACI_GAP_SLAVE_SECURITY_REQUEST is called to reestablish the bond
+with a master but the master has lost the bond. When this event is received, the upper layer has to issue the
+ACI_GAP_ALLOW_REBOND command in order to allow the slave to continue the pairing process with the master.
+On the master this event is raised when ACI_GAP_SEND_PAIRING_REQUEST is called to reestablish a bond with a slave
+but the slave has lost the bond. In order to create a new bond the master has to launch ACI_GAP_SEND_PAIRING_REQUEST
+with force_rebond set to 1.
+  * @retval None
+*/
+void aci_gap_bond_lost_event(void)
+{
+  uint8_t buffer_out[258];
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 0 + 2;
+  buffer_out[3] = 0x05;
+  buffer_out[4] = 0x04;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gap_proc_complete_event */
+/* Event len: 1 + 1 + 1 + rp0->Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is sent by the GAP to the upper layers when a procedure previously started has
+been terminated by the upper layer or has completed for any other reason
+  * @param Procedure_Code Terminated procedure.
+  * Values:
+  - 0x01: LIMITED_DISCOVERY_PROC
+  - 0x02: GENERAL_DISCOVERY_PROC
+  - 0x04: NAME_DISCOVERY_PROC
+  - 0x08: AUTO_CONNECTION_ESTABLISHMENT_PROC
+  - 0x10: GENERAL_CONNECTION_ESTABLISHMENT_PROC
+  - 0x20: SELECTIVE_CONNECTION_ESTABLISHMENT_PROC
+  - 0x40: DIRECT_CONNECTION_ESTABLISHMENT_PROC
+  - 0x80: OBSERVATION_PROC
+  * @param Status For standard error codes see Bluetooth specification, Vol. 2, part D. For proprietary error code refer to Error codes section
+  * @param Data_Length Length of Data in octets
+  * @param Data Procedure Specific Data:
+- For Name Discovery Procedure: the name of the peer device if the procedure completed successfully.
+  * @retval None
+*/
+void aci_gap_proc_complete_event(uint8_t Procedure_Code,
+                                 uint8_t Status,
+                                 uint8_t Data_Length,
+                                 uint8_t Data[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gap_proc_complete_event_rp0 *rp0 = (aci_gap_proc_complete_event_rp0 *) (buffer_out + 5);
+  rp0->Procedure_Code = Procedure_Code;
+  rp0->Status = Status;
+  rp0->Data_Length = Data_Length;
+  Osal_MemCpy((void *) rp0->Data,(const void *) Data, Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 1 + 1 + 1 + Data_Length + 2;
+  buffer_out[3] = 0x07;
+  buffer_out[4] = 0x04;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gap_addr_not_resolved_event */
+/* Event len: 2 */
+/**
+  * @brief This event is sent only by a privacy enabled Peripheral. The event is sent to the
+upper layers when the peripheral is unsuccessful in resolving the resolvable
+address of the peer device after connecting to it.
+  * @param Connection_Handle Connection handle for which the private address could not be
+resolved with any of the stored IRK's.
+  * @retval None
+*/
+void aci_gap_addr_not_resolved_event(uint16_t Connection_Handle)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gap_addr_not_resolved_event_rp0 *rp0 = (aci_gap_addr_not_resolved_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2;
+  buffer_out[3] = 0x08;
+  buffer_out[4] = 0x04;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gap_numeric_comparison_value_event */
+/* Event len: 2 + 4 */
+/**
+  * @brief This event is sent only during SC v.4.2 Pairing, when Numeric Comparison Association model is selected, in order to show the Numeric Value generated, and to ask for Confirmation to the User. When this event is received, the application has to respond with the
+@ref aci_gap_numeric_comparison_value_confirm_yesno command
+  * @param Connection_Handle Connection handle related to the underlying Pairing
+  * @param Numeric_Value
+  * @retval None
+*/
+void aci_gap_numeric_comparison_value_event(uint16_t Connection_Handle,
+                                            uint32_t Numeric_Value)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gap_numeric_comparison_value_event_rp0 *rp0 = (aci_gap_numeric_comparison_value_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Numeric_Value = Numeric_Value;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 4 + 2;
+  buffer_out[3] = 0x09;
+  buffer_out[4] = 0x04;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gap_keypress_notification_event */
+/* Event len: 2 + 1 */
+/**
+  * @brief This event is sent only during SC v.4.2 Pairing, when Keypress Notifications are supported, in order to show the input type signalled by the peer device, having Keyboard only I/O capabilities. When this event is received, no action is required to the User.
+  * @param Connection_Handle Connection handle related to the underlying Pairing
+  * @param Notification_Type Type of Keypress input notified/signaled by peer device (having Keyboard only I/O capabilities
+  * @retval None
+*/
+void aci_gap_keypress_notification_event(uint16_t Connection_Handle,
+                                         uint8_t Notification_Type)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gap_keypress_notification_event_rp0 *rp0 = (aci_gap_keypress_notification_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Notification_Type = Notification_Type;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + 2;
+  buffer_out[3] = 0x0a;
+  buffer_out[4] = 0x04;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_l2cap_connection_update_resp_event */
+/* Event len: 2 + 2 */
+/**
+  * @brief This event is generated when the master responds to the connection update request packet
+with a connection update response packet.
+  * @param Connection_Handle Connection handle referring to the COS Channel where the Disconnection has been received.
+  * @param Result
+  * @retval None
+*/
+void aci_l2cap_connection_update_resp_event(uint16_t Connection_Handle,
+                                            uint16_t Result)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_l2cap_connection_update_resp_event_rp0 *rp0 = (aci_l2cap_connection_update_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Result = Result;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2 + 2;
+  buffer_out[3] = 0x00;
+  buffer_out[4] = 0x08;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_l2cap_proc_timeout_event */
+/* Event len: 2 + 1 + rp0->Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is generated when the master does not respond to the connection update
+request packet with a connection update response packet or a command reject packet
+within 30 seconds.
+  * @param Connection_Handle Handle of the connection related to this
+L2CAP procedure.
+  * @param Data_Length Length of following data
+  * @param Data
+  * @retval None
+*/
+void aci_l2cap_proc_timeout_event(uint16_t Connection_Handle,
+                                  uint8_t Data_Length,
+                                  uint8_t Data[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_l2cap_proc_timeout_event_rp0 *rp0 = (aci_l2cap_proc_timeout_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Data_Length = Data_Length;
+  Osal_MemCpy((void *) rp0->Data,(const void *) Data, Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + Data_Length + 2;
+  buffer_out[3] = 0x01;
+  buffer_out[4] = 0x08;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_l2cap_connection_update_req_event */
+/* Event len: 2 + 1 + 2 + 2 + 2 + 2 + 2 */
+/**
+  * @brief The event is given by the L2CAP layer when a connection update request is received from
+the slave. The upper layer which receives this event has to respond by sending a
+@ref aci_l2cap_connection_parameter_update_resp command.
+  * @param Connection_Handle Handle of the connection related to this
+L2CAP procedure.
+  * @param Identifier This is the identifier which associate the request to the
+response.
+  * @param L2CAP_Length Length of the L2CAP connection update request.
+  * @param Interval_Min Minimum value for the connection event interval. This shall be less
+than or equal to Conn_Interval_Max.
+Time = N * 1.25 msec.
+  * Values:
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
+  * @param Interval_Max Maximum value for the connection event interval. This shall be
+greater than or equal to Conn_Interval_Min.
+Time = N * 1.25 msec.
+  * Values:
+  - 0x0006 (7.50 ms)  ... 0x0C80 (4000.00 ms)
+  * @param Slave_Latency Slave latency for the connection in number of connection events.
+  * Values:
+  - 0x0000 ... 0x01F3
+  * @param Timeout_Multiplier Defines connection timeout parameter in the following manner: Timeout Multiplier * 10ms.
+  * @retval None
+*/
+void aci_l2cap_connection_update_req_event(uint16_t Connection_Handle,
+                                           uint8_t Identifier,
+                                           uint16_t L2CAP_Length,
+                                           uint16_t Interval_Min,
+                                           uint16_t Interval_Max,
+                                           uint16_t Slave_Latency,
+                                           uint16_t Timeout_Multiplier)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_l2cap_connection_update_req_event_rp0 *rp0 = (aci_l2cap_connection_update_req_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Identifier = Identifier;
+  rp0->L2CAP_Length = L2CAP_Length;
+  rp0->Interval_Min = Interval_Min;
+  rp0->Interval_Max = Interval_Max;
+  rp0->Slave_Latency = Slave_Latency;
+  rp0->Timeout_Multiplier = Timeout_Multiplier;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + 2 + 2 + 2 + 2 + 2 + 2;
+  buffer_out[3] = 0x02;
+  buffer_out[4] = 0x08;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_l2cap_command_reject_event */
+/* Event len: 2 + 1 + 2 + 1 + rp0->Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is generated when the master responds to the connection update request packet
+with a command reject packet.
+  * @param Connection_Handle Connection handle referring to the COS Channel where the Disconnection has been received.
+  * @param Identifier This is the identifier which associate the request to the
+response.
+  * @param Reason Reason
+  * @param Data_Length Length of following data
+  * @param Data Data field associated with Reason
+  * @retval None
+*/
+void aci_l2cap_command_reject_event(uint16_t Connection_Handle,
+                                    uint8_t Identifier,
+                                    uint16_t Reason,
+                                    uint8_t Data_Length,
+                                    uint8_t Data[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_l2cap_command_reject_event_rp0 *rp0 = (aci_l2cap_command_reject_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Identifier = Identifier;
+  rp0->Reason = Reason;
+  rp0->Data_Length = Data_Length;
+  Osal_MemCpy((void *) rp0->Data,(const void *) Data, Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + 2 + 1 + Data_Length + 2;
+  buffer_out[3] = 0x0a;
+  buffer_out[4] = 0x08;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gatt_attribute_modified_event */
+/* Event len: 2 + 2 + 2 + 2 + rp0->Attr_Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is generated to the application by the GATT server when a client modifies any
+attribute on the server, as consequence of one of the following GATT procedures:
+- write without response
+- signed write without response
+- write characteristic value
+- write long characteristic value
+- reliable write.
+  * @param Connection_Handle The connection handle which modified the attribute.
+  * @param Attr_Handle Handle of the attribute that was modified.
+  * @param Offset SoC mode: the offset is never used and it is always 0. Network coprocessor mode:
+   - Bits 0-14: offset of the reported value inside the attribute.
+   - Bit 15: if the entire value of the attribute does not fit inside a single ACI_GATT_ATTRIBUTE_MODIFIED_EVENT event, this bit is set to 1 to notify that other ACI_GATT_ATTRIBUTE_MODIFIED_EVENT events will follow to report the remaining value.
+  * @param Attr_Data_Length Length of Attr_Data in octets
+  * @param Attr_Data The modified value
+  * @retval None
+*/
+void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
+                                       uint16_t Attr_Handle,
+                                       uint16_t Offset,
+                                       uint16_t Attr_Data_Length,
+                                       uint8_t Attr_Data[])
+
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gatt_attribute_modified_event_rp0 *rp0 = (aci_gatt_attribute_modified_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Attr_Handle = Attr_Handle;
+  rp0->Offset = 0;
+
+  while(Attr_Data_Length){
+    rp0->Attr_Data_Length = MIN(Attr_Data_Length,255-10);
+    Osal_MemCpy((void *) rp0->Attr_Data,(const void *)(Attr_Data + rp0->Offset), rp0->Attr_Data_Length);
+    buffer_out[0] = 0x04;
+    buffer_out[1] = 0xFF;
+    buffer_out[2] = 2 + 2 + 2 + 2 + rp0->Attr_Data_Length + 2;
+    buffer_out[3] = 0x01;
+    buffer_out[4] = 0x0c;
+    Attr_Data_Length -= rp0->Attr_Data_Length;
+    if(Attr_Data_Length){ // If there are other data to be sent after the next HCI event.
+      rp0->Offset |= 0x8000;
+    }
+    rcv_callback(buffer_out, buffer_out[2] + 3);
+    rp0->Offset &= ~0x8000;
+    rp0->Offset += rp0->Attr_Data_Length;
+  }
+} /* aci_gatt_proc_timeout_event */
+/* Event len: 2 */
+/**
+  * @brief This event is generated by the client/server to the application on a GATT timeout (30
+seconds). This is a critical event that should not happen during normal operating conditions. It is an indication of either a major disruption in the communication link or a mistake in the application which does not provide a reply to GATT procedures. After this event, the GATT channel is closed and no more GATT communication can be performed. The applications is exptected to issue an @ref aci_gap_terminate to disconnect from the peer device. It is important to leave an 100 ms blank window before sending the @ref aci_gap_terminate, since immediately after this event, system could save important information in non volatile memory.
+  * @param Connection_Handle Connection handle on which the GATT procedure has timed out
+  * @retval None
+*/
+void aci_gatt_proc_timeout_event(uint16_t Connection_Handle)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gatt_proc_timeout_event_rp0 *rp0 = (aci_gatt_proc_timeout_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2;
+  buffer_out[3] = 0x02;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_att_exchange_mtu_resp_event */
+/* Event len: 2 + 2 */
+/**
+  * @brief This event is generated in response to an Exchange MTU request. See
+@ref aci_gatt_exchange_config.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Server_RX_MTU ATT_MTU value agreed between server and client
+  * @retval None
+*/
+void aci_att_exchange_mtu_resp_event(uint16_t Connection_Handle,
+                                     uint16_t Server_RX_MTU)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_att_exchange_mtu_resp_event_rp0 *rp0 = (aci_att_exchange_mtu_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Server_RX_MTU = Server_RX_MTU;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2 + 2;
+  buffer_out[3] = 0x03;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_att_find_info_resp_event */
+/* Event len: 2 + 1 + 1 + rp0->Event_Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is generated in response to a Find Information Request. See
+@ref aci_att_find_info_req and Find Information Response in Bluetooth Core v4.1
+spec.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Format Format of the hanndle-uuid pairs
+  * @param Event_Data_Length Length of Handle_UUID_Pair in octets
+  * @param Handle_UUID_Pair A sequence of handle-uuid pairs. if format=1, each pair is:[2 octets for handle, 2 octets for UUIDs], if format=2, each pair is:[2 octets for handle, 16 octets for UUIDs]
+  * @retval None
+*/
+void aci_att_find_info_resp_event(uint16_t Connection_Handle,
+                                  uint8_t Format,
+                                  uint8_t Event_Data_Length,
+                                  uint8_t Handle_UUID_Pair[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_att_find_info_resp_event_rp0 *rp0 = (aci_att_find_info_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Format = Format;
+  rp0->Event_Data_Length = Event_Data_Length;
+  Osal_MemCpy((void *) rp0->Handle_UUID_Pair,(const void *) Handle_UUID_Pair, Event_Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + 1 + Event_Data_Length + 2;
+  buffer_out[3] = 0x04;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_att_find_by_type_value_resp_event */
+/* Event len: 2 + 1 + rp0->Num_of_Handle_Pair * (sizeof(Attribute_Group_Handle_Pair_t)) */
+/**
+  * @brief This event is generated in response to a @ref aci_att_find_by_type_value_req
+  * @param Connection_Handle Connection handle related to the response
+  * @param Num_of_Handle_Pair Number of attribute, group handle pairs
+  * @param Attribute_Group_Handle_Pair See @ref Attribute_Group_Handle_Pair_t
+  * @retval None
+*/
+void aci_att_find_by_type_value_resp_event(uint16_t Connection_Handle,
+                                           uint8_t Num_of_Handle_Pair,
+                                           Attribute_Group_Handle_Pair_t Attribute_Group_Handle_Pair[])
+{
+  uint8_t buffer_out[258];
+  int output_size = 0;
+  /* Output params */
+  aci_att_find_by_type_value_resp_event_rp0 *rp0 = (aci_att_find_by_type_value_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Num_of_Handle_Pair = Num_of_Handle_Pair;
+  {
+    int i;
+    for (i = 0; i < Num_of_Handle_Pair; i++) {
+      rp0->Attribute_Group_Handle_Pair[i].Found_Attribute_Handle = Attribute_Group_Handle_Pair[i].Found_Attribute_Handle;
+      output_size += sizeof(uint16_t);
+      rp0->Attribute_Group_Handle_Pair[i].Group_End_Handle = Attribute_Group_Handle_Pair[i].Group_End_Handle;
+      output_size += sizeof(uint16_t);
+    }
+  }
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + output_size + 2;
+  buffer_out[3] = 0x05;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_att_read_by_type_resp_event */
+/* Event len: 2 + 1 + 1 + rp0->Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is generated in response to a @ref aci_att_read_by_type_req. See
+@ref aci_gatt_find_included_services and @ref aci_gatt_disc_all_char_desc.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Handle_Value_Pair_Length The size of each attribute handle-value pair
+  * @param Data_Length Length of Handle_Value_Pair_Data in octets
+  * @param Handle_Value_Pair_Data Attribute Data List as defined in Bluetooth Core v4.1 spec. A sequence of handle-value pairs: [2 octets for Attribute Handle, (Handle_Value_Pair_Length - 2 octets) for Attribute Value]
+  * @retval None
+*/
+void aci_att_read_by_type_resp_event(uint16_t Connection_Handle,
+                                     uint8_t Handle_Value_Pair_Length,
+                                     uint8_t Data_Length,
+                                     uint8_t Handle_Value_Pair_Data[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_att_read_by_type_resp_event_rp0 *rp0 = (aci_att_read_by_type_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Handle_Value_Pair_Length = Handle_Value_Pair_Length;
+  rp0->Data_Length = Data_Length;
+  Osal_MemCpy((void *) rp0->Handle_Value_Pair_Data,(const void *) Handle_Value_Pair_Data, Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + 1 + Data_Length + 2;
+  buffer_out[3] = 0x06;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_att_read_resp_event */
+/* Event len: 2 + 1 + rp0->Event_Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is generated in response to a Read Request. See @ref aci_gatt_read_char_value.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Event_Data_Length Length of following data
+  * @param Attribute_Value The value of the attribute.
+  * @retval None
+*/
+void aci_att_read_resp_event(uint16_t Connection_Handle,
+                             uint8_t Event_Data_Length,
+                             uint8_t Attribute_Value[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_att_read_resp_event_rp0 *rp0 = (aci_att_read_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Event_Data_Length = Event_Data_Length;
+  Osal_MemCpy((void *) rp0->Attribute_Value,(const void *) Attribute_Value, Event_Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + Event_Data_Length + 2;
+  buffer_out[3] = 0x07;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_att_read_blob_resp_event */
+/* Event len: 2 + 1 + rp0->Event_Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event can be generated during a read long characteristic value procedure. See @ref aci_gatt_read_long_char_value.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Event_Data_Length Length of following data
+  * @param Attribute_Value Part of the attribute value.
+  * @retval None
+*/
+void aci_att_read_blob_resp_event(uint16_t Connection_Handle,
+                                  uint8_t Event_Data_Length,
+                                  uint8_t Attribute_Value[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_att_read_blob_resp_event_rp0 *rp0 = (aci_att_read_blob_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Event_Data_Length = Event_Data_Length;
+  Osal_MemCpy((void *) rp0->Attribute_Value,(const void *) Attribute_Value, Event_Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + Event_Data_Length + 2;
+  buffer_out[3] = 0x08;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_att_read_multiple_resp_event */
+/* Event len: 2 + 1 + rp0->Event_Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is generated in response to a Read Multiple Request.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Event_Data_Length Length of following data
+  * @param Set_Of_Values A set of two or more values.
+A concatenation of attribute values for each of the attribute handles in the request in the order that they were requested.
+  * @retval None
+*/
+void aci_att_read_multiple_resp_event(uint16_t Connection_Handle,
+                                      uint8_t Event_Data_Length,
+                                      uint8_t Set_Of_Values[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_att_read_multiple_resp_event_rp0 *rp0 = (aci_att_read_multiple_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Event_Data_Length = Event_Data_Length;
+  Osal_MemCpy((void *) rp0->Set_Of_Values,(const void *) Set_Of_Values, Event_Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + Event_Data_Length + 2;
+  buffer_out[3] = 0x09;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_att_read_by_group_type_resp_event */
+/* Event len: 2 + 1 + 1 + rp0->Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is generated in response to a Read By Group Type Request. See
+@ref aci_gatt_disc_all_primary_services.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Attribute_Data_Length The size of each attribute data
+  * @param Data_Length Length of Attribute_Data_List in octets
+  * @param Attribute_Data_List Attribute Data List as defined in Bluetooth Core v4.1 spec. A sequence of attribute handle, end group handle, attribute value tuples: [2 octets for Attribute Handle, 2 octets End Group Handle, (Attribute_Data_Length - 4 octets) for Attribute Value]
+  * @retval None
+*/
+void aci_att_read_by_group_type_resp_event(uint16_t Connection_Handle,
+                                           uint8_t Attribute_Data_Length,
+                                           uint8_t Data_Length,
+                                           uint8_t Attribute_Data_List[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_att_read_by_group_type_resp_event_rp0 *rp0 = (aci_att_read_by_group_type_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Attribute_Data_Length = Attribute_Data_Length;
+  rp0->Data_Length = Data_Length;
+  Osal_MemCpy((void *) rp0->Attribute_Data_List,(const void *) Attribute_Data_List, Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + 1 + Data_Length + 2;
+  buffer_out[3] = 0x0a;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_att_prepare_write_resp_event */
+/* Event len: 2 + 2 + 2 + 1 + rp0->Part_Attribute_Value_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is generated in response to a @ref aci_att_prepare_write_req.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Attribute_Handle The handle of the attribute to be written
+  * @param Offset The offset of the first octet to be written.
+  * @param Part_Attribute_Value_Length Length of Part_Attribute_Value in octets
+  * @param Part_Attribute_Value The value of the attribute to be written
+  * @retval None
+*/
+void aci_att_prepare_write_resp_event(uint16_t Connection_Handle,
+                                      uint16_t Attribute_Handle,
+                                      uint16_t Offset,
+                                      uint8_t Part_Attribute_Value_Length,
+                                      uint8_t Part_Attribute_Value[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_att_prepare_write_resp_event_rp0 *rp0 = (aci_att_prepare_write_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Attribute_Handle = Attribute_Handle;
+  rp0->Offset = Offset;
+  rp0->Part_Attribute_Value_Length = Part_Attribute_Value_Length;
+  Osal_MemCpy((void *) rp0->Part_Attribute_Value,(const void *) Part_Attribute_Value, Part_Attribute_Value_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2 + 2 + 1 + Part_Attribute_Value_Length + 2;
+  buffer_out[3] = 0x0c;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_att_exec_write_resp_event */
+/* Event len: 2 */
+/**
+  * @brief This event is generated in response to an Execute Write Request.
+  * @param Connection_Handle Connection handle related to the response
+  * @retval None
+*/
+void aci_att_exec_write_resp_event(uint16_t Connection_Handle)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_att_exec_write_resp_event_rp0 *rp0 = (aci_att_exec_write_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2;
+  buffer_out[3] = 0x0d;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gatt_indication_event */
+/* Event len: 2 + 2 + 1 + rp0->Attribute_Value_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is generated when an indication is received from the server.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Attribute_Handle The handle of the attribute
+  * @param Attribute_Value_Length Length of Attribute_Value in octets
+  * @param Attribute_Value The current value of the attribute
+  * @retval None
+*/
+void aci_gatt_indication_event(uint16_t Connection_Handle,
+                               uint16_t Attribute_Handle,
+                               uint8_t Attribute_Value_Length,
+                               uint8_t Attribute_Value[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gatt_indication_event_rp0 *rp0 = (aci_gatt_indication_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Attribute_Handle = Attribute_Handle;
+  rp0->Attribute_Value_Length = Attribute_Value_Length;
+  Osal_MemCpy((void *) rp0->Attribute_Value,(const void *) Attribute_Value, Attribute_Value_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2 + 1 + Attribute_Value_Length + 2;
+  buffer_out[3] = 0x0e;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gatt_notification_event */
+/* Event len: 2 + 2 + 1 + rp0->Attribute_Value_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is generated when a notification is received from the server.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Attribute_Handle The handle of the attribute
+  * @param Attribute_Value_Length Length of Attribute_Value in octets
+  * @param Attribute_Value The current value of the attribute
+  * @retval None
+*/
+void aci_gatt_notification_event(uint16_t Connection_Handle,
+                                 uint16_t Attribute_Handle,
+                                 uint8_t Attribute_Value_Length,
+                                 uint8_t Attribute_Value[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gatt_notification_event_rp0 *rp0 = (aci_gatt_notification_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Attribute_Handle = Attribute_Handle;
+  rp0->Attribute_Value_Length = Attribute_Value_Length;
+  Osal_MemCpy((void *) rp0->Attribute_Value,(const void *) Attribute_Value, Attribute_Value_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2 + 1 + Attribute_Value_Length + 2;
+  buffer_out[3] = 0x0f;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gatt_proc_complete_event */
+/* Event len: 2 + 1 */
+/**
+  * @brief This event is generated when a GATT client procedure completes either with error or
+successfully.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Error_Code Indicates whether the procedure completed with an error or was successful
+  * Values:
+  - 0x00: Success
+  - 0x01: Unknown HCI Command
+  - 0x02: Unknown Connection Identifier
+  - 0x03: Hardware Failure
+  - 0x04: Page Timeout
+  - 0x05: Authentication Failure
+  - 0x06: PIN or Key Missing
+  - 0x07: Memory Capacity Exceeded
+  - 0x08: Connection Timeout
+  - 0x09: Connection Limit Exceeded
+  - 0x0A: Synchronous Connection Limit to a Device Exceeded
+  - 0x0B: ACL Connection Already Exists
+  - 0x0C: Command Disallowed
+  - 0x0D: Connection Rejected Due To Limited Resources
+  - 0x0E: Connection Rejected Due To Security Reasons
+  - 0x0F: Connection Rejected due to Unacceptable BD_ADDR
+  - 0x10: Connection Accept Timeout Exceeded
+  - 0x11: Unsupported Feature Or Parameter Value
+  - 0x12: Invalid HCI Command Parameters
+  - 0x13: Remote User Terminated Connection
+  - 0x14: Remote Device Terminated Connection due to Low Resources
+  - 0x15: Remote Device Terminated Connection due to Power Off
+  - 0x16: Connection Terminated By Local Host
+  - 0x17: Repeated Attempts
+  - 0x18: Pairing Not Allowed
+  - 0x19: Unknown LMP PDU
+  - 0x1A: Unsupported Remote Feature / Unsupported LMP Feature
+  - 0x1B: SCO Offset Rejected
+  - 0x1C: SCO Interval Rejected
+  - 0x1D: SCO Air Mode Rejected
+  - 0x1E: Invalid LMP Parameters
+  - 0x1F: Unspecified Error
+  - 0x20: Unsupported LMP Parameter Value
+  - 0x21: Role Change Not Allowed
+  - 0x22: LMP Response Timeout / LL Response Timeout
+  - 0x23: LMP Error Transaction Collision
+  - 0x24: LMP PDU Not Allowed
+  - 0x25: Encryption Mode Not Acceptable
+  - 0x26: Link Key cannot be Changed
+  - 0x27: Requested QoS Not Supported
+  - 0x28: Instant Passed
+  - 0x29: Pairing With Unit Key Not Supported
+  - 0x2A: Different Transaction Collision
+  - 0x2C: QoS Unacceptable Parameter
+  - 0x2D: QoS Rejected
+  - 0x2E: Channel Assessment Not Supported
+  - 0x2F: Insufficient Security
+  - 0x30: Parameter Out Of Mandatory Range
+  - 0x32: Role Switch Pending
+  - 0x34: Reserved Slot Violation
+  - 0x35: Role Switch Failed
+  - 0x36: Extended Inquiry Response Too Large
+  - 0x37: Secure Simple Pairing Not Supported by Host
+  - 0x38: Host Busy - Pairing
+  - 0x39: Connection Rejected due to No Suitable Channel Found
+  - 0x3A: Controller Busy
+  - 0x3B: Unacceptable Connection Interval
+  - 0x3C: Directed Advertising Timeout
+  - 0x3D: Connection Terminated Due to MIC Failure
+  - 0x3E: Connection Failed to be Established
+  - 0x3F: MAC of the 802.11 AMP
+  - 0x41: Failed
+  - 0x42: Invalid parameters
+  - 0x43: Busy
+  - 0x44: Invalid length
+  - 0x45: Pending
+  - 0x46: Not allowed
+  - 0x47: GATT error
+  - 0x48: Address not resolved
+  - 0x50: Invalid CID
+  - 0x5A: CSRK not found
+  - 0x5B: IRK not found
+  - 0x5C: Device not found in DB
+  - 0x5D: Security DB full
+  - 0x5E: Device not bonded
+  - 0x5F: Device in blacklist
+  - 0x60: Invalid handle
+  - 0x61: Invalid parameter
+  - 0x62: Out of handles
+  - 0x63: Invalid operation
+  - 0x64: Insufficient resources
+  - 0x65: Insufficient encryption key size
+  - 0x66: Characteristic already exist
+  - 0x82: No valid slot
+  - 0x83: Short window
+  - 0x84: New interval failed
+  - 0x85: Too large interval
+  - 0x86: Slot length failed
+  - 0xFA: Flash read failed
+  - 0xFB: Flash write failed
+  - 0xFC: Flash erase failed
+  * @retval None
+*/
+void aci_gatt_proc_complete_event(uint16_t Connection_Handle,
+                                  uint8_t Error_Code)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gatt_proc_complete_event_rp0 *rp0 = (aci_gatt_proc_complete_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Error_Code = Error_Code;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + 2;
+  buffer_out[3] = 0x10;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gatt_error_resp_event */
+/* Event len: 2 + 1 + 2 + 1 */
+/**
+  * @brief This event is generated when an Error Response is received from the server. The error
+response can be given by the server at the end of one of the GATT discovery procedures.
+This does not mean that the procedure ended with an error, but this error event is part of the
+procedure itself.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Req_Opcode The request that generated this error response
+  * @param Attribute_Handle The attribute handle that generated this error response
+  * @param Error_Code The reason why the request has generated an error response (ATT error codes)
+  * Values:
+  - 0x01: Invalid handle
+  - 0x02: Read not permitted
+  - 0x03: Write not permitted
+  - 0x04: Invalid PDU
+  - 0x05: Insufficient authentication
+  - 0x06: Request not supported
+  - 0x07: Invalid offset
+  - 0x08: Insufficient authorization
+  - 0x09: Prepare queue full
+  - 0x0A: Attribute not found
+  - 0x0B: Attribute not long
+  - 0x0C: Insufficient encryption key size
+  - 0x0D: Invalid attribute value length
+  - 0x0E: Unlikely error
+  - 0x0F: Insufficient encryption
+  - 0x10: Unsupported group type
+  - 0x11: Insufficient resources
+  * @retval None
+*/
+void aci_gatt_error_resp_event(uint16_t Connection_Handle,
+                               uint8_t Req_Opcode,
+                               uint16_t Attribute_Handle,
+                               uint8_t Error_Code)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gatt_error_resp_event_rp0 *rp0 = (aci_gatt_error_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Req_Opcode = Req_Opcode;
+  rp0->Attribute_Handle = Attribute_Handle;
+  rp0->Error_Code = Error_Code;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + 2 + 1 + 2;
+  buffer_out[3] = 0x11;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gatt_disc_read_char_by_uuid_resp_event */
+/* Event len: 2 + 2 + 1 + rp0->Attribute_Value_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event can be generated during a "Discover Characteristics By UUID" procedure or a
+"Read using Characteristic UUID" procedure.
+The attribute value will be a service declaration as defined in Bluetooth Core v4.1spec
+(vol.3, Part G, ch. 3.3.1), when a "Discover Characteristics By UUID" has been started. It will
+be the value of the Characteristic if a* "Read using Characteristic UUID" has been
+performed.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Attribute_Handle The handle of the attribute
+  * @param Attribute_Value_Length Length of Attribute_Value in octets
+  * @param Attribute_Value The attribute value will be a service declaration as defined in Bluetooth Core v4.0 spec
+ (vol.3, Part G, ch. 3.3.1), when a "Discover Characteristics By UUID" has been started.
+ It will be the value of the Characteristic if a "Read using Characteristic UUID" has been performed.
+  * @retval None
+*/
+void aci_gatt_disc_read_char_by_uuid_resp_event(uint16_t Connection_Handle,
+                                                uint16_t Attribute_Handle,
+                                                uint8_t Attribute_Value_Length,
+                                                uint8_t Attribute_Value[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gatt_disc_read_char_by_uuid_resp_event_rp0 *rp0 = (aci_gatt_disc_read_char_by_uuid_resp_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Attribute_Handle = Attribute_Handle;
+  rp0->Attribute_Value_Length = Attribute_Value_Length;
+  Osal_MemCpy((void *) rp0->Attribute_Value,(const void *) Attribute_Value, Attribute_Value_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2 + 1 + Attribute_Value_Length + 2;
+  buffer_out[3] = 0x12;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gatt_write_permit_req_event */
+/* Event len: 2 + 2 + 1 + rp0->Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is given to the application when a write request, write command or signed write
+command is received by the server from the client. This event will be given to the application
+only if the event bit for this event generation is set when the characteristic was added.
+When this event is received, the application has to check whether the value being requested
+for write can be allowed to be written and respond with the command @ref aci_gatt_write_resp.
+The details of the parameters of the command can be found. Based on the response from
+the application, the attribute value will be modified by the stack. If the write is rejected by the
+application, then the value of the attribute will not be modified. In case of a write REQ, an
+error response will be sent to the client, with the error code as specified by the application.
+In case of write/signed write commands, no response is sent to the client but the attribute is
+not modified.
+  * @param Connection_Handle Handle of the connection on which there was the request to write the attribute
+  * @param Attribute_Handle The handle of the attribute
+  * @param Data_Length Length of Data field
+  * @param Data The data that the client has requested to write
+  * @retval None
+*/
+void aci_gatt_write_permit_req_event(uint16_t Connection_Handle,
+                                     uint16_t Attribute_Handle,
+                                     uint8_t Data_Length,
+                                     uint8_t Data[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gatt_write_permit_req_event_rp0 *rp0 = (aci_gatt_write_permit_req_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Attribute_Handle = Attribute_Handle;
+  rp0->Data_Length = Data_Length;
+  Osal_MemCpy((void *) rp0->Data,(const void *) Data, Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2 + 1 + Data_Length + 2;
+  buffer_out[3] = 0x13;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gatt_read_permit_req_event */
+/* Event len: 2 + 2 + 2 */
+/**
+  * @brief This event is given to the application when a read request or read blob request is received
+by the server from the client. This event will be given to the application only if the event bit
+for this event generation is set when the characteristic was added.
+On receiving this event, the application can update the value of the handle if it desires and
+when done, it has to send the @ref aci_gatt_allow_read command to indicate to the stack that it
+can send the response to the client.
+  * @param Connection_Handle Connection handle related to the response
+  * @param Attribute_Handle The handle of the attribute
+  * @param Offset Contains the offset from which the read has been requested
+  * @retval None
+*/
+void aci_gatt_read_permit_req_event(uint16_t Connection_Handle,
+                                    uint16_t Attribute_Handle,
+                                    uint16_t Offset)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gatt_read_permit_req_event_rp0 *rp0 = (aci_gatt_read_permit_req_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Attribute_Handle = Attribute_Handle;
+  rp0->Offset = Offset;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2 + 2 + 2;
+  buffer_out[3] = 0x14;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gatt_read_multi_permit_req_event */
+/* Event len: 2 + 1 + rp0->Number_of_Handles * (sizeof(Handle_Item_t)) */
+/**
+  * @brief This event is given to the application when a read multiple request or read by type request is
+received by the server from the client. This event will be given to the application only if the
+event bit for this event generation is set when the characteristic was added.
+On receiving this event, the application can update the values of the handles if it desires and
+when done, it has to send the @ref aci_gatt_allow_read command to indicate to the stack that it
+can send the response to the client.
+  * @param Connection_Handle Handle of the connection which requested to read the attribute
+  * @param Number_of_Handles
+  * @param Handle_Item See @ref Handle_Item_t
+  * @retval None
+*/
+void aci_gatt_read_multi_permit_req_event(uint16_t Connection_Handle,
+                                          uint8_t Number_of_Handles,
+                                          Handle_Item_t Handle_Item[])
+{
+  uint8_t buffer_out[258];
+  int output_size = 0;
+  /* Output params */
+  aci_gatt_read_multi_permit_req_event_rp0 *rp0 = (aci_gatt_read_multi_permit_req_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Number_of_Handles = Number_of_Handles;
+  {
+    int i;
+    for (i = 0; i < Number_of_Handles; i++) {
+      rp0->Handle_Item[i].Handle = Handle_Item[i].Handle;
+      output_size += sizeof(uint16_t);
+    }
+  }
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 1 + output_size + 2;
+  buffer_out[3] = 0x15;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gatt_tx_pool_available_event */
+/* Event len: 2 + 2 */
+/**
+  * @brief Each time BLE FW stack raises the error code @ref ble_status_insufficient_resources (0x64),
+the @ref aci_gatt_tx_pool_available_event event is generated as soon as the available buffer size
+is greater than maximum ATT MTU (on stack versions below v2.1 this event is generated when at least 2 packets
+with MTU of 23 bytes are available).
+  * @param Connection_Handle Connection handle related to the request
+  * @param Available_Buffers Not used.
+  * @retval None
+*/
+void aci_gatt_tx_pool_available_event(uint16_t Connection_Handle,
+                                      uint16_t Available_Buffers)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gatt_tx_pool_available_event_rp0 *rp0 = (aci_gatt_tx_pool_available_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Available_Buffers = Available_Buffers;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2 + 2;
+  buffer_out[3] = 0x16;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gatt_server_confirmation_event */
+/* Event len: 2 */
+/**
+  * @brief This event is generated when the client has sent the confirmation to a previously sent indication
+  * @param Connection_Handle Connection handle related to the event
+  * @retval None
+*/
+void aci_gatt_server_confirmation_event(uint16_t Connection_Handle)
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gatt_server_confirmation_event_rp0 *rp0 = (aci_gatt_server_confirmation_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2;
+  buffer_out[3] = 0x17;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+/* aci_gatt_prepare_write_permit_req_event */
+/* Event len: 2 + 2 + 2 + 1 + rp0->Data_Length * (sizeof(uint8_t)) */
+/**
+  * @brief This event is given to the application when a prepare write request
+is received by the server from the client. This event will be given to the application
+only if the event bit for this event generation is set when the characteristic was added.
+When this event is received, the application has to check whether the value being requested
+for write can be allowed to be written and respond with the command @ref aci_gatt_write_resp.
+Based on the response from the application, the attribute value will be modified by the stack.
+If the write is rejected by the application, then the value of the attribute will not be modified
+and an error response will be sent to the client, with the error code as specified by the application.
+  * @param Connection_Handle Handle of the connection on which there was the request to write the attribute
+  * @param Attribute_Handle The handle of the attribute
+  * @param Offset The offset from which the prepare write has been requested
+  * @param Data_Length Length of Data field
+  * @param Data The data that the client has requested to write
+  * @retval None
+*/
+void aci_gatt_prepare_write_permit_req_event(uint16_t Connection_Handle,
+                                             uint16_t Attribute_Handle,
+                                             uint16_t Offset,
+                                             uint8_t Data_Length,
+                                             uint8_t Data[])
+{
+  uint8_t buffer_out[258];
+  /* Output params */
+  aci_gatt_prepare_write_permit_req_event_rp0 *rp0 = (aci_gatt_prepare_write_permit_req_event_rp0 *) (buffer_out + 5);
+  rp0->Connection_Handle = Connection_Handle;
+  rp0->Attribute_Handle = Attribute_Handle;
+  rp0->Offset = Offset;
+  rp0->Data_Length = Data_Length;
+  Osal_MemCpy((void *) rp0->Data,(const void *) Data, Data_Length);
+  buffer_out[0] = 0x04;
+  buffer_out[1] = 0xFF;
+  buffer_out[2] = 2 + 2 + 2 + 1 + Data_Length + 2;
+  buffer_out[3] = 0x18;
+  buffer_out[4] = 0x0c;
+  rcv_callback(buffer_out, buffer_out[2] + 3);
+}
+
+tBleStatus hci_rx_acl_data_event(uint16_t connHandle, uint8_t  pb_flag, uint8_t  bc_flag, uint16_t  dataLen, uint8_t*  pduData)
+{
+  uint8_t buffer_out[251+5];
+
+  buffer_out[0] = 0x02;
+  buffer_out[1] = connHandle & 0xFF;
+  buffer_out[2] = (connHandle >> 8 & 0x0F) | (pb_flag << 4) | (bc_flag << 6) ;
+  Osal_MemCpy(buffer_out+3,&dataLen, 2);
+  Osal_MemCpy(buffer_out+5, pduData, dataLen);
+  rcv_callback(buffer_out, dataLen+2+2+1);
+  return 0; // ???
 }

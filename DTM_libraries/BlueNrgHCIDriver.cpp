@@ -13,6 +13,7 @@
 #include "DTM_cmd_db.h"
 #include "osal.h"
 #include "bluenrg1_api.h"
+#include "bluenrg1_stack.h"
 #include "hci_defs.h"
 //#include "transport_layer.h"
 
@@ -36,8 +37,8 @@ extern "C" void rcv_callback(uint8_t *data, uint16_t len){ble::vendor::cordio::C
 //#define BLUE_FLAG_RAM_RESET             0x01010101
 
 #define HCI_CMD_FLAG 0x01 ////antonio
-//uint8_t mask_events[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10}; //antonio
-//uint8_t le_mask_events[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; //antonio
+uint8_t mask_events[8] = {0xff, 0xff, 0xff, 0xff, 0xff, 0x1f, 0x00, 0x20}; //antonio
+uint8_t le_mask_events[8] = {0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; //antonio
 
 namespace ble {
 namespace vendor {
@@ -111,8 +112,8 @@ public:
         	// procedure it is bypassed
 
         	/*enable link layer only */
-//        	uint8_t Value = 1;
-//        	aci_hal_write_config_data(0x2C, 1, &Value);
+        	uint8_t Value = 1;
+        	aci_hal_write_config_data(0x2C, 1, &Value);
         	//aci_gatt_init();
         	aciReadConfigParameter(RANDOM_STATIC_ADDRESS_OFFSET);
         } break;
@@ -148,14 +149,14 @@ public:
         	break;
 
         case HCI_OPCODE_LE_SET_RAND_ADDR:
-//        	HciSetEventMaskCmd((uint8_t *) mask_events);
-        	HciSetEventMaskCmd((uint8_t *) hciEventMask_BNRG2);
+        	HciSetEventMaskCmd((uint8_t *) mask_events);
+//        	HciSetEventMaskCmd((uint8_t *) hciEventMask_BNRG2);
         	break;
 
         case HCI_OPCODE_SET_EVENT_MASK:
         	/* send next command in sequence */
-//        	HciLeSetEventMaskCmd((uint8_t *) le_mask_events);
-        	HciLeSetEventMaskCmd((uint8_t *) hciLeEventMask_BNRG2);
+        	HciLeSetEventMaskCmd((uint8_t *) le_mask_events);
+//        	HciLeSetEventMaskCmd((uint8_t *) hciLeEventMask_BNRG2);
         	break;
 
         case HCI_OPCODE_LE_SET_EVENT_MASK:
@@ -384,12 +385,12 @@ private:
       0,                                              /* Byte 4 */
       HCI_EVT_MASK_ENC_KEY_REFRESH_CMPL,              /* Byte 5 */
       0,                                              /* Byte 6 */
-      0         // HCI_EVT_MASK_LE_META                /* Byte 7 */   ///////// this bit should be 1, but it must be neglected to enable LE meta events
+      0         //HCI_EVT_MASK_LE_META                /* Byte 7 */   ///////// this bit should be 1, but it must be neglected to enable LE meta events
     };
     /* LE mask according to 4.2 specification */
     const uint8_t hciLeEventMask_BNRG2[HCI_LE_EVT_MASK_LEN] =
     {
-      HCI_EVT_MASK_LE_CONN_CMPL_EVT |                 /* Byte 0 */
+      //HCI_EVT_MASK_LE_CONN_CMPL_EVT |                 /* Byte 0 */
       HCI_EVT_MASK_LE_ADV_REPORT_EVT |                /* Byte 0 */
       HCI_EVT_MASK_LE_CONN_UPDATE_CMPL_EVT |          /* Byte 0 */
       HCI_EVT_MASK_LE_READ_REMOTE_FEAT_CMPL_EVT |     /* Byte 0 */
@@ -479,9 +480,19 @@ public:
     			buffer[i] = pData[i];
     		}
     	}
-    	else{
-    		//should never enter here
-    		while(1){}
+    	else if(type==HCI_ACL_TYPE){
+    		uint16_t connHandle;
+    		uint16_t dataLen;
+    		uint8_t* pduData;
+    		uint8_t  pb_flag;
+    		uint8_t  bc_flag;
+
+    		connHandle = ((pData[2] & 0x0F) << 8) + pData[1];
+    		dataLen = (pData[4] << 8) + pData[3];
+    		pduData = pData+5;
+    		pb_flag = (pData[2] >> 4) & 0x3;
+    		bc_flag = (pData[2] >> 6) & 0x3;
+    		hci_tx_acl_data(connHandle, pb_flag, bc_flag, dataLen, pduData);
     	}
     	resp_len = process_command(buffer, len, buffer_out, 255);
     	send_event(buffer_out, resp_len);

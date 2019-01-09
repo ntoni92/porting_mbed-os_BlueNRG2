@@ -77,7 +77,8 @@
 
 
 /* Set the number of memory block for packet allocation */
-#define MBLOCKS_COUNT           (MBLOCKS_CALC(PREPARE_WRITE_LIST_SIZE, MAX_ATT_MTU, NUM_LINKS) + OPT_MBLOCKS)
+//#define MBLOCKS_COUNT           (MBLOCKS_CALC(PREPARE_WRITE_LIST_SIZE, MAX_ATT_MTU, NUM_LINKS) + OPT_MBLOCKS)
+#define MBLOCKS_COUNT 15 ////antonio
 
 /* RAM reserved to manage all the data stack according the number of links,
  * number of services, number of attributes and attribute value length
